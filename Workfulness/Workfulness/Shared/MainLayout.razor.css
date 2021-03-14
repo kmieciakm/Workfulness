@@ -13,6 +13,15 @@
     padding-top: 2rem;
 }
 
+.bottombar {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+}
+
 @media (min-width: 641px) {
     .page {
         flex-direction: row;

@@ -41,13 +41,24 @@ html, body {
 
 /*
 ___________________________
-    Custom shared CSS
+    Override styles 
 ___________________________
 */
+
+.fa-2x {
+    font-size: 24px !important;
+}
 
 .row {
     margin: 0 auto;
 }
+
+
+/*
+___________________________
+    Custom shared CSS
+___________________________
+*/
 
 .fill {
     height: 100%;

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Workfulness.Services;
+using Workfulness.Services.Contracts;
 
 namespace Workfulness
 {
@@ -17,9 +19,14 @@ namespace Workfulness
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            ConfigureServices(builder.Services);
 
             await builder.Build().RunAsync();
+        }
+
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddScoped<IAudioPlayer, AudioPlayer>();
         }
     }
 }

@@ -1,0 +1,133 @@
+﻿@inject IAudioPlayer audioPlayer;
+
+<div class="background" hidden="@(!IsPlaylistWindowVisible)"></div>
+
+<div class="audio-player">
+    <div class="playlist" hidden="@(!IsPlaylistWindowVisible)">
+        <div class="container-fluid fill">
+            <div class="row fill m-0">
+                <div class="col-lg-6 p-1 content-center">
+                    <div class="playlist_image" style='background-image: url("@Playlist.CoverUrl")' />
+                </div>
+                <!-- TODO: Style and implement function to switch to desired song -->
+                <div class="col-lg-6 p-1 content-vertical-center w-fill">
+                    <ul class="playlist_list">
+                        @foreach (var song in Playlist.Songs)
+                        {
+                            <li>@song.SongFullName</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="song_panel">
+        <div class="song_info pt-4">
+            <h2>@Playlist.CurrentSong.SongFullName</h2>
+            <!-- TODO: Get elapsed time -->
+            <p class="song_timeleft">00:00</p>
+            <div class="progressbar_slide">
+                <div class="progressbar_range"></div>
+            </div>
+        </div>
+        <div class="song_controls m-4">
+            <div class="controls_plays">
+                <div id="prev_btn" @onclick="PreviousSong">
+                    <i class="fas fa-2x fa-backward"></i>
+                </div>
+                @if (!IsSongPlaying)
+                {
+                    <div id="play_btn" @onclick="PlaySong">
+                        <i class="fas fa-2x fa-play"></i>
+                    </div>
+                }
+                else
+                {
+                    <div id="pause_btn" @onclick="PauseSong">
+                        <i class="fas fa-2x fa-pause"></i>
+                    </div>
+                }
+                <div id="next_btn" @onclick="NextSong">
+                    <i class="fas fa-2x fa-forward"></i>
+                </div>
+            </div>
+        </div>
+
+        @if (!IsPlaylistWindowVisible)
+        {
+            <div id="extends_btn" @onclick="ShowPlaylist">
+                <i class="fas fa-2x fa-level-up-alt"></i>
+            </div>
+
+        }
+        else
+        {
+            <div id="extends_btn" @onclick="HidePlaylist">
+                <i class="fas fa-2x fa-level-down-alt"></i>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    bool IsPlaylistWindowVisible { get; set; }
+    bool IsSongPlaying { get; set; }
+    Playlist Playlist { get; set; } = new Playlist();
+    private bool IsSongAttachedToAudio { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        // TODO: Move to separate service and inject
+        Playlist.CoverUrl = "https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
+        Playlist.Songs = new List<Song>() {
+            new Song {
+                Title = "Blathering On",
+                Author = "Derek Clegg",
+                SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
+            },
+            new Song {
+                Title = "Heavy Waves",
+                Author = "Crowander",
+                SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+            }
+        };
+    }
+
+    private void ShowPlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = true;
+
+    private void HidePlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = false;
+
+    private async Task PlaySong(MouseEventArgs args)
+    {
+        if (IsSongAttachedToAudio)
+        {
+            await audioPlayer.Replay();
+        }
+        else
+        {
+            await audioPlayer.Play(Playlist.CurrentSong.SongUrl);
+            IsSongAttachedToAudio = true;
+        }
+        IsSongPlaying = true;
+    }
+
+    private async Task PauseSong(MouseEventArgs args)
+    {
+        await audioPlayer.Pause();
+        IsSongPlaying = false;
+    }
+
+    private async Task NextSong(MouseEventArgs args)
+    {
+        Playlist.SwitchToNextSong();
+        await audioPlayer.Play(Playlist.CurrentSong.SongUrl);
+        IsSongPlaying = true;
+    }
+
+    private async Task PreviousSong(MouseEventArgs args)
+    {
+        Playlist.SwitchToPreviousSong();
+        await audioPlayer.Play(Playlist.CurrentSong.SongUrl);
+        IsSongPlaying = true;
+    }
+}
