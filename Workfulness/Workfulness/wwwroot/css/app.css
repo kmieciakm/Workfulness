@@ -1,17 +1,7 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,700;1,100;1,400;1,700&display=swap');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-a, .btn-link {
-    color: #0366d6;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .content {
@@ -48,3 +38,48 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+/*
+___________________________
+    Custom shared CSS
+___________________________
+*/
+
+.row {
+    margin: 0 auto;
+}
+
+.fill {
+    height: 100%;
+    width: 100%;
+}
+
+.h-fill {
+    height: 100%;
+}
+
+.w-fill {
+    width: 100%;
+}
+
+.content-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.content-vertical-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.content-horizontal-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
