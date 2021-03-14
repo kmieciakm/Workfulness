@@ -1,4 +1,5 @@
 ﻿@inject IAudioPlayer audioPlayer;
+@inject IPlaylistService playlistService;
 
 <div class="background" hidden="@(!IsPlaylistWindowVisible)"></div>
 
@@ -72,25 +73,12 @@
 @code {
     bool IsPlaylistWindowVisible { get; set; }
     bool IsSongPlaying { get; set; }
-    Playlist Playlist { get; set; } = new Playlist();
+    Playlist Playlist { get; set; }
     private bool IsSongAttachedToAudio { get; set; } = false;
 
     protected override void OnInitialized()
     {
-        // TODO: Move to separate service and inject
-        Playlist.CoverUrl = "https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
-        Playlist.Songs = new List<Song>() {
-            new Song {
-                Title = "Blathering On",
-                Author = "Derek Clegg",
-                SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
-            },
-            new Song {
-                Title = "Heavy Waves",
-                Author = "Crowander",
-                SongUrl = "./songs/Crowander - Heavy Waves.mp3"
-            }
-        };
+        Playlist = playlistService.GetPlaylist();
     }
 
     private void ShowPlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = true;

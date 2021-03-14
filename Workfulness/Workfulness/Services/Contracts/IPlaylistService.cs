@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Workfulness.Models;
 
 namespace Workfulness.Services.Contracts
 {
-    internal interface IAudioPlayer
+    interface IPlaylistService
     {
-        Task Play(string songUrl);
-        Task Pause();
-        Task Replay();
+        Playlist GetPlaylist();
     }
 }

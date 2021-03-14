@@ -7,7 +7,7 @@ using Workfulness.Services.Contracts;
 
 namespace Workfulness.Services
 {
-    public class AudioPlayer : IAudioPlayer
+    internal class AudioPlayer : IAudioPlayer
     {
         private IJSRuntime _JSRuntime { get; set; }
 
