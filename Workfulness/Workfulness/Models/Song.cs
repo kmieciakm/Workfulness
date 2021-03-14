@@ -12,5 +12,5 @@ namespace Workfulness.Models
         public string SongUrl { get; set; }
 
         public string SongFullName { get { return $"{Author} - {Title}"; } }
-    }   
+    }
 }
