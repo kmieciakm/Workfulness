@@ -160,18 +160,27 @@ __________________________
 
 .scroll_playlist {
     height: 80%;
+    color: black;
+    padding-left: 0px;
     width: 100%;
-    overflow: hidden;
+    height: 400px;
+    max-width: 700px;
+    overflow-x: hidden;
     overflow-y: scroll;
-    display: block;
-    margin-left: auto;
-    margin-right:100px;
 }
-nav{
-    background-color:transparent;
+
+li:hover {
+    color: #89cac7;
+    cursor: pointer;
+    /*background-color: #89cac7;*/
+}
+
+nav {
+    background-color: transparent;
     color: white;
 }
-/* width */
+
+/* Width */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -183,10 +192,16 @@ nav{
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: white;
+    background: #89cac7;
 }
 
- /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-     background: white;
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #89cac7;
+    }
+
+@media (max-width: 991px) {
+    .playlist_box {
+        height: 50%;
+    }
 }

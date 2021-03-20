@@ -13,6 +13,7 @@ namespace Workfulness.Services
         {
             Playlist playlist = new Playlist();
             playlist.CoverUrl = "https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
+            playlist.Title = "This is Sample Playlist Titile";
             playlist.Songs = new List<Song>() 
             {
                 new Song 
@@ -22,6 +23,114 @@ namespace Workfulness.Services
                     SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
                 },
                 new Song 
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                  new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },  
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Blathering On",
+                    Author = "Derek Clegg",
+                    SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
+                {
+                    Title = "Heavy Waves",
+                    Author = "Crowander",
+                    SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                },
+                new Song
                 {
                     Title = "Heavy Waves",
                     Author = "Crowander",
