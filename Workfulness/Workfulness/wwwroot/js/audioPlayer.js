@@ -1,13 +1,12 @@
 ﻿let track = document.createElement('audio');
 
-window.playFromStart = (songUrl) => {
+window.attachSongToAudio = (songUrl) => {
     track.src = songUrl;
     track.load();
     track.currentTime = 0;
-    track.play();
 }
 
-window.replay = () => {
+window.play = () => {
     track.play();
 }
 
@@ -16,11 +15,14 @@ window.pause = () => {
 }
 
 window.setTrackAtTime = (percent) => {
-    console.log(percent);
     let trackTime = track.duration * percent / 100;
     track.currentTime = trackTime;
 }
 
 window.getElapsedTimeInPercents = () => {
-    return track.currentTime / track.duration * 100;
+    let elapseTime = Math.ceil(track.currentTime / track.duration * 100);
+
+    if (isNaN(elapseTime))
+        return 0;
+    return parseInt(elapseTime);
 }

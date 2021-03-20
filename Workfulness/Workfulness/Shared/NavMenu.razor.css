@@ -43,7 +43,7 @@
         align-items: center;
         line-height: 3rem;
         border-bottom: 2px solid transparent;
-        transition: ease-out 1s;
+        transition: ease-out 0.4s;
     }
 
         .nav-item ::deep a.active {
