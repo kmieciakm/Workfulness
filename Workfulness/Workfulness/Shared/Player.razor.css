@@ -143,6 +143,12 @@ __________________________
     z-index: 10;
 }
 
+.playlist_title {
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
 .playlist_image {
     background-color: var(--color-light);
     height: 50vh;
@@ -156,4 +162,50 @@ __________________________
 
 .playlist_list {
     color: var(--color-dark);
+    padding-left: 0px;
+    width: 100%;
+    height: 400px;
+    max-width: 700px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+li {
+    background-color: var(--color-light);
+    transition: 0.2s;
+}
+
+li:hover {
+    color: #89cac7;
+    cursor: pointer;
+}
+
+/* Width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: black;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #89cac7;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #89cac7;
+    }
+
+@media (max-width: 991px) {
+    .playlist_box {
+        height: 50%;
+    }
+
+    .playlist_list {
+        max-width: 100%;
+    }
 }

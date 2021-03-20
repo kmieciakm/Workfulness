@@ -1,8 +1,9 @@
 ﻿let track = document.createElement('audio');
 
-window.play = (songUrl) => {
+window.playFromStart = (songUrl) => {
     track.src = songUrl;
     track.load();
+    track.currentTime = 0;
     track.play();
 }
 

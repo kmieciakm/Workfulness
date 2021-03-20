@@ -7,15 +7,20 @@
     <div class="playlist" hidden="@(!IsPlaylistWindowVisible)">
         <div class="container-fluid fill">
             <div class="row fill m-0">
-                <div class="col-lg-6 p-1 content-center">
+                <div class="col-lg-6 p-1 content-center playlist_box">     
                     <div class="playlist_image" style='background-image: url("@Playlist.CoverUrl")' />
+                    <h3 class="playlist_title p-2">@Playlist.Title</h3>
                 </div>
-                <!-- TODO: Style and implement function to switch to desired song -->
-                <div class="col-lg-6 p-1 content-vertical-center w-fill">
-                    <ul class="playlist_list">
+                <!-- TODO: Implement function to switch to desired song -->
+                <div class="col-lg-6 p-1 content-vertical-center playlist_box">
+                    <ul class="playlist_list list-group-flush m-1 mr-lg-5">
                         @foreach (var song in Playlist.Songs)
                         {
-                            <li>@song.SongFullName</li>
+                            <li class="list-group-item" @onclick="PlayCurrentSong">
+                                <span class="font-weight-bold">@song.Title</span>
+                                <br />
+                                <span>@song.Author</span>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -33,12 +38,13 @@
         </div>
         <div class="song_controls m-4">
             <div class="controls_plays">
+             
                 <div id="prev_btn" @onclick="PreviousSong">
                     <i class="fas fa-2x fa-backward"></i>
                 </div>
                 @if (!IsSongPlaying)
                 {
-                    <div id="play_btn" @onclick="PlaySong">
+                    <div id="play_btn" @onclick="PlayCurrentSong">
                         <i class="fas fa-2x fa-play"></i>
                     </div>
                 }
@@ -87,7 +93,7 @@
 
     // TODO: This methods (below) should be placed in Player class
 
-    private async Task PlaySong(MouseEventArgs args)
+    private async Task PlayCurrentSong(MouseEventArgs args)
     {
         if (IsSongAttachedToAudio)
         {
@@ -123,7 +129,10 @@
 
     private async Task RewindSong(ChangeEventArgs args)
     {
-        int durationPercent = int.Parse(args.Value.ToString());
-        await audioPlayer.SetTrackAtTime(durationPercent);
+        if (IsSongAttachedToAudio)
+        {
+            int durationPercent = int.Parse(args.Value.ToString());
+            await audioPlayer.SetTrackAtTime(durationPercent);
+        }
     }
 }

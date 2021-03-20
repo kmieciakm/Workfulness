@@ -17,7 +17,7 @@ namespace Workfulness.Services
         }
 
         public async Task Play(string songUrl) 
-            => await _JSRuntime.InvokeVoidAsync("play", songUrl);
+            => await _JSRuntime.InvokeVoidAsync("playFromStart", songUrl);
 
         public async Task Pause() =>
             await _JSRuntime.InvokeVoidAsync("pause");
