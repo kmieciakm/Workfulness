@@ -157,3 +157,36 @@ __________________________
 .playlist_list {
     color: var(--color-dark);
 }
+
+.scroll_playlist {
+    height: 80%;
+    width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    display: block;
+    margin-left: auto;
+    margin-right:100px;
+}
+nav{
+    background-color:transparent;
+    color: white;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: black;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: white;
+}
+
+ /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+     background: white;
+}

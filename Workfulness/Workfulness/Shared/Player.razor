@@ -12,12 +12,14 @@
                 </div>
                 <!-- TODO: Style and implement function to switch to desired song -->
                 <div class="col-lg-6 p-1 content-vertical-center w-fill">
-                    <ul class="playlist_list">
-                        @foreach (var song in Playlist.Songs)
-                        {
-                            <li>@song.SongFullName</li>
-                        }
-                    </ul>
+                    <nav class="scroll_playlist">
+                        <ul class="playlist_list">
+                            @foreach (var song in Playlist.Songs)
+                            {
+                                <li>@song.SongFullName</li>
+                            }
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
