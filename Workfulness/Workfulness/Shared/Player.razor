@@ -28,7 +28,7 @@
             <!-- TODO: Get elapsed time -->
             <p class="song_timeleft">00:00</p>
             <div class="progressbar_slide">
-                <div class="progressbar_range"></div>
+                <input type="range" min="0" max="100" value="0" @onchange="RewindSong" />
             </div>
         </div>
         <div class="song_controls m-4">
@@ -85,6 +85,8 @@
 
     private void HidePlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = false;
 
+    // TODO: This methods (below) should be placed in Player class
+
     private async Task PlaySong(MouseEventArgs args)
     {
         if (IsSongAttachedToAudio)
@@ -117,5 +119,11 @@
         Playlist.SwitchToPreviousSong();
         await audioPlayer.Play(Playlist.CurrentSong.SongUrl);
         IsSongPlaying = true;
+    }
+
+    private async Task RewindSong(ChangeEventArgs args)
+    {
+        int durationPercent = int.Parse(args.Value.ToString());
+        await audioPlayer.SetTrackAtTime(durationPercent);
     }
 }

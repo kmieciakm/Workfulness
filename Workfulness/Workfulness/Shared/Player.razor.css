@@ -60,15 +60,24 @@ __________________________
 
 .progressbar_slide {
     width: 100%;
-    background-color: var(--color-secondary);
-    height: 6px;
 }
 
-.progressbar_range {
-    width: 0;
-    background: black;
-    height: 6px;
-}
+    .progressbar_slide input[type="range"] {
+        -webkit-appearance: none;
+        height: 5px;
+        width: 100%;
+        outline: none;
+        background-color: var(--color-dark);
+    }
+
+        .progressbar_slide input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 30px;
+            width: 30px;
+            background: var(--color-secondary);
+            border-radius: 50%;
+            cursor: pointer;
+        }
 
 /*
 __________________________

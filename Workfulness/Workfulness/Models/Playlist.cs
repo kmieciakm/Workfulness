@@ -21,6 +21,7 @@ namespace Workfulness.Models
                 CurrentSongIndex++;
             }
         }
+
         public void SwitchToPreviousSong()
         {
             if (CurrentSongIndex > 0)

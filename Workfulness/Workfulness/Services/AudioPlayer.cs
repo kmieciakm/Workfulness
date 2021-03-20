@@ -24,5 +24,8 @@ namespace Workfulness.Services
 
         public async Task Replay() =>
             await _JSRuntime.InvokeVoidAsync("replay");
+
+        public async Task SetTrackAtTime(int percent) =>
+            await _JSRuntime.InvokeVoidAsync("setTrackAtTime", percent);
     }
 }
