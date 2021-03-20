@@ -12,14 +12,14 @@ h3 {
     top: 0;
     height: 100vh;
     width: 100%;
-    background-color: black;
+    background-color: var(--color-dark);
     opacity: 0.7;
     z-index: 5;
 }
 
 .audio-player {
     width: 100%;
-    background-color: lightskyblue;
+    background-color: var(--color-light);
     box-sizing: border-box !important;
     color: #222;
     z-index: 10;
@@ -60,7 +60,7 @@ __________________________
 
 .progressbar_slide {
     width: 100%;
-    background-color: dodgerblue;
+    background-color: var(--color-secondary);
     height: 6px;
 }
 
@@ -129,12 +129,13 @@ __________________________
     bottom: 0;
     height: 70vh;
     width: 100%;
-    background-color: #111;
+    background-color: var(--color-light);
+    border-bottom: 1px solid #aaa;
     z-index: 10;
 }
 
 .playlist_image {
-    background-color: #cccccc;
+    background-color: var(--color-light);
     height: 50vh;
     width: 50vh;
     max-height: 500px;
@@ -145,5 +146,5 @@ __________________________
 }
 
 .playlist_list {
-    color: white;
+    color: var(--color-dark);
 }

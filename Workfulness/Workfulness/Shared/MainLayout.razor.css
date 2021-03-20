@@ -6,10 +6,12 @@
 
 .main {
     flex: 1;
+    min-height: 100vh;
+    background-color: var(--color-primary);
 }
 
 .sidebar {
-    background-color: #111;
+    background-color: var(--color-dark);
     padding-top: 2rem;
 }
 
@@ -22,7 +24,7 @@
     align-items: flex-end;
 }
 
-@media (min-width: 641px) {
+@media (min-width: 770px) {
     .page {
         flex-direction: row;
     }
