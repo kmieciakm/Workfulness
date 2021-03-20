@@ -143,6 +143,12 @@ __________________________
     z-index: 10;
 }
 
+.playlist_title {
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
 .playlist_image {
     background-color: var(--color-light);
     height: 50vh;
@@ -156,11 +162,6 @@ __________________________
 
 .playlist_list {
     color: var(--color-dark);
-}
-
-.scroll_playlist {
-    height: 80%;
-    color: black;
     padding-left: 0px;
     width: 100%;
     height: 400px;
@@ -169,15 +170,14 @@ __________________________
     overflow-y: scroll;
 }
 
+li {
+    background-color: var(--color-light);
+    transition: 0.2s;
+}
+
 li:hover {
     color: #89cac7;
     cursor: pointer;
-    /*background-color: #89cac7;*/
-}
-
-nav {
-    background-color: transparent;
-    color: white;
 }
 
 /* Width */
@@ -203,5 +203,9 @@ nav {
 @media (max-width: 991px) {
     .playlist_box {
         height: 50%;
+    }
+
+    .playlist_list {
+        max-width: 100%;
     }
 }

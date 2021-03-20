@@ -9,14 +9,18 @@
             <div class="row fill m-0">
                 <div class="col-lg-6 p-1 content-center playlist_box">     
                     <div class="playlist_image" style='background-image: url("@Playlist.CoverUrl")' />
-                    <div class="playlist_title">@Playlist.Title</div>
+                    <h3 class="playlist_title p-2">@Playlist.Title</h3>
                 </div>
                 <!-- TODO: Implement function to switch to desired song -->
                 <div class="col-lg-6 p-1 content-vertical-center playlist_box">
-                    <ul class="playlist_list list-group-flush m-1 mr-md-5">
+                    <ul class="playlist_list list-group-flush m-1 mr-lg-5">
                         @foreach (var song in Playlist.Songs)
                         {
-                            <li class="list-group-item" @onclick="PlayCurrentSong">@song.SongFullName</li>
+                            <li class="list-group-item" @onclick="PlayCurrentSong">
+                                <span class="font-weight-bold">@song.Title</span>
+                                <br />
+                                <span>@song.Author</span>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -125,7 +129,10 @@
 
     private async Task RewindSong(ChangeEventArgs args)
     {
-        int durationPercent = int.Parse(args.Value.ToString());
-        await audioPlayer.SetTrackAtTime(durationPercent);
+        if (IsSongAttachedToAudio)
+        {
+            int durationPercent = int.Parse(args.Value.ToString());
+            await audioPlayer.SetTrackAtTime(durationPercent);
+        }
     }
 }
