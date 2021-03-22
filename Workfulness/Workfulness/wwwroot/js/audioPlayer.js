@@ -1,4 +1,5 @@
 ﻿let track = document.createElement('audio');
+let dotnetHelper;
 
 window.attachSongToAudio = (songUrl) => {
     track.src = songUrl;
@@ -22,7 +23,15 @@ window.setTrackAtTime = (percent) => {
 window.getElapsedTimeInPercents = () => {
     let elapseTime = Math.ceil(track.currentTime / track.duration * 100);
 
+    if (elapseTime >= 100) {
+        this.dotnetHelper.invokeMethodAsync('SongFinished');
+    }
+
     if (isNaN(elapseTime))
         return 0;
     return parseInt(elapseTime);
+}
+
+window.setDotnetHelper = (dotnetHelper) => {
+    this.dotnetHelper = dotnetHelper;
 }

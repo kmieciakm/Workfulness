@@ -10,12 +10,13 @@ namespace Workfulness.Services
     internal class AudioPlayer : IAudioPlayer
     {
         private IJSRuntime _JSRuntime { get; set; }
-
         public bool IsSongPlaying { get; private set; }
+        public event Action SongHasFinished;
 
         public AudioPlayer(IJSRuntime jsRuntime)
         {
             _JSRuntime = jsRuntime;
+            _JSRuntime.InvokeVoidAsync("setDotnetHelper", DotNetObjectReference.Create(this));
         }
 
         public async Task AttachSong(string songSrc) =>
@@ -38,5 +39,8 @@ namespace Workfulness.Services
 
         public async Task<int> GetElapsedTime() =>
             await _JSRuntime.InvokeAsync<int>("getElapsedTimeInPercents");
+
+        [JSInvokable]
+        public void SongFinished() => SongHasFinished?.Invoke();
     }
 }

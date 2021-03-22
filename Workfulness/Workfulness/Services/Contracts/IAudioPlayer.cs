@@ -8,6 +8,7 @@ namespace Workfulness.Services.Contracts
     internal interface IAudioPlayer
     {
         bool IsSongPlaying { get; }
+        public event Action SongHasFinished;
         Task AttachSong(string songSrc);
         Task Play();
         Task Pause();

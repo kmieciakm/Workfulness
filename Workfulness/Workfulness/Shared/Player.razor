@@ -91,15 +91,15 @@
     {
         Playlist = playlistService.GetPlaylist();
         SliderTimer.Elapsed += UpdateSlider;
-        elapsedPrecentSongTime = 0;
         audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
+        audioPlayer.SongHasFinished += async () => await PlayNextSong();
     }
 
     public bool IsPlaylistWindowVisible { get; set; }
     private void ShowPlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = true;
     private void HidePlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = false;
 
-    private int elapsedPrecentSongTime;
+    private int elapsedPrecentSongTime = 0;
     public int ElapsedPrecentSongTime
     {
         get
@@ -125,12 +125,12 @@
     }
 
     private Playlist Playlist { get; set; }
-    private async Task PlayCurrentSong(MouseEventArgs args)
+    private async Task PlayCurrentSong()
     {
         await audioPlayer.Play();
         SliderTimer.Start();
     }
-    private async Task PauseCurrentSong(MouseEventArgs args)
+    private async Task PauseCurrentSong()
     {
         await audioPlayer.Pause();
         SliderTimer.Stop();
@@ -141,13 +141,13 @@
         await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
         await audioPlayer.Play();
     }
-    private async Task PlayNextSong(MouseEventArgs args)
+    private async Task PlayNextSong()
     {
         Playlist.SwitchToNextSong();
         await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
         await audioPlayer.Play();
     }
-    private async Task PlayPreviousSong(MouseEventArgs args)
+    private async Task PlayPreviousSong()
     {
         Playlist.SwitchToPreviousSong();
         await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
