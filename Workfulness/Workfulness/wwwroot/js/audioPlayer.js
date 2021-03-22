@@ -1,26 +1,34 @@
-﻿let track = document.createElement('audio');
+﻿window.audioPlayer = {
+    track: document.createElement('audio'),
+    dotnetHelper: undefined,
 
-window.playFromStart = (songUrl) => {
-    track.src = songUrl;
-    track.load();
-    track.currentTime = 0;
-    track.play();
-}
+    attachSongToAudio: function(songUrl) {
+        this.track.src = songUrl;
+        this.track.load();
+        this.track.currentTime = 0;
+    },
+    play: function() {
+        this.track.play();
+    },
+    pause: function() {
+        this.track.pause();
+    },
+    setTrackAtTime: function(percent) {
+        let trackTime = this.track.duration * percent / 100;
+        this.track.currentTime = trackTime;
+    },
+    getElapsedTimeInPercents: function() {
+        let elapseTime = Math.ceil(this.track.currentTime / this.track.duration * 100);
 
-window.replay = () => {
-    track.play();
-}
+        if (elapseTime >= 100) {
+            this.dotnetHelper.invokeMethodAsync('SongFinished');
+        }
 
-window.pause = () => {
-    track.pause();
-}
-
-window.setTrackAtTime = (percent) => {
-    console.log(percent);
-    let trackTime = track.duration * percent / 100;
-    track.currentTime = trackTime;
-}
-
-window.getElapsedTimeInPercents = () => {
-    return track.currentTime / track.duration * 100;
-}
+        if (isNaN(elapseTime))
+            return 0;
+        return parseInt(elapseTime);
+    },
+    setDotnetHelper: function(dotnetHelper) {
+        this.dotnetHelper = dotnetHelper;
+    }
+};

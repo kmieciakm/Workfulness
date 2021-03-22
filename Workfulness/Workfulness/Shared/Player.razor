@@ -1,4 +1,5 @@
-﻿@inject IAudioPlayer audioPlayer;
+﻿@using System.Timers;
+@inject IAudioPlayer audioPlayer;
 @inject IPlaylistService playlistService;
 
 <div class="background" hidden="@(!IsPlaylistWindowVisible)"></div>
@@ -7,42 +8,51 @@
     <div class="playlist" hidden="@(!IsPlaylistWindowVisible)">
         <div class="container-fluid fill">
             <div class="row fill m-0">
-                <div class="col-lg-6 p-1 content-center playlist_box">     
+                <div class="col-lg-6 p-1 content-center playlist_box">
                     <div class="playlist_image" style='background-image: url("@Playlist.CoverUrl")' />
                     <h3 class="playlist_title p-2">@Playlist.Title</h3>
                 </div>
-                <!-- TODO: Implement function to switch to desired song -->
                 <div class="col-lg-6 p-1 content-vertical-center playlist_box">
                     <ul class="playlist_list list-group-flush m-1 mr-lg-5">
                         @foreach (var song in Playlist.Songs)
                         {
-                            <li class="list-group-item" @onclick="PlayCurrentSong">
-                                <span class="font-weight-bold">@song.Title</span>
-                                <br />
-                                <span>@song.Author</span>
-                            </li>
+                            if (song.SongId == Playlist.CurrentSong.SongId)
+                            {
+                                <li class="list-group-item list-item-active" @onclick="@(e => PlaySelectedSong(e, song.SongId))">
+                                    <i class="far fa-1x fa-play-circle"></i>
+                                    <span class="font-weight-bold">@song.Title</span>
+                                    <br />
+                                    <span>@song.Author</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item" @onclick="@(e => PlaySelectedSong(e, song.SongId))">
+                                    <span class="font-weight-bold">@song.Title</span>
+                                    <br />
+                                    <span>@song.Author</span>
+                                </li>
+                            }
                         }
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <div class="song_panel">
+    <div class="song_panel p-2">
         <div class="song_info pt-4">
             <h2>@Playlist.CurrentSong.SongFullName</h2>
-            <!-- TODO: Get elapsed time -->
-            <p class="song_timeleft">00:00</p>
-            <div class="progressbar_slide">
-                <input type="range" min="0" max="100" value="0" @onchange="RewindSong" />
+            <div class="progressbar_slide pt-2">
+                <input type="range" min="0" max="100" @bind="ElapsedPrecentSongTime" />
             </div>
         </div>
-        <div class="song_controls m-4">
+        <div class="song_controls m-2">
             <div class="controls_plays">
-             
-                <div id="prev_btn" @onclick="PreviousSong">
+
+                <div id="prev_btn" @onclick="PlayPreviousSong">
                     <i class="fas fa-2x fa-backward"></i>
                 </div>
-                @if (!IsSongPlaying)
+                @if (!audioPlayer.IsSongPlaying)
                 {
                     <div id="play_btn" @onclick="PlayCurrentSong">
                         <i class="fas fa-2x fa-play"></i>
@@ -50,11 +60,11 @@
                 }
                 else
                 {
-                    <div id="pause_btn" @onclick="PauseSong">
+                    <div id="pause_btn" @onclick="PauseCurrentSong">
                         <i class="fas fa-2x fa-pause"></i>
                     </div>
                 }
-                <div id="next_btn" @onclick="NextSong">
+                <div id="next_btn" @onclick="PlayNextSong">
                     <i class="fas fa-2x fa-forward"></i>
                 </div>
             </div>
@@ -65,7 +75,6 @@
             <div id="extends_btn" @onclick="ShowPlaylist">
                 <i class="fas fa-2x fa-level-up-alt"></i>
             </div>
-
         }
         else
         {
@@ -77,62 +86,74 @@
 </div>
 
 @code {
-    bool IsPlaylistWindowVisible { get; set; }
-    bool IsSongPlaying { get; set; }
-    Playlist Playlist { get; set; }
-    private bool IsSongAttachedToAudio { get; set; } = false;
-
     protected override void OnInitialized()
     {
         Playlist = playlistService.GetPlaylist();
+        SliderTimer.Elapsed += UpdateSlider;
+        audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
+        audioPlayer.SongHasFinished += async () => await PlayNextSong();
     }
 
+    public bool IsPlaylistWindowVisible { get; set; }
     private void ShowPlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = true;
-
     private void HidePlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = false;
 
-    // TODO: This methods (below) should be placed in Player class
-
-    private async Task PlayCurrentSong(MouseEventArgs args)
+    private int elapsedPrecentSongTime = 0;
+    public int ElapsedPrecentSongTime
     {
-        if (IsSongAttachedToAudio)
+        get
         {
-            await audioPlayer.Replay();
+            return elapsedPrecentSongTime;
         }
-        else
+        set
         {
-            await audioPlayer.Play(Playlist.CurrentSong.SongUrl);
-            IsSongAttachedToAudio = true;
+            elapsedPrecentSongTime = value;
+            RewindSong(elapsedPrecentSongTime);
         }
-        IsSongPlaying = true;
+    }
+    private Timer SliderTimer { get; } = new Timer()
+    {
+        AutoReset = true,
+        Enabled = false,
+        Interval = 1000
+    };
+    private async void UpdateSlider(Object source, ElapsedEventArgs e)
+    {
+        elapsedPrecentSongTime = await audioPlayer.GetElapsedTime();
+        StateHasChanged();
     }
 
-    private async Task PauseSong(MouseEventArgs args)
+    private Playlist Playlist { get; set; }
+    private async Task PlayCurrentSong()
+    {
+        SliderTimer.Start();
+        await audioPlayer.Play();
+    }
+    private async Task PauseCurrentSong()
     {
         await audioPlayer.Pause();
-        IsSongPlaying = false;
+        SliderTimer.Stop();
     }
-
-    private async Task NextSong(MouseEventArgs args)
+    private async Task PlaySelectedSong(MouseEventArgs args, int songId)
+    {
+        Playlist.SwitchSongById(songId);
+        await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
+        await PlayCurrentSong();
+    }
+    private async Task PlayNextSong()
     {
         Playlist.SwitchToNextSong();
-        await audioPlayer.Play(Playlist.CurrentSong.SongUrl);
-        IsSongPlaying = true;
+        await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
+        await PlayCurrentSong();
     }
-
-    private async Task PreviousSong(MouseEventArgs args)
+    private async Task PlayPreviousSong()
     {
         Playlist.SwitchToPreviousSong();
-        await audioPlayer.Play(Playlist.CurrentSong.SongUrl);
-        IsSongPlaying = true;
+        await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
+        await PlayCurrentSong();
     }
-
-    private async Task RewindSong(ChangeEventArgs args)
+    private void RewindSong(int durationPercent)
     {
-        if (IsSongAttachedToAudio)
-        {
-            int durationPercent = int.Parse(args.Value.ToString());
-            await audioPlayer.SetTrackAtTime(durationPercent);
-        }
+        audioPlayer.SetTrackAtTime(durationPercent);
     }
 }

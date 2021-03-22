@@ -7,11 +7,10 @@ namespace Workfulness.Models
 {
     public record Playlist
     {
-        public string Title { get; set; }
-        public string CoverUrl { get; set; }
-        public List<Song> Songs { get; set; }
+        public string Title { get; init; }
+        public string CoverUrl { get; init; }
+        public List<Song> Songs { get; init; }
         public Song CurrentSong { get { return Songs?.ElementAt(CurrentSongIndex); } }
-
         private int CurrentSongIndex { get; set; } = 0;
 
         public void SwitchToNextSong()
@@ -27,6 +26,15 @@ namespace Workfulness.Models
             if (CurrentSongIndex > 0)
             {
                 CurrentSongIndex--;
+            }
+        }
+
+        public void SwitchSongById(int songId)
+        {
+            var desiredSongIndex = Songs?.FindIndex(song => song.SongId == songId);
+            if (desiredSongIndex.HasValue || desiredSongIndex != -1)
+            {
+                CurrentSongIndex = desiredSongIndex.Value;
             }
         }
     }

@@ -72,8 +72,8 @@ __________________________
 
         .progressbar_slide input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            height: 30px;
-            width: 30px;
+            height: 26px;
+            width: 26px;
             background: var(--color-secondary);
             border-radius: 50%;
             cursor: pointer;
@@ -88,7 +88,7 @@ __________________________
 .song_controls {
     display: flex;
     width: 100%;
-    max-width: 700px;
+    max-width: 500px;
     box-sizing: border-box;
     transition: all 0.2s;
 }
@@ -175,32 +175,49 @@ li {
     transition: 0.2s;
 }
 
-li:hover {
-    color: #89cac7;
-    cursor: pointer;
+    li:hover {
+        color: var(--color-secondary);
+        cursor: pointer;
+    }
+
+.list-item-active {
+    color: var(--color-secondary);
 }
 
-/* Width */
+/*
+__________________________
+Playlist scrollbar
+__________________________
+*/
+
 ::-webkit-scrollbar {
     width: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
     background: black;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #89cac7;
+    background: var(--color-secondary);
 }
 
-    /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
-        background: #89cac7;
+        background: var(--color-secondary);
     }
 
+/*
+__________________________
+Responsive settings
+__________________________
+*/
+
 @media (max-width: 991px) {
+    .playlist {
+        height: 80vh;
+        padding-top: 1rem;
+    }
+
     .playlist_box {
         height: 50%;
     }
