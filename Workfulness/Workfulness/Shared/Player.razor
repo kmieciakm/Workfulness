@@ -12,7 +12,6 @@
                     <div class="playlist_image" style='background-image: url("@Playlist.CoverUrl")' />
                     <h3 class="playlist_title p-2">@Playlist.Title</h3>
                 </div>
-                <!-- TODO: Implement function to switch to desired song -->
                 <div class="col-lg-6 p-1 content-vertical-center playlist_box">
                     <ul class="playlist_list list-group-flush m-1 mr-lg-5">
                         @foreach (var song in Playlist.Songs)
@@ -115,7 +114,7 @@
     private Timer SliderTimer { get; } = new Timer()
     {
         AutoReset = true,
-        Enabled = true,
+        Enabled = false,
         Interval = 1000
     };
     private async void UpdateSlider(Object source, ElapsedEventArgs e)

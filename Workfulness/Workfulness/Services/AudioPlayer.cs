@@ -16,29 +16,29 @@ namespace Workfulness.Services
         public AudioPlayer(IJSRuntime jsRuntime)
         {
             _JSRuntime = jsRuntime;
-            _JSRuntime.InvokeVoidAsync("setDotnetHelper", DotNetObjectReference.Create(this));
+            _JSRuntime.InvokeVoidAsync("audioPlayer.setDotnetHelper", DotNetObjectReference.Create(this));
         }
 
         public async Task AttachSong(string songSrc) =>
-            await _JSRuntime.InvokeVoidAsync("attachSongToAudio", songSrc);
+            await _JSRuntime.InvokeVoidAsync("audioPlayer.attachSongToAudio", songSrc);
 
         public async Task Play()
         {
-            await _JSRuntime.InvokeVoidAsync("play");
+            await _JSRuntime.InvokeVoidAsync("audioPlayer.play");
             IsSongPlaying = true;
         }
 
         public async Task Pause()
         {
-            await _JSRuntime.InvokeVoidAsync("pause");
+            await _JSRuntime.InvokeVoidAsync("audioPlayer.pause");
             IsSongPlaying = false;
         }
 
         public async Task SetTrackAtTime(int percent) =>
-            await _JSRuntime.InvokeVoidAsync("setTrackAtTime", percent);
+            await _JSRuntime.InvokeVoidAsync("audioPlayer.setTrackAtTime", percent);
 
         public async Task<int> GetElapsedTime() =>
-            await _JSRuntime.InvokeAsync<int>("getElapsedTimeInPercents");
+            await _JSRuntime.InvokeAsync<int>("audioPlayer.getElapsedTimeInPercents");
 
         [JSInvokable]
         public void SongFinished() => SongHasFinished?.Invoke();
