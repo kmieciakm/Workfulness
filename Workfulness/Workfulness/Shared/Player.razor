@@ -126,8 +126,8 @@
     private Playlist Playlist { get; set; }
     private async Task PlayCurrentSong()
     {
-        await audioPlayer.Play();
         SliderTimer.Start();
+        await audioPlayer.Play();
     }
     private async Task PauseCurrentSong()
     {
@@ -138,19 +138,19 @@
     {
         Playlist.SwitchSongById(songId);
         await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
-        await audioPlayer.Play();
+        await PlayCurrentSong();
     }
     private async Task PlayNextSong()
     {
         Playlist.SwitchToNextSong();
         await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
-        await audioPlayer.Play();
+        await PlayCurrentSong();
     }
     private async Task PlayPreviousSong()
     {
         Playlist.SwitchToPreviousSong();
         await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
-        await audioPlayer.Play();
+        await PlayCurrentSong();
     }
     private void RewindSong(int durationPercent)
     {
