@@ -51,6 +51,27 @@ namespace Workfulness.Services
                         Title = "Heavy Waves",
                         Author = "Crowander",
                         SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 5,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 6,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 7,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
                     }
                 }
             };

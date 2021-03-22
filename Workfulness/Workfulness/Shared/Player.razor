@@ -17,11 +17,23 @@
                     <ul class="playlist_list list-group-flush m-1 mr-lg-5">
                         @foreach (var song in Playlist.Songs)
                         {
-                            <li class="list-group-item" @onclick="@(e => PlaySelectedSong(e, song.SongId))">
-                                <span class="font-weight-bold">@song.Title</span>
-                                <br />
-                                <span>@song.Author</span>
-                            </li>
+                            if (song.SongId == Playlist.CurrentSong.SongId)
+                            {
+                                <li class="list-group-item list-item-active" @onclick="@(e => PlaySelectedSong(e, song.SongId))">
+                                    <i class="far fa-1x fa-play-circle"></i>
+                                    <span class="font-weight-bold">@song.Title</span>
+                                    <br />
+                                    <span>@song.Author</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item" @onclick="@(e => PlaySelectedSong(e, song.SongId))">
+                                    <span class="font-weight-bold">@song.Title</span>
+                                    <br />
+                                    <span>@song.Author</span>
+                                </li>
+                            }
                         }
                     </ul>
                 </div>

@@ -180,6 +180,10 @@ li {
         cursor: pointer;
     }
 
+.list-item-active {
+    color: var(--color-secondary);
+}
+
 /*
 __________________________
 Playlist scrollbar
