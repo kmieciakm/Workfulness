@@ -17,7 +17,7 @@
                     <ul class="playlist_list list-group-flush m-1 mr-lg-5">
                         @foreach (var song in Playlist.Songs)
                         {
-                            <li class="list-group-item" @onclick="PlayCurrentSong">
+                            <li class="list-group-item" @onclick="@(e => PlaySelectedSong(e, song.SongId))">
                                 <span class="font-weight-bold">@song.Title</span>
                                 <br />
                                 <span>@song.Author</span>
@@ -122,6 +122,12 @@
     {
         await audioPlayer.Pause();
         SliderTimer.Stop();
+    }
+    private async Task PlaySelectedSong(MouseEventArgs args, int songId)
+    {
+        Playlist.SwitchSongById(songId);
+        await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
+        await audioPlayer.Play();
     }
     private async Task PlayNextSong(MouseEventArgs args)
     {
