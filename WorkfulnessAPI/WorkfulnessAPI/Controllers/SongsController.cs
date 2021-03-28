@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,12 @@ namespace WorkfulnessAPI.Controllers
             _SongService = songsService;
         }
 
-        // TODO: Add description for swagger
+        /// <summary>
+        /// Returns all available songs URLs.
+        /// </summary>
+        /// <response code="200">Returns songs URLs list.</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IEnumerable<string> GetAllSongLinks()
         {
             return _SongService.GetAllSongsUrl();

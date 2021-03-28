@@ -11,10 +11,9 @@ namespace WorkfulnessAPI.Services
     {
         public string _BaseUrl { get; set; }
 
-        public SongsService(string baseUrl)
+        public SongsService(string baseSongsUrl)
         {
-            // TODO: Create settings service and get baseUrl from service
-            _BaseUrl = baseUrl;
+            _BaseUrl = baseSongsUrl;
         }
 
         public IEnumerable<string> GetAllSongsUrl()
