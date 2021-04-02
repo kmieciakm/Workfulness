@@ -8,8 +8,10 @@ namespace Workfulness.Models
     public record Playlist
     {
         public string Title { get; init; }
+        public string Category { get; init; }
         public string CoverUrl { get; init; }
         public List<Song> Songs { get; init; }
+        public List<Playlist> Playlists { get; init; }
         public Song CurrentSong { get { return Songs?.ElementAt(CurrentSongIndex); } }
         private int CurrentSongIndex { get; set; } = 0;
 

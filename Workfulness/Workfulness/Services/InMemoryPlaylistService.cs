@@ -72,9 +72,98 @@ namespace Workfulness.Services
                         Title = "Heavy Waves",
                         Author = "Crowander",
                         SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 8,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 9,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 10,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 11,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 12,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 13,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 14,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 15,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 16,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 17,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 18,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                    },
+                    new Song
+                    {
+                        SongId = 19,
+                        Title = "Heavy Waves",
+                        Author = "Crowander",
+                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
                     }
                 }
             };
         }
+
+      /*  public List<Playlist> GetPlaylistsList();
+        {
+            throw new NotImplementedException();
+        }*/
     }
 }
