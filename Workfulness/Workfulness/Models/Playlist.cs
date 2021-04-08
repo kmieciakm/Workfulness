@@ -12,6 +12,9 @@ namespace Workfulness.Models
         public string CoverUrl { get; init; }
         public List<Song> Songs { get; init; }
         public List<Playlist> Playlists { get; init; }
+        public int PlaylistId { get; set; }
+        public Playlist CurrentPlaylist { get { return Playlists?.ElementAt(CurrentPlaylistIndex); } }
+        private int CurrentPlaylistIndex { get; set; } = 0;
         public Song CurrentSong { get { return Songs?.ElementAt(CurrentSongIndex); } }
         private int CurrentSongIndex { get; set; } = 0;
 

@@ -1,132 +1,21 @@
 ﻿@page "/explore"
-@using System.Timers;
-@inject IAudioPlayer audioPlayer;
 @inject IPlaylistService playlistService;
 
-<div class="playlit_category">
-    <div class="imageBtn" hidden="@(IsPlaylistInsideIsVisible)">
-        <div class="playlist_image" style='background-image: url("@Playlist.CoverUrl")' />
-        <h3 class="playlist_title p-2">@Playlist.Title</h3>
-    </div>
-    @if (!IsPlaylistInsideIsVisible)
+<div class="playlist_category">
+    @foreach (var playlist in Playlists)
     {
-        <div id="imageBtn" @onclick="ShowPlaylistInside">
-            <i class="fas fa-2x fa-arrow-circle-right"></i>
-
+        <div class="imageBtn">
+            <div class="playlist_image" style='background-image: url("@playlist.CoverUrl")' />
+            <h3 class="playlist_title p-2">@playlist.Title</h3>
         </div>
     }
-    else
-    {
-        <div id="imageBtn" @onclick="HidePlaylistInside">
-            <i class="fas fa-2x fa-arrow-circle-left"></i>
-        </div>
-    }
-
-<div class="container-fluid fill" hidden="@(!IsPlaylistInsideIsVisible)">
-    <div class="row fill m-0">
-        <div class="col-lg-6 p-1 content-center playlist_box">
-            <div class="playlist_image" style='background-image: url("@Playlist.CoverUrl")' />
-            <h3 class="playlist_title p-2">@Playlist.Title</h3>
-        </div>
-        <div class="col-lg-6 p-1 content-vertical-center playlist_box">
-            <ul class="playlist_list list-group-flush m-1 mr-lg-5">
-                @foreach (var song in Playlist.Songs)
-                {
-                    if (song.SongId == Playlist.CurrentSong.SongId)
-                    {
-                        <li class="list-group-item list-item-active" @onclick="@(e => PlaySelectedSong(e, song.SongId))">
-                            <i class="far fa-1x fa-play-circle"></i>
-                            <span class="font-weight-bold">@song.Title</span>
-                            <br />
-                            <span>@song.Author</span>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="list-group-item" @onclick="@(e => PlaySelectedSong(e, song.SongId))">
-                            <span class="font-weight-bold">@song.Title</span>
-                            <br />
-                            <span>@song.Author</span>
-                        </li>
-                    }
-                }
-            </ul>
-        </div>
-    </div>
 </div>
-</div>
-
-
-
 
 @code {
-
-    private Playlist Playlist { get; set; }
+    private List<Playlist> Playlists { get; set; }
 
     protected override void OnInitialized()
     {
-        Playlist = playlistService.GetPlaylist();
-        audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
-    }
-
-    public bool IsPlaylistInsideIsVisible { get; set; }
-    private void ShowPlaylistInside(MouseEventArgs args) => IsPlaylistInsideIsVisible = true;
-    private void HidePlaylistInside(MouseEventArgs args) => IsPlaylistInsideIsVisible = false;
-
-    private int elapsedPrecentSongTime = 0;
-    public int ElapsedPrecentSongTime
-    {
-        get
-        {
-            return elapsedPrecentSongTime;
-        }
-        set
-        {
-            elapsedPrecentSongTime = value;
-            RewindSong(elapsedPrecentSongTime);
-        }
-    }
-    private Timer SliderTimer { get; } = new Timer()
-    {
-        AutoReset = true,
-        Enabled = false,
-        Interval = 1000
-    };
-    private async void UpdateSlider(Object source, ElapsedEventArgs e)
-    {
-        elapsedPrecentSongTime = await audioPlayer.GetElapsedTime();
-        StateHasChanged();
-    }
-    private async Task PlayCurrentSong()
-    {
-        SliderTimer.Start();
-        await audioPlayer.Play();
-    }
-    private async Task PauseCurrentSong()
-    {
-        await audioPlayer.Pause();
-        SliderTimer.Stop();
-    }
-    private async Task PlaySelectedSong(MouseEventArgs args, int songId)
-    {
-        Playlist.SwitchSongById(songId);
-        await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
-        await PlayCurrentSong();
-    }
-    private async Task PlayNextSong()
-    {
-        Playlist.SwitchToNextSong();
-        await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
-        await PlayCurrentSong();
-    }
-    private async Task PlayPreviousSong()
-    {
-        Playlist.SwitchToPreviousSong();
-        await audioPlayer.AttachSong(Playlist.CurrentSong.SongUrl);
-        await PlayCurrentSong();
-    }
-    private void RewindSong(int durationPercent)
-    {
-        audioPlayer.SetTrackAtTime(durationPercent);
+        Playlists = playlistService.GetPlaylists();
     }
 }

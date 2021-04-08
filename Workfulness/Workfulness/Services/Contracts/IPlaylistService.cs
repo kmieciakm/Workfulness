@@ -9,6 +9,6 @@ namespace Workfulness.Services.Contracts
     interface IPlaylistService
     {
         Playlist GetPlaylist();
-       // List<Playlist> GetPlaylistsList();
+        List<Playlist> GetPlaylists();
     }
 }

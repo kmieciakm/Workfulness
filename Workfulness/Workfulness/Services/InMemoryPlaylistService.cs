@@ -15,6 +15,7 @@ namespace Workfulness.Services
             {
                 CoverUrl = "https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
                 Title = "This is Sample Playlist Title",
+                PlaylistId = 0,
                 Songs = new List<Song>()
                 {
                     new Song
@@ -160,10 +161,80 @@ namespace Workfulness.Services
                 }
             };
         }
-
-      /*  public List<Playlist> GetPlaylistsList();
+        public List<Playlist> GetPlaylists()
         {
-            throw new NotImplementedException();
-        }*/
+            return new List<Playlist>()
+            {
+                new Playlist()
+                {
+                    CoverUrl = "https://images.pexels.com/photos/2691882/pexels-photo-2691882.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+                    Title = "This is Sample Playlist Title",
+                    PlaylistId = 1,
+                    Songs = new List<Song>()
+                    {
+                        new Song
+                        {
+                            SongId = 20,
+                            Title = "Blathering On",
+                            Author = "Derek Clegg",
+                            SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
+                        },
+                        new Song
+                        {
+                            SongId = 21,
+                            Title = "Heavy Waves",
+                            Author = "Crowander",
+                            SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        }
+                    }
+                },
+                new Playlist()
+                {
+                    CoverUrl = "https://images.pexels.com/photos/1556797/pexels-photo-1556797.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                    Title = "This is Sample Title",
+                    PlaylistId = 2,
+                    Songs = new List<Song>()
+                    {
+                        new Song
+                        {
+                            SongId = 22,
+                            Title = "Blathering On",
+                            Author = "Derek Clegg",
+                            SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
+                        },
+                        new Song
+                        {
+                            SongId = 23,
+                            Title = "Heavy Waves",
+                            Author = "Crowander",
+                            SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        }
+                    }
+                },
+                 new Playlist()
+                {
+                    CoverUrl = "https://images.pexels.com/photos/7210517/pexels-photo-7210517.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    Title = "This is Title",
+                    PlaylistId = 3,
+                    Songs = new List<Song>()
+                    {
+                        new Song
+                        {
+                            SongId = 24,
+                            Title = "Blathering On",
+                            Author = "Derek Clegg",
+                            SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
+                        },
+                        new Song
+                        {
+                            SongId = 25,
+                            Title = "Heavy Waves",
+                            Author = "Crowander",
+                            SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        }
+                    }
+                }
+            };
+        }
     }
 }
