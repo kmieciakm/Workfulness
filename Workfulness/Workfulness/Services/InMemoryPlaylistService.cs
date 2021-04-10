@@ -168,7 +168,7 @@ namespace Workfulness.Services
                 new Playlist()
                 {
                     CoverUrl = "https://images.pexels.com/photos/2691882/pexels-photo-2691882.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-                    Title = "This is Sample Playlist Title",
+                    Title = "This is Sample Title",
                     PlaylistId = 1,
                     Songs = new List<Song>()
                     {
@@ -228,6 +228,52 @@ namespace Workfulness.Services
                         new Song
                         {
                             SongId = 25,
+                            Title = "Heavy Waves",
+                            Author = "Crowander",
+                            SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        }
+                    }
+                },
+                new Playlist()
+                {
+                    CoverUrl = "https://images.pexels.com/photos/1556797/pexels-photo-1556797.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                    Title = "This is Sample Title",
+                    PlaylistId = 3,
+                    Songs = new List<Song>()
+                    {
+                        new Song
+                        {
+                            SongId = 26,
+                            Title = "Blathering On",
+                            Author = "Derek Clegg",
+                            SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
+                        },
+                        new Song
+                        {
+                            SongId = 27,
+                            Title = "Heavy Waves",
+                            Author = "Crowander",
+                            SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        }
+                    }
+                },
+                 new Playlist()
+                {
+                    CoverUrl = "https://images.pexels.com/photos/7210517/pexels-photo-7210517.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    Title = "This is Title",
+                    PlaylistId = 4,
+                    Songs = new List<Song>()
+                    {
+                        new Song
+                        {
+                            SongId = 28,
+                            Title = "Blathering On",
+                            Author = "Derek Clegg",
+                            SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
+                        },
+                        new Song
+                        {
+                            SongId = 29,
                             Title = "Heavy Waves",
                             Author = "Crowander",
                             SongUrl = "./songs/Crowander - Heavy Waves.mp3"

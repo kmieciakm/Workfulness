@@ -2,7 +2,7 @@
 @inject IPlaylistService playlistService;
 
 <div class="playlist_category">
-    @foreach (var playlist in Playlists)
+    @foreach(var playlist in Playlists)
     {
         <div class="imageBtn">
             <div class="playlist_image" style='background-image: url("@playlist.CoverUrl")' />
@@ -10,6 +10,7 @@
         </div>
     }
 </div>
+
 
 @code {
     private List<Playlist> Playlists { get; set; }
