@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WorkfulnessAPI.Services.Contracts
+namespace WorkfulnessAPI.Services.Ports.Presenters
 {
     public interface ISongsService
     {

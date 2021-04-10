@@ -13,8 +13,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using WorkfulnessAPI.Services;
-using WorkfulnessAPI.Services.Contracts;
+using WorkfulnessAPI.Services.Ports.Presenters;
+using WorkfulnessAPI.Services.Services.Fake;
 
 namespace WorkfulnessAPI
 {
@@ -39,9 +39,8 @@ namespace WorkfulnessAPI
                 config.IncludeXmlComments(xmlCommentsPath);
             });
 
-            // TODO: Move local services to separate project
             services.AddSingleton<ISongsService>(
-                new SongsService(Configuration.GetValue<string>("SongsFolder")));
+                new FakeSongsService(Configuration.GetValue<string>("SongsFolder")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
