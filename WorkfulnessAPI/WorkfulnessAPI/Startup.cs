@@ -20,6 +20,8 @@ namespace WorkfulnessAPI
 {
     public class Startup
     {
+        private string _corsPolicyName { get { return "CustomAllowSpecificOrigins"; } }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,6 +31,19 @@ namespace WorkfulnessAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                string[] origins = Configuration
+                    .GetSection("AllowedOrigins")
+                    .Get<string[]>();
+
+                options.AddPolicy(_corsPolicyName, builder =>
+                {
+                    builder.WithOrigins(origins)
+                       .WithMethods("POST")
+                       .WithHeaders("Content-Type");
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(config =>
@@ -39,8 +54,8 @@ namespace WorkfulnessAPI
                 config.IncludeXmlComments(xmlCommentsPath);
             });
 
-            services.AddSingleton<ISongsService>(
-                new FakeSongsService(Configuration.GetValue<string>("SongsFolder")));
+            services.AddSingleton<IPlaylistService>(
+                new FakePlaylistService(Configuration.GetValue<string>("SongsFolder")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -53,6 +68,7 @@ namespace WorkfulnessAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(_corsPolicyName);
 
             app.UseRouting();
 

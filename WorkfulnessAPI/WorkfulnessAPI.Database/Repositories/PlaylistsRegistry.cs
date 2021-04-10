@@ -7,7 +7,7 @@ using WorkfulnessAPI.Services.Ports.Infrastructure;
 
 namespace WorkfulnessAPI.Database.Repositories
 {
-    class SongsRegistry : ISongsRegistry
+    public class PlaylistsRegistry : IPlaylistsRegistry
     {
     }
 }

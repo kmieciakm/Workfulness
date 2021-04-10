@@ -2,7 +2,7 @@
 
 namespace WorkfulnessAPI.Services.Ports.Infrastructure
 {
-    public interface ISongsRegistry
+    public interface IPlaylistsRegistry
     {
     }
 }

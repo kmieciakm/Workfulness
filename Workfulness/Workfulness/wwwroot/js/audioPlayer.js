@@ -2,7 +2,7 @@
     track: document.createElement('audio'),
     dotnetHelper: undefined,
 
-    attachSongToAudio: function(songUrl) {
+    attachSongToAudio: function (songUrl) {
         this.track.src = songUrl;
         this.track.load();
         this.track.currentTime = 0;
