@@ -19,15 +19,26 @@ namespace Workfulness
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
+            var gatewayApiUrl = builder.Configuration.GetValue<string>("ApiUrls:GatewayAPI");
+
+            ConfigureHttpClient(builder.Services, gatewayApiUrl);
             ConfigureServices(builder.Services);
 
             await builder.Build().RunAsync();
         }
 
+        private static void ConfigureHttpClient(IServiceCollection services, string gatewayApiUrl)
+        {
+            services.AddHttpClient("GatewayAPI", client => new HttpClient
+            {
+                BaseAddress = new Uri(gatewayApiUrl)
+            });
+        }
+
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IAudioPlayer, AudioPlayer>();
-            services.AddSingleton<IPlaylistService, InMemoryPlaylistService>();
+            services.AddScoped<IPlaylistService, PlaylistService>();
         }
     }
 }

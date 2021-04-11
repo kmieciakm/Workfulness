@@ -9,72 +9,75 @@ namespace Workfulness.Services
 {
     internal class InMemoryPlaylistService : IPlaylistService
     {
-        public Playlist GetPlaylist()
+        private static Playlist samplePlaylist { get; set; } = new Playlist()
         {
-            return new Playlist()
-            {
-                CoverUrl = "https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-                Title = "This is Sample Playlist Title",
-                Songs = new List<Song>()
+            CoverUrl = "https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+            Title = "This is Sample Playlist Title",
+            Songs = new List<Song>()
                 {
                     new Song
                     {
-                        SongId = 0,
+                        Id = 0,
                         Title = "Blathering On",
                         Author = "Derek Clegg",
-                        SongUrl = "./songs/Derek Clegg - Blathering On.mp3"
+                        Url = "./songs/Derek Clegg - Blathering On.mp3"
                     },
                     new Song
                     {
-                        SongId = 1,
+                        Id = 1,
                         Title = "Heavy Waves",
                         Author = "Crowander",
-                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        Url = "./songs/Crowander - Heavy Waves.mp3"
                     },
                     new Song
                     {
-                        SongId = 2,
+                        Id = 2,
                         Title = "Heavy Waves",
                         Author = "Crowander",
-                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        Url = "./songs/Crowander - Heavy Waves.mp3"
                     },
                     new Song
                     {
-                        SongId = 3,
+                        Id = 3,
                         Title = "Heavy Waves",
                         Author = "Crowander",
-                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        Url = "./songs/Crowander - Heavy Waves.mp3"
                     },
                     new Song
                     {
-                        SongId = 4,
+                        Id = 4,
                         Title = "Heavy Waves",
                         Author = "Crowander",
-                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        Url = "./songs/Crowander - Heavy Waves.mp3"
                     },
                     new Song
                     {
-                        SongId = 5,
+                        Id = 5,
                         Title = "Heavy Waves",
                         Author = "Crowander",
-                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        Url = "./songs/Crowander - Heavy Waves.mp3"
                     },
                     new Song
                     {
-                        SongId = 6,
+                        Id = 6,
                         Title = "Heavy Waves",
                         Author = "Crowander",
-                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        Url = "./songs/Crowander - Heavy Waves.mp3"
                     },
                     new Song
                     {
-                        SongId = 7,
+                        Id = 7,
                         Title = "Heavy Waves",
                         Author = "Crowander",
-                        SongUrl = "./songs/Crowander - Heavy Waves.mp3"
+                        Url = "./songs/Crowander - Heavy Waves.mp3"
                     }
                 }
-            };
+        };
+
+        public async Task<Playlist> GetPlaylistAsync(int id)
+        {
+            await Task.Delay(100);
+            return samplePlaylist;
         }
     }
 }

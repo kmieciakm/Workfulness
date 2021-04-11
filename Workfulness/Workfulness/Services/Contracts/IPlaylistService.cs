@@ -8,6 +8,6 @@ namespace Workfulness.Services.Contracts
 {
     interface IPlaylistService
     {
-        Playlist GetPlaylist();
+        Task<Playlist> GetPlaylistAsync(int id);
     }
 }

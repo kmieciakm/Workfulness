@@ -13,13 +13,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using WorkfulnessAPI.Services;
-using WorkfulnessAPI.Services.Contracts;
+using WorkfulnessAPI.Services.Ports.Presenters;
+using WorkfulnessAPI.Services.Services.Fake;
 
 namespace WorkfulnessAPI
 {
     public class Startup
     {
+        private string _corsPolicyName { get { return "CustomAllowSpecificOrigins"; } }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,6 +31,19 @@ namespace WorkfulnessAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                string[] origins = Configuration
+                    .GetSection("AllowedOrigins")
+                    .Get<string[]>();
+
+                options.AddPolicy(_corsPolicyName, builder =>
+                {
+                    builder.WithOrigins(origins)
+                       .WithMethods("POST")
+                       .WithHeaders("Content-Type");
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(config =>
@@ -39,9 +54,11 @@ namespace WorkfulnessAPI
                 config.IncludeXmlComments(xmlCommentsPath);
             });
 
-            // TODO: Move local services to separate project
-            services.AddSingleton<ISongsService>(
-                new SongsService(Configuration.GetValue<string>("SongsFolder")));
+            services.AddSingleton<IPlaylistService>(
+                new FakePlaylistService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
+
+            services.AddSingleton<ISongService>(
+                new FakeSongService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -54,6 +71,7 @@ namespace WorkfulnessAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(_corsPolicyName);
 
             app.UseRouting();
 

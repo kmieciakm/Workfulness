@@ -2,7 +2,7 @@
     track: document.createElement('audio'),
     dotnetHelper: undefined,
 
-    attachSongToAudio: function(songUrl) {
+    attachSongToAudio: function (songUrl) {
         this.track.src = songUrl;
         this.track.load();
         this.track.currentTime = 0;
@@ -13,7 +13,7 @@
     pause: function() {
         this.track.pause();
     },
-    setTrackAtTime: function(percent) {
+    setTrackAtTime: function (percent) {
         let trackTime = this.track.duration * percent / 100;
         this.track.currentTime = trackTime;
     },
@@ -28,7 +28,7 @@
             return 0;
         return parseInt(elapseTime);
     },
-    setDotnetHelper: function(dotnetHelper) {
+    setDotnetHelper: function (dotnetHelper) {
         this.dotnetHelper = dotnetHelper;
     }
 };
