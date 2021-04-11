@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace WorkfulnessAPI.Services.Models
 {
-    public record Song(int Id, string Title, string Author, string Url);
+    public record Song(int Id, string Title, string Author, string Url, string FileName, string FilePath);
 }

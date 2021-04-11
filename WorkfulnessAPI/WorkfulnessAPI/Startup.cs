@@ -55,7 +55,10 @@ namespace WorkfulnessAPI
             });
 
             services.AddSingleton<IPlaylistService>(
-                new FakePlaylistService(Configuration.GetValue<string>("SongsFolder")));
+                new FakePlaylistService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
+
+            services.AddSingleton<ISongService>(
+                new FakeSongService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

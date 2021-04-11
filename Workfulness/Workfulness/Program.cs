@@ -38,7 +38,7 @@ namespace Workfulness
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IAudioPlayer, AudioPlayer>();
-            services.AddScoped<IPlaylistService, InMemoryPlaylistService>();
+            services.AddScoped<IPlaylistService, PlaylistService>();
         }
     }
 }
