@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using WorkfulnessAPI.DTO;
@@ -12,11 +13,13 @@ namespace WorkfulnessAPI.Controllers
     public class PlaylistController : ControllerBase
     {
         private readonly ILogger<PlaylistController> _logger;
+        public string _BaseSongsUrl { get; }
         private IPlaylistService _PlaylistService { get; set; }
 
-        public PlaylistController(ILogger<PlaylistController> logger, IPlaylistService songsService)
+        public PlaylistController(ILogger<PlaylistController> logger, IPlaylistService songsService, IConfiguration configuration)
         {
             _logger = logger;
+            _BaseSongsUrl = configuration["BaseSongsUrl"];
             _PlaylistService = songsService;
         }
 
@@ -31,7 +34,7 @@ namespace WorkfulnessAPI.Controllers
             List<PlaylistDTO> playlists = new List<PlaylistDTO>();
             foreach(var playlist in _PlaylistService.GetPlaylists())
             {
-                playlists.Add(new PlaylistDTO(playlist));
+                playlists.Add(new PlaylistDTO(playlist, _BaseSongsUrl));
             }
             return playlists;
         }
@@ -46,7 +49,7 @@ namespace WorkfulnessAPI.Controllers
         public ActionResult<PlaylistDTO> GetPlaylist(int id)
         {
             var playlist = _PlaylistService.GetPlaylistById(id);
-            return new PlaylistDTO(playlist);
+            return new PlaylistDTO(playlist, _BaseSongsUrl);
         }
     }
 }

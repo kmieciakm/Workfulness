@@ -8,11 +8,12 @@ namespace WorkfulnessAPI.DTO
 {
     public record PlaylistDTO(string Title, string CoverUrl, List<SongDTO> Songs)
     {
-        public PlaylistDTO(Playlist playlist) : this(playlist.Title, playlist.CoverUrl, MapToSongsDTO(playlist.Songs)) { }
+        public PlaylistDTO(Playlist playlist, string baseSongUrl)
+            : this(playlist.Title, playlist.CoverUrl, MapToSongsDTO(playlist.Songs, baseSongUrl)) { }
 
-        private static List<SongDTO> MapToSongsDTO(List<Song> songs)
+        private static List<SongDTO> MapToSongsDTO(IEnumerable<Song> songs, string baseSongUrl)
         {
-            return songs.Select(song => new SongDTO(song)).ToList();
+            return songs.Select(song => new SongDTO(song, baseSongUrl)).ToList();
         }
     }
 }

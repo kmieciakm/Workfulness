@@ -22,21 +22,25 @@ namespace WorkfulnessAPI.Services.Services.Fake
         {
             return new List<Playlist>() {
                 new Playlist(
+                    1,
                     "Calm lake",
                     @"https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                    "Folk",
                     new List<Song>() {
-                        new Song(0, "Blathering On", "Derek Clegg", $"{_BaseSongsUrl}/{0}", "Derek Clegg - Blathering On.mp3", $"{_SongsDirectory}Derek Clegg - Blathering On.mp3"),
-                        new Song(1, "Heavy Waves", "Crowander", $"{_BaseSongsUrl}/{1}", "Heavy Waves - Crowander.mp3", $"{_SongsDirectory}Heavy Waves - Crowander.mp3")
+                        new Song(0, "Blathering On", "Derek Clegg", "Derek Clegg - Blathering On.mp3"),
+                        new Song(1, "Heavy Waves", "Crowander", "Heavy Waves - Crowander.mp3")
                     }
                 ),
                 new Playlist(
+                    2,
                     "Calm lake 2",
                     @"https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                    "Folk",
                     new List<Song>() {
-                        new Song(0, "Blathering On", "Derek Clegg", $"{_BaseSongsUrl}/{0}", "Derek Clegg - Blathering On.mp3", $"{_SongsDirectory}Derek Clegg - Blathering On.mp3"),
-                        new Song(1, "Heavy Waves", "Crowander", $"{_BaseSongsUrl}/{1}", "Heavy Waves - Crowander.mp3", $"{_SongsDirectory}Heavy Waves - Crowander.mp3"),
-                        new Song(0, "Blathering On", "Derek Clegg", $"{_BaseSongsUrl}/{0}", "Derek Clegg - Blathering On.mp3",$"{_SongsDirectory}Derek Clegg - Blathering On.mp3"),
-                        new Song(1, "Heavy Waves", "Crowander", $"{_BaseSongsUrl}/{1}", "Heavy Waves - Crowander.mp3", $"{_SongsDirectory}Heavy Waves - Crowander.mp3")
+                        new Song(0, "Blathering On", "Derek Clegg", "Derek Clegg - Blathering On.mp3"),
+                        new Song(1, "Heavy Waves", "Crowander", "Heavy Waves - Crowander.mp3"),
+                        new Song(0, "Blathering On", "Derek Clegg", "Derek Clegg - Blathering On.mp3"),
+                        new Song(1, "Heavy Waves", "Crowander", "Heavy Waves - Crowander.mp3")
                     }
                 )
             };
@@ -45,11 +49,13 @@ namespace WorkfulnessAPI.Services.Services.Fake
         public Playlist GetPlaylistById(int id)
         {
             return new Playlist(
+                id,
                 "Calm lake",
                 @"https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                "Folk",
                 new List<Song>() {
-                    new Song(0, "Blathering On", "Derek Clegg", $"{_BaseSongsUrl}0", "Derek Clegg - Blathering On.mp3", $"{_SongsDirectory}Derek Clegg - Blathering On.mp3"),
-                    new Song(1, "Heavy Waves", "Crowander", $"{_BaseSongsUrl}1", "Heavy Waves - Crowander.mp3", $"{_SongsDirectory}Heavy Waves - Crowander.mp3"),
+                    new Song(0, "Blathering On", "Derek Clegg", "Derek Clegg - Blathering On.mp3"),
+                    new Song(1, "Heavy Waves", "Crowander", "Heavy Waves - Crowander.mp3"),
                 }
             );
         }

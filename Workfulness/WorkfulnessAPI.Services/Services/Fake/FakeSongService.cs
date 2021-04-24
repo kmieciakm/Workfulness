@@ -22,13 +22,18 @@ namespace WorkfulnessAPI.Services.Services.Fake
         public Song GetSongById(int id)
         {
             return new Song(
-                0, 
+                id,
                 "Blathering On",
                 "Derek Clegg",
-                $"{_BaseSongsUrl}0",
-                "Derek Clegg - Blathering On.mp3",
-                $"{_SongsDirectory}Derek Clegg - Blathering On.mp3"
-                );
+                "Derek Clegg - Blathering On.mp3"
+            );
+        }
+
+        public byte[] GetSongBytes(int songId)
+        {
+            var filePath = $"{_SongsDirectory}Derek Clegg - Blathering On.mp3";
+            var songBytes = System.IO.File.ReadAllBytes(filePath);
+            return songBytes;
         }
     }
 }
