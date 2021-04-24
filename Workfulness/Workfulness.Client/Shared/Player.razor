@@ -5,7 +5,6 @@
 @if (isReady)
 {
     <div class="background" hidden="@(!IsPlaylistWindowVisible)"></div>
-
     <div class="audio-player">
         <div class="playlist" hidden="@(!IsPlaylistWindowVisible)">
             <div class="container-fluid fill">
@@ -50,7 +49,6 @@
             </div>
             <div class="song_controls m-2">
                 <div class="controls_plays">
-
                     <div id="prev_btn" @onclick="PlayPreviousSong">
                         <i class="fas fa-2x fa-backward"></i>
                     </div>

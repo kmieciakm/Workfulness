@@ -1,1 +1,4 @@
-﻿
+﻿.explore_container {
+    max-width: 1800px;
+    margin-bottom: 200px !important;
+}

@@ -87,7 +87,7 @@ namespace Workfulness.Client.Services
             {
                 new PlaylistGroup() {
                     Category = "Folk",
-                    Playlists = new List<Playlist>() { samplePlaylist, samplePlaylist }
+                    Playlists = new List<Playlist>() { samplePlaylist, samplePlaylist, samplePlaylist }
                 },
                 new PlaylistGroup() {
                     Category = "Blues",

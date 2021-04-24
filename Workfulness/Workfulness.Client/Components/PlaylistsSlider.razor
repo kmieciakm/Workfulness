@@ -1,8 +1,61 @@
-﻿<h3>@Category</h3>
+﻿<div class="slider_container m-2 m-lg-4">
+    <h3 class="slider_title mt-1 mb-2">@Category</h3>
+    <div class="slider_body">
+        <div id="slider_left_btn" class="slider_btn content-vertical-center" @onclick="MoveLeft">
+            <i class="fas fa-2x fa-angle-left"></i>
+        </div>
+        <div class="slider_group">
+            @foreach (var playlist in PlaylistsRange)
+            {
+                <div class="slider_element">
+                    <div class="slider_element_image" style='background-image: url("@playlist.CoverUrl")' />
+                    <h4 class="slider_element_title p-2 pt-4">@playlist.Title</h4>
+                </div>
+            }
+        </div>
+        <div id="slider_right_btn" class="slider_btn content-vertical-center" @onclick="MoveRight">
+            <i class="fas fa-2x fa-angle-right"></i>
+        </div>
+    </div>
+</div>
 
 @code {
     [Parameter]
     public string Category { get; set; }
     [Parameter]
+    public List<Playlist> Playlists { get; set; }
+    [Parameter]
     public short SlidesVisible { get; set; }
+
+    public List<Playlist> PlaylistsRange
+    {
+        get
+        {
+            if (Playlists.Count >= SlidesVisible)
+                return Playlists.GetRange(StartElementIndex, SlidesVisible);
+            else
+                return Playlists;
+        }
+    }
+    private short _startElementIndex;
+    public short StartElementIndex
+    {
+        get { return _startElementIndex; }
+        set
+        {
+            if (Playlists.Count - SlidesVisible >= value && value >= 0)
+            {
+                _startElementIndex = value;
+            }
+            Console.WriteLine(_startElementIndex);
+        }
+    }
+    public void MoveRight()
+    {
+        StartElementIndex++;
+    }
+    public void MoveLeft()
+    {
+        StartElementIndex--;
+    }
 }

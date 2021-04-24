@@ -3,12 +3,18 @@
 
 @if (isReady)
 {
-    <h3>Explore</h3>
-    <div>
-        @foreach (var playlistGroup in CategorizedPlaylists)
-        {
-            <PlaylistsSlider Category="@playlistGroup.Category" SlidesVisible="3"></PlaylistsSlider>
-        }
+    <div class="explore_container p-3">
+        <h2>Explore</h2>
+        <div>
+            @foreach (var playlistGroup in CategorizedPlaylists)
+            {
+                <PlaylistsSlider
+                    Category="@playlistGroup.Category"
+                    Playlists="playlistGroup.Playlists.ToList()"
+                    SlidesVisible="3">
+                </PlaylistsSlider>
+            }
+        </div>
     </div>
 }
 
