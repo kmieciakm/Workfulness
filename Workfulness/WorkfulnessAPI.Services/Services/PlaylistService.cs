@@ -27,5 +27,15 @@ namespace WorkfulnessAPI.Services.Services
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Playlist> GetPlaylistsOfCategory(string category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> GetAvailablePlaylistsCategories()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

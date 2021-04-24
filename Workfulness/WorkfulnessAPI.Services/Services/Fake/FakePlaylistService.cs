@@ -59,5 +59,25 @@ namespace WorkfulnessAPI.Services.Services.Fake
                 }
             );
         }
+
+        public IEnumerable<Playlist> GetPlaylistsOfCategory(string category)
+        {
+            return GetPlaylists()
+                .Select(playlist =>
+                {
+                    playlist.Category = category;
+                    return playlist;
+                });
+        }
+
+        public IEnumerable<string> GetAvailablePlaylistsCategories()
+        {
+            return new List<string>()
+            {
+                "Blues",
+                "Folk",
+                "Jazz"
+            };
+        }
     }
 }

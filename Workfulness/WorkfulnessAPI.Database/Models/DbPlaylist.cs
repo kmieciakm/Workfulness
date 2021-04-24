@@ -15,7 +15,7 @@ namespace WorkfulnessAPI.Database.Models
         public string CoverUrl { get; set; }
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public DbCategory Category { get; set; }
+        public DbPlaylistCategory Category { get; set; }
         public ICollection<DbSong> Songs { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace WorkfulnessAPI.Database.Context
     public class DatabaseContext : DbContext
     {
         public DbSet<DbSong> Songs { get; set; }
-        public DbSet<DbCategory> Categories { get; set; }
+        public DbSet<DbPlaylistCategory> PlaylistsCategories { get; set; }
         public DbSet<DbPlaylist> Playlists { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> dbOptions) : base(dbOptions) { }

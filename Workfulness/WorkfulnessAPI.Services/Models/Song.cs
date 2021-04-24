@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace WorkfulnessAPI.Services.Models
 {
     public class Song {
-        public int Id { get; set; }
+        public int Id { get; }
         public string Title { get; set; }
         public string Author { get; set; }
         public string FileName { get; set; }
