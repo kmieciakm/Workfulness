@@ -9,5 +9,6 @@ namespace Workfulness.Client.Services.Contracts
     interface IPlaylistService
     {
         Task<Playlist> GetPlaylistAsync(int id);
+        Task<List<PlaylistGroup>> GetCategorizedPlaylistsAsync();
     }
 }

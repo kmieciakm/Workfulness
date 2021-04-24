@@ -1,11 +1,24 @@
 ﻿@page "/explore"
 @inject IPlaylistService playlistService;
 
-<h3>Explore</h3>
+@if (isReady)
+{
+    <h3>Explore</h3>
+    <div>
+        @foreach (var playlistGroup in CategorizedPlaylists)
+        {
+            <PlaylistsSlider Category="@playlistGroup.Category" SlidesVisible="3"></PlaylistsSlider>
+        }
+    </div>
+}
 
 @code {
+    private bool isReady { get; set; } = false;
+    List<PlaylistGroup> CategorizedPlaylists { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        CategorizedPlaylists = await playlistService.GetCategorizedPlaylistsAsync();
+        isReady = true;
     }
 }

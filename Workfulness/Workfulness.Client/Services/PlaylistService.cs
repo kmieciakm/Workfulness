@@ -17,13 +17,19 @@ namespace Workfulness.Client.Services
         {
             _HttpClient = httpClientFactory.CreateClient("GatewayAPI");
             _HttpClient.BaseAddress = new Uri("https://localhost:44300/"); // BUG, TODO: Check why client is injected without BaseAddress
-            Console.WriteLine($"API: {_HttpClient.BaseAddress}");
+            Console.WriteLine($"API: {_HttpClient.BaseAddress}"); // TODO: Delete
         }
 
         public async Task<Playlist> GetPlaylistAsync(int id)
         {
             var playlist = await _HttpClient.GetFromJsonAsync<Playlist>($"playlist/{id}");
             return playlist;
+        }
+
+        public async Task<List<PlaylistGroup>> GetCategorizedPlaylistsAsync()
+        {
+            await Task.Delay(100);
+            throw new NotImplementedException();
         }
     }
 }
