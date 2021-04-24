@@ -4,14 +4,13 @@
 @if (isReady)
 {
     <div class="explore_container p-3">
-        <h2>Explore</h2>
-        <div>
+        <div class="explore_body p-3">
             @foreach (var playlistGroup in CategorizedPlaylists)
             {
                 <PlaylistsSlider
                     Category="@playlistGroup.Category"
                     Playlists="playlistGroup.Playlists.ToList()"
-                    SlidesVisible="3">
+                    SlidesVisible="4">
                 </PlaylistsSlider>
             }
         </div>

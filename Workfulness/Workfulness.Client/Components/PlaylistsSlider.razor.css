@@ -3,6 +3,7 @@
 
 .slider_title {
     margin: auto;
+    text-transform: uppercase;
 }
 
 .slider_body {
@@ -20,7 +21,20 @@
 
 .slider_element {
     display: inline-block;
+    max-width: 200px;
+    box-sizing: content-box;
+    cursor: pointer;
+    transition: 1s ease;
+    -webkit-filter: brightness(100%);
 }
+
+    .slider_element:hover {
+        -webkit-filter: brightness(110%);
+    }
+
+        .slider_element:hover .slider_element_image {
+            border-radius: 0px;
+        }
 
 .slider_element_image {
     width: 200px;
@@ -29,11 +43,13 @@
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 10px;
+    transition: 1s ease;
 }
 
 .slider_element_title {
     display: inline;
     text-transform: lowercase;
+    font-size: 1.2em;
 }
 
 .slider_btn {
