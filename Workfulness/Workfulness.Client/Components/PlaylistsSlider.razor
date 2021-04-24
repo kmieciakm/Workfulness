@@ -1,4 +1,6 @@
-﻿<div class="slider_container m-2 m-lg-4">
+﻿@inject IPlaylistManager playlistManager;
+
+<div class="slider_container m-2 m-lg-4">
     <h3 class="slider_title mt-1 mb-2">@Category</h3>
     <div class="slider_body">
         <div id="slider_left_btn" class="slider_btn content-vertical-center" @onclick="MoveLeft">
@@ -7,8 +9,8 @@
         <div class="slider_group">
             @foreach (var playlist in PlaylistsRange)
             {
-                <div class="slider_element p-1 p-lg-3">
-                    <div class="slider_element_image" style='background-image: url("@playlist.CoverUrl")' />
+                <div class="slider_element p-1 p-lg-3" @onclick="() => Play(playlist)">
+                    <div class="slider_element_image" style='background-image: url("@playlist.CoverUrl")'></div>
                     <span class="slider_element_title mt-2">@playlist.Title</span>
                 </div>
             }
@@ -57,5 +59,10 @@
     public void MoveLeft()
     {
         StartElementIndex--;
+    }
+
+    private void Play(Playlist playlist)
+    {
+        playlistManager.Playlist = playlist;
     }
 }

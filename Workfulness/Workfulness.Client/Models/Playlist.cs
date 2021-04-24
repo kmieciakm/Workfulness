@@ -38,5 +38,9 @@ namespace Workfulness.Client.Models
                 CurrentSongIndex = desiredSongIndex.Value;
             }
         }
+
+        public void SwitchToBeginning() {
+            CurrentSongIndex = 0;
+        }
     }
 }

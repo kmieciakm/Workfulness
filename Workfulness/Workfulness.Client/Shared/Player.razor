@@ -1,8 +1,8 @@
 ﻿@using System.Timers;
 @inject IAudioPlayer audioPlayer;
-@inject IPlaylistService playlistService;
+@inject IPlaylistManager playlistManager;
 
-@if (isReady)
+@if (Playlist != null)
 {
     <div class="background" hidden="@(!IsPlaylistWindowVisible)"></div>
     <div class="audio-player">
@@ -72,13 +72,13 @@
 
             @if (!IsPlaylistWindowVisible)
             {
-                <div id="extends_btn" @onclick="ShowPlaylist">
+                <div id="extends_btn" @onclick="ShowPlaylistWindow">
                     <i class="fas fa-2x fa-level-up-alt"></i>
                 </div>
             }
             else
             {
-                <div id="extends_btn" @onclick="HidePlaylist">
+                <div id="extends_btn" @onclick="HidePlaylistWindow">
                     <i class="fas fa-2x fa-level-down-alt"></i>
                 </div>
             }
@@ -87,19 +87,34 @@
 }
 
 @code {
-    private bool isReady { get; set; } = false;
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        Playlist = await playlistService.GetPlaylistAsync(0);
+        playlistManager.PlaylistChanged += async () => {
+            Playlist = playlistManager.Playlist;
+            if (Playlist != null)
+            {
+                await Reset();
+                await audioPlayer.Play();
+                ShowPlaylistWindow();
+                StateHasChanged();
+            }
+        };
         SliderTimer.Elapsed += UpdateSlider;
-        await audioPlayer.AttachSong(Playlist.CurrentSong.Url);
         audioPlayer.SongHasFinished += async () => await PlayNextSong();
-        isReady = true;
+
+    }
+    private async Task Reset()
+    {
+        SliderTimer.Stop();
+        SliderTimer.Start();
+        Playlist.SwitchToBeginning();
+        await audioPlayer.Reset();
+        await audioPlayer.AttachSong(Playlist.CurrentSong.Url);
     }
 
     public bool IsPlaylistWindowVisible { get; set; }
-    private void ShowPlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = true;
-    private void HidePlaylist(MouseEventArgs args) => IsPlaylistWindowVisible = false;
+    private void ShowPlaylistWindow() => IsPlaylistWindowVisible = true;
+    private void HidePlaylistWindow() => IsPlaylistWindowVisible = false;
 
     private int elapsedPrecentSongTime = 0;
     public int ElapsedPrecentSongTime
@@ -126,7 +141,7 @@
         StateHasChanged();
     }
 
-    private Playlist Playlist { get; set; } = new Playlist();
+    private Playlist Playlist { get; set; }
     private async Task PlayCurrentSong()
     {
         SliderTimer.Start();

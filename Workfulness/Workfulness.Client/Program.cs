@@ -38,7 +38,10 @@ namespace Workfulness.Client
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IAudioPlayer, AudioPlayer>();
-            services.AddScoped<IPlaylistService, InMemoryPlaylistService>();
+            services.AddScoped<IPlaylistManager, PlaylistManager>();
+
+            // External
+            services.AddSingleton<IPlaylistService, InMemoryPlaylistService>();
         }
     }
 }

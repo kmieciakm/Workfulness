@@ -30,5 +30,10 @@
     },
     setDotnetHelper: function (dotnetHelper) {
         this.dotnetHelper = dotnetHelper;
+    },
+    reset: function () {
+        this.track.pause();
+        this.track.src = "";
+        this.track.currentTime = 0;
     }
 };
