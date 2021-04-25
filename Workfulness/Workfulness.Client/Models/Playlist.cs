@@ -8,6 +8,7 @@ namespace Workfulness.Client.Models
     public record Playlist
     {
         public string Title { get; set; }
+        public string Category { get; set; }
         public string CoverUrl { get; set; }
         public List<Song> Songs { get; set; } = new List<Song>();
         public Song CurrentSong { get { return Songs?.ElementAt(CurrentSongIndex); } }
@@ -36,6 +37,10 @@ namespace Workfulness.Client.Models
             {
                 CurrentSongIndex = desiredSongIndex.Value;
             }
+        }
+
+        public void SwitchToBeginning() {
+            CurrentSongIndex = 0;
         }
     }
 }

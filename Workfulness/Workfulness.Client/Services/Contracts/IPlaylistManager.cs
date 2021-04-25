@@ -6,9 +6,9 @@ using Workfulness.Client.Models;
 
 namespace Workfulness.Client.Services.Contracts
 {
-    interface IPlaylistService
+    public interface IPlaylistManager
     {
-        Task<Playlist> GetPlaylistAsync(int id);
-        Task<List<PlaylistGroup>> GetCategorizedPlaylistsAsync();
+        event Action PlaylistChanged;
+        public Playlist Playlist { get; set; }
     }
 }

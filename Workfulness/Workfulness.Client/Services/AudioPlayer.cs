@@ -33,6 +33,11 @@ namespace Workfulness.Client.Services
             await _JSRuntime.InvokeVoidAsync("audioPlayer.pause");
             IsSongPlaying = false;
         }
+        public async Task Reset()
+        {
+            await _JSRuntime.InvokeVoidAsync("audioPlayer.reset");
+            IsSongPlaying = false;
+        }
 
         public async Task SetTrackAtTime(int percent) =>
             await _JSRuntime.InvokeVoidAsync("audioPlayer.setTrackAtTime", percent);

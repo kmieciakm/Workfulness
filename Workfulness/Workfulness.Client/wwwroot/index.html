@@ -13,7 +13,7 @@
     <link href="css/font-awesome/css/all.min.css" rel="stylesheet" />
 </head>
 
-<body>
+<body onresize="window.app.callResize()">
     <div id="app">Loading...</div>
 
     <div id="blazor-error-ui">
@@ -22,6 +22,7 @@
         <a class="dismiss">🗙</a>
     </div>
 
+    <script src="js/app.js"></script>
     <script src="js/audioPlayer.js"></script>
     <script src="css/font-awesome/js/all.min.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>

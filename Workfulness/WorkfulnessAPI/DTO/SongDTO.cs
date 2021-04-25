@@ -8,6 +8,8 @@ namespace WorkfulnessAPI.DTO
 {
     public record SongDTO(int Id, string Title, string Author, string Url)
     {
-        public SongDTO(Song song) : this(song.Id, song.Title, song.Author, song.Url) { }
-    };
+        public SongDTO(Song song, string baseSongUrl) : this(song.Id, song.Title, song.Author, "") {
+            Url = $"{baseSongUrl}{song.Id}";
+        }
+    }
 }

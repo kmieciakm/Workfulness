@@ -32,7 +32,8 @@ namespace WorkfulnessAPI.Controllers
         public ActionResult GetSong(int id)
         {
             var song = _SongService.GetSongById(id);
-            var songBytes = System.IO.File.ReadAllBytes(song.FilePath);
+            var songBytes = _SongService.GetSongBytes(id);
+
             return File(songBytes, "audio/mpeg", song.FileName, true);
         }
     }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Workfulness.Client.Models;
 using Workfulness.Client.Services.Contracts;
 
-namespace Workfulness.Client.Services
+namespace Workfulness.Client.Services.InMemory
 {
     internal class InMemoryPlaylistService : IPlaylistService
     {
@@ -78,6 +78,26 @@ namespace Workfulness.Client.Services
         {
             await Task.Delay(100);
             return samplePlaylist;
+        }
+
+        public async Task<List<PlaylistGroup>> GetCategorizedPlaylistsAsync()
+        {
+            await Task.Delay(100);
+            return new List<PlaylistGroup>()
+            {
+                new PlaylistGroup() {
+                    Category = "Folk",
+                    Playlists = new List<Playlist>() { samplePlaylist, samplePlaylist, samplePlaylist, samplePlaylist }
+                },
+                new PlaylistGroup() {
+                    Category = "Blues",
+                    Playlists = new List<Playlist>() { samplePlaylist, samplePlaylist, samplePlaylist, samplePlaylist }
+                },
+                new PlaylistGroup() {
+                    Category = "Jazz",
+                    Playlists = new List<Playlist>() { samplePlaylist, samplePlaylist, samplePlaylist, samplePlaylist }
+                }
+            };
         }
     }
 }

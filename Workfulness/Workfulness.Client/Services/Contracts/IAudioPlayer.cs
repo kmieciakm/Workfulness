@@ -8,10 +8,11 @@ namespace Workfulness.Client.Services.Contracts
     internal interface IAudioPlayer
     {
         bool IsSongPlaying { get; }
-        public event Action SongHasFinished;
+        event Action SongHasFinished;
         Task AttachSong(string songSrc);
         Task Play();
         Task Pause();
+        Task Reset();
         /// <summary>
         /// Set track current playing time to given song duration percentage.
         /// </summary>

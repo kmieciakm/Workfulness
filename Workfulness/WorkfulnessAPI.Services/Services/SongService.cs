@@ -14,5 +14,10 @@ namespace WorkfulnessAPI.Services.Services
         {
             throw new NotImplementedException();
         }
+
+        public byte[] GetSongBytes(int songId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
