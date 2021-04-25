@@ -1,4 +1,5 @@
 ﻿@page "/explore"
+@inject IPageSize page;
 @inject IPlaylistService playlistService;
 
 @if (isReady)
@@ -7,10 +8,9 @@
         <div class="explore_body p-3">
             @foreach (var playlistGroup in CategorizedPlaylists)
             {
-                <PlaylistsSlider
-                    Category="@playlistGroup.Category"
-                    Playlists="playlistGroup.Playlists.ToList()"
-                    SlidesVisible="4">
+                <PlaylistsSlider Category="@playlistGroup.Category"
+                                 Playlists="playlistGroup.Playlists.ToList()"
+                                 SlidesVisible="@SlidesVisible">
                 </PlaylistsSlider>
             }
         </div>
@@ -19,11 +19,22 @@
 
 @code {
     private bool isReady { get; set; } = false;
+    public short SlidesVisible { get; set; }
     List<PlaylistGroup> CategorizedPlaylists { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         CategorizedPlaylists = await playlistService.GetCategorizedPlaylistsAsync();
+        page.PageResized += AdjustSlidesAmount;
+        AdjustSlidesAmount();
         isReady = true;
+    }
+
+    public void AdjustSlidesAmount() {
+        if (page.Width > 1600) SlidesVisible = 4;
+        else if (page.IsExtraLarge) SlidesVisible = 3;
+        else if (page.IsLarge || page.IsMedium || page.IsSmall) SlidesVisible = 2;
+        else if (page.IsExtraSmall) SlidesVisible = 1;
+        StateHasChanged();
     }
 }

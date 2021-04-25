@@ -9,7 +9,7 @@
         <div class="slider_group">
             @foreach (var playlist in PlaylistsRange)
             {
-                <div class="slider_element p-1 p-lg-3" @onclick="() => Play(playlist)">
+                <div class="slider_element p-2 p-lg-3" @onclick="() => Play(playlist)">
                     <div class="slider_element_image" style='background-image: url("@playlist.CoverUrl")'></div>
                     <span class="slider_element_title mt-2">@playlist.Title</span>
                 </div>
@@ -28,6 +28,11 @@
     public List<Playlist> Playlists { get; set; }
     [Parameter]
     public short SlidesVisible { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        StartElementIndex = 0;
+    }
 
     public List<Playlist> PlaylistsRange
     {
@@ -49,7 +54,6 @@
             {
                 _startElementIndex = value;
             }
-            Console.WriteLine(_startElementIndex);
         }
     }
     public void MoveRight()

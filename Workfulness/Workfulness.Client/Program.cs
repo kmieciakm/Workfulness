@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Workfulness.Client.Services;
 using Workfulness.Client.Services.Contracts;
+using Workfulness.Client.Services.InMemory;
 
 namespace Workfulness.Client
 {
@@ -37,6 +38,7 @@ namespace Workfulness.Client
 
         public static void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IPageSize, PageSize>();
             services.AddScoped<IAudioPlayer, AudioPlayer>();
             services.AddScoped<IPlaylistManager, PlaylistManager>();
 

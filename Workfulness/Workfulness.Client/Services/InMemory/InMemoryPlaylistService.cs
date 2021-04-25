@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Workfulness.Client.Models;
 using Workfulness.Client.Services.Contracts;
 
-namespace Workfulness.Client.Services
+namespace Workfulness.Client.Services.InMemory
 {
     internal class InMemoryPlaylistService : IPlaylistService
     {
