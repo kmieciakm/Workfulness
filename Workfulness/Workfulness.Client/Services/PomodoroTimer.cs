@@ -55,7 +55,12 @@ namespace Workfulness.Client.Services
             SetTime(15);
             _Timer.Start();
         }
-
+        public void Work() 
+        {
+            _Timer.Stop();
+            SetTime(25);
+            _Timer.Start();
+        }
         public void SetTime(int minutesToSet)
         {
             StopCount();

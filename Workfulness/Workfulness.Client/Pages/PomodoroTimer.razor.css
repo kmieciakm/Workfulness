@@ -1,5 +1,12 @@
-﻿.center {
+﻿.centerContext {
+    width: 100%;
     display: flex;
-    justify-content: center;
+    flex-flow: column nowrap;
     align-items: center;
+}
+
+.time {
+    font-size: 3rem;
+    font-weight: bold;
+    letter-spacing: 5px;
 }

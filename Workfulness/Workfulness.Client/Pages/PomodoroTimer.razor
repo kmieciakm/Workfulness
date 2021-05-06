@@ -1,17 +1,19 @@
 ﻿@page "/pomodoro"
 @inject IPomodoroTimer counter;
 
-<div class="centerContext">
-    <div class="title">PomodoroTimer</div>
+<div class="centerContext mt-5">
     <div>
-        <p>@counter.ShortTime</p>
-        <button class="btn btn-primary" @onclick="e => counter.StartCount()">Start</button>
-        <button class="btn btn-danger" @onclick="e => counter.StopCount()">Stop</button>
+        <button class="btn btn-primary" @onclick="e => counter.Work()">Work</button>
         <button class="btn btn-warning" @onclick="e => counter.ShortBreak()"> Short break</button>
         <button class="btn btn-warning" @onclick="e => counter.LongBreak()"> Long break</button>
     </div>
-</div>
+    <p class="time p-5 text-center">@counter.ShortTime</p>
+    <div>
+        <button class="btn btn-success" @onclick="e => counter.StartCount()">Start</button>
+        <button class="btn btn-danger" @onclick="e => counter.StopCount()">Stop</button>
+    </div>
 
+</div>
 
 @code {
     protected override void OnInitialized()

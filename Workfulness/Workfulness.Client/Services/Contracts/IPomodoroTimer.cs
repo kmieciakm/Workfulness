@@ -16,6 +16,7 @@ namespace Workfulness.Client.Services.Contracts
         void StopCount();
         void ShortBreak();
         void LongBreak();
+        void Work();
 
         event Action OnTick;
         event Action OnFinished;
