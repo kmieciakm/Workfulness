@@ -1,25 +1,25 @@
 ﻿@page "/pomodoro"
-@inject ICounter counter;
+@inject IPomodoroTimer counter;
 
-<h3>PomodoroTimer</h3>
-
-<div>
-    <p>@counter.Minutes : @counter.Seconds</p>
-    <button class="btn btn-primary" @onclick="e => counter.StartCount()">Start</button>
-    <button class="btn btn-danger" @onclick="e => counter.StopCount()" >Stop</button>
-    <button class="btn btn-warning "> Break</button>
+<div class="centerContext">
+    <div class="title">PomodoroTimer</div>
+    <div>
+        <p>@counter.ShortTime</p>
+        <button class="btn btn-primary" @onclick="e => counter.StartCount()">Start</button>
+        <button class="btn btn-danger" @onclick="e => counter.StopCount()">Stop</button>
+        <button class="btn btn-warning" @onclick="e => counter.ShortBreak()"> Short break</button>
+        <button class="btn btn-warning" @onclick="e => counter.LongBreak()"> Long break</button>
+    </div>
 </div>
-
-
 
 
 @code {
     protected override void OnInitialized()
     {
         counter.OnTick += () => { StateHasChanged(); };
+        counter.OnFinished += () => { Console.WriteLine("Finished - time up"); };
     }
-    public void CountDown()
-    {
 
-    }
+
+
 }
