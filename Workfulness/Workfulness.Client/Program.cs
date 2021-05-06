@@ -44,6 +44,7 @@ namespace Workfulness.Client
 
             // External
             services.AddSingleton<IPlaylistService, InMemoryPlaylistService>();
+            services.AddSingleton<ICounter>(_ => new Counter(25));
         }
     }
 }

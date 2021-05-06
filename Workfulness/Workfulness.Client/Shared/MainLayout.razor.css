@@ -20,6 +20,16 @@
     padding-top: 2rem;
 }
 
+.right-top-tooltip {
+    position: fixed;
+    top: 50px;
+    right: 0px;
+    width: 150px;
+    height: 100px;
+    background-color: red;
+    border-radius: 12px 0px 0px 12px;
+}
+
 .bottombar {
     position: fixed;
     width: 100%;
