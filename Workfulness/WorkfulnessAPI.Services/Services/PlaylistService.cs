@@ -20,22 +20,23 @@ namespace WorkfulnessAPI.Services.Services
 
         public Playlist GetPlaylistById(int id)
         {
-            throw new NotImplementedException();
+            return _PlaylistRegistry.Get(id);
         }
 
         public IEnumerable<Playlist> GetPlaylists()
         {
-            throw new NotImplementedException();
+            return _PlaylistRegistry.FindAll();
         }
 
         public IEnumerable<Playlist> GetPlaylistsOfCategory(string category)
         {
-            throw new NotImplementedException();
+            category = category.ToLower();
+            return _PlaylistRegistry.FindByCategory(category);
         }
 
         public IEnumerable<string> GetAvailablePlaylistsCategories()
         {
-            throw new NotImplementedException();
+            return _PlaylistRegistry.GetCategories();
         }
     }
 }

@@ -13,13 +13,37 @@ namespace WorkfulnessAPI.Database.Helpers.Mappers
         public static class Playlist
         {
             public static DomainModels.Playlist ToPlaylist(DbPlaylist dbPlaylist) {
+                if (dbPlaylist == null) return null;
                 return new DomainModels.Playlist(
                         dbPlaylist.Id,
                         dbPlaylist.Title,
                         dbPlaylist.CoverUrl,
-                        dbPlaylist.Category.Name,
+                        dbPlaylist.Category?.Name,
                         Song.ToSong(dbPlaylist.Songs)
                     );
+            }
+
+            public static IQueryable<DomainModels.Playlist> ToPlaylist(IQueryable<DbPlaylist> dbPlaylists)
+            {
+                if (dbPlaylists == null) return null;
+                return dbPlaylists.Select(dbPlaylist => ToPlaylist(dbPlaylist));
+            }
+
+            public static DbPlaylist ToDbPlaylist(DomainModels.Playlist playlist)
+            {
+                if (playlist == null) return null;
+                return new DbPlaylist
+                {
+                    Id = playlist.Id,
+                    Title = playlist.Title,
+                    CoverUrl = playlist.CoverUrl,
+                    Songs = Song.ToSong(playlist.Songs),
+                    Category = new DbPlaylistCategory() {
+                        Id = null,
+                        Name = playlist.Category
+                    },
+                    CategoryId = null
+                };
             }
         }
     }

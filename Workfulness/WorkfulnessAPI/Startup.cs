@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,7 +14,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using WorkfulnessAPI.Database.Context;
+using WorkfulnessAPI.Database.Repositories;
+using WorkfulnessAPI.Services.Ports.Infrastructure;
 using WorkfulnessAPI.Services.Ports.Presenters;
+using WorkfulnessAPI.Services.Services;
 using WorkfulnessAPI.Services.Services.Fake;
 
 namespace WorkfulnessAPI
@@ -54,8 +59,16 @@ namespace WorkfulnessAPI
                 config.IncludeXmlComments(xmlCommentsPath);
             });
 
-            services.AddSingleton<IPlaylistService>(
-                new FakePlaylistService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
+            services.AddDbContext<DatabaseContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
+
+            //services.AddSingleton<IPlaylistService>(
+            //    new FakePlaylistService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
+
+            services.AddScoped<IPlaylistService, PlaylistService>();
 
             services.AddSingleton<ISongService>(
                 new FakeSongService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));

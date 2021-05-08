@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using WorkfulnessAPI.DTO;
+using WorkfulnessAPI.Services.Helpers;
 using WorkfulnessAPI.Services.Ports.Presenters;
 
 namespace WorkfulnessAPI.Controllers
@@ -30,8 +33,15 @@ namespace WorkfulnessAPI.Controllers
         /// <response code="200">Returns list of playlists.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<PlaylistDTO>> GetPlaylists([FromQuery] string playlistCategory)
         {
+            var categories = _PlaylistService.GetAvailablePlaylistsCategories();
+            if (!categories.Any(category => category.EqualsCaseInsensitive(playlistCategory)))
+            {
+                return NotFound(new { category = playlistCategory });
+            }
+
             if (!string.IsNullOrEmpty(playlistCategory))
             {
                 return new OkObjectResult(GetPlaylistsByCategory(playlistCategory));
@@ -62,9 +72,14 @@ namespace WorkfulnessAPI.Controllers
         /// <response code="200">Return requested playlist.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<PlaylistDTO> GetPlaylist(int id)
         {
             var playlist = _PlaylistService.GetPlaylistById(id);
+            if (playlist == null)
+            {
+                return NotFound();
+            }
             return new PlaylistDTO(playlist, _BaseSongsUrl);
         }
 
