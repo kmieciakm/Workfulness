@@ -15,12 +15,11 @@ namespace Workfulness.Client.Services
         public BeepPlayer(IJSRuntime jsRuntime) 
         {
             _JSRuntime = jsRuntime;
-            _JSRuntime.InvokeVoidAsync("audioPlayer.setDotnetHelper", DotNetObjectReference.Create(this));
         }
 
         public async Task PlayBeep(string songSource)
         {
-            await _JSRuntime.InvokeVoidAsync("beepPlayer.playBeep", songSource);
+            await _JSRuntime.InvokeVoidAsync("beepPlayer.playBeep", songSource, DotNetObjectReference.Create(this));
         }
 
         [JSInvokable]

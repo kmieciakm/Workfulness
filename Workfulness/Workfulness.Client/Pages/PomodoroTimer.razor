@@ -31,7 +31,7 @@
         var beepUrl = "./songs/alarm.mp3";
         await Task.Delay(1000);
         await beepPlayer.PlayBeep(beepUrl);
-       // beepPlayer.BeepHasFinished += async () => { await audioPlayer.Play(); };
+        beepPlayer.BeepHasFinished += async () => { await audioPlayer.Play(); };
 
     }
 }
