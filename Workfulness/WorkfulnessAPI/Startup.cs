@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using WorkfulnessAPI.Database.Context;
 using WorkfulnessAPI.Database.Repositories;
+using WorkfulnessAPI.Services.Models.Config;
 using WorkfulnessAPI.Services.Ports.Infrastructure;
 using WorkfulnessAPI.Services.Ports.Presenters;
 using WorkfulnessAPI.Services.Services;
@@ -63,15 +64,18 @@ namespace WorkfulnessAPI
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            services.Configure<SongsConfig>(Configuration.GetSection("SongsConfig"));
+
             services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
+            services.AddScoped<ISongsRegistry, SongsRegistry>();
 
             //services.AddSingleton<IPlaylistService>(
             //    new FakePlaylistService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
+            //services.AddSingleton<ISongService>(
+            //    new FakeSongService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
 
             services.AddScoped<IPlaylistService, PlaylistService>();
-
-            services.AddSingleton<ISongService>(
-                new FakeSongService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
+            services.AddScoped<ISongService, SongService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -13,12 +13,12 @@ namespace WorkfulnessAPI.Controllers
     [Route("[controller]")]
     public class SongController : ControllerBase
     {
-        private readonly ILogger<SongController> _logger;
+        private ILogger<SongController> _Logger { get; }
         private ISongService _SongService { get; set; }
 
         public SongController(ILogger<SongController> logger, ISongService songService) 
         {
-            _logger = logger;
+            _Logger = logger;
             _SongService = songService;
         }
 

@@ -37,7 +37,7 @@ namespace WorkfulnessAPI.Database.Helpers.Mappers
                     Id = playlist.Id,
                     Title = playlist.Title,
                     CoverUrl = playlist.CoverUrl,
-                    Songs = Song.ToSong(playlist.Songs),
+                    Songs = Song.ToDbSong(playlist.Songs),
                     Category = new DbPlaylistCategory() {
                         Id = null,
                         Name = playlist.Category
