@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using WorkfulnessAPI.Database.Context;
 using WorkfulnessAPI.Database.Repositories;
+using WorkfulnessAPI.Database.Seed;
 using WorkfulnessAPI.Services.Models.Config;
 using WorkfulnessAPI.Services.Ports.Infrastructure;
 using WorkfulnessAPI.Services.Ports.Presenters;
@@ -69,22 +70,21 @@ namespace WorkfulnessAPI
             services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
             services.AddScoped<ISongsRegistry, SongsRegistry>();
 
-            //services.AddSingleton<IPlaylistService>(
-            //    new FakePlaylistService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
-            //services.AddSingleton<ISongService>(
-            //    new FakeSongService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
-
             services.AddScoped<IPlaylistService, PlaylistService>();
             services.AddScoped<ISongService, SongService>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WorkfulnessAPI v1"));
+
+                var seedDatabase = new DatabaseSeed(
+                        serviceProvider.GetRequiredService<DatabaseContext>());
+                seedDatabase.Seed();
             }
 
             app.UseHttpsRedirection();
