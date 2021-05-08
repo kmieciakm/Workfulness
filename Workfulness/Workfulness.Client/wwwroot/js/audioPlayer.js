@@ -7,6 +7,9 @@
         this.track.load();
         this.track.currentTime = 0;
     },
+    getCurrentSource: function () {
+        return this.track.src;
+    },
     play: function() {
         this.track.play();
     },

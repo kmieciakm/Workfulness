@@ -40,11 +40,12 @@ namespace Workfulness.Client
         {
             services.AddSingleton<IPageSize, PageSize>();
             services.AddScoped<IAudioPlayer, AudioPlayer>();
+            services.AddScoped<IBeepPlayer, BeepPlayer>();
             services.AddScoped<IPlaylistManager, PlaylistManager>();
 
             // External
             services.AddSingleton<IPlaylistService, InMemoryPlaylistService>();
-            services.AddSingleton<IPomodoroTimer>(_ => new PomodoroTimer(25));
+            services.AddSingleton<IPomodoroTimer>(_ => new PomodoroTimer(0));
         }
     }
 }

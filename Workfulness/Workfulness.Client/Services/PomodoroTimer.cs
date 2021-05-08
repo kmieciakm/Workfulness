@@ -45,7 +45,7 @@ namespace Workfulness.Client.Services
         public void ShortBreak()
         {
             _Timer.Stop();
-            SetTime(5);
+            SetTime(1);
             _Timer.Start();
         }
 

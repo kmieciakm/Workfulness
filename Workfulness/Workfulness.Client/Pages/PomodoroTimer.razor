@@ -1,5 +1,8 @@
 ﻿@page "/pomodoro"
 @inject IPomodoroTimer counter;
+@inject IAudioPlayer audioPlayer;
+@inject IBeepPlayer beepPlayer;
+
 
 <div class="centerContext mt-5">
     <div>
@@ -19,9 +22,16 @@
     protected override void OnInitialized()
     {
         counter.OnTick += () => { StateHasChanged(); };
-        counter.OnFinished += () => { Console.WriteLine("Finished - time up"); };
+        counter.OnFinished += () => { Beep(); };
     }
+    public async void Beep()
+    {
+        await audioPlayer.Pause();
 
+        var beepUrl = "./songs/alarm.mp3";
+        await Task.Delay(1000);
+        await beepPlayer.PlayBeep(beepUrl);
+       // beepPlayer.BeepHasFinished += async () => { await audioPlayer.Play(); };
 
-
+    }
 }
