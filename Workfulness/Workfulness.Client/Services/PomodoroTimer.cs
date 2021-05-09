@@ -10,9 +10,15 @@ namespace Workfulness.Client.Services
     {
         public event Action OnTick;
         public event Action OnFinished;
+        public event Action OnWorkStarted;
+        public event Action OnShortBreakStarted;
+        public event Action OnLongBreakStarted;
 
         private int _TimeLeft { get; set; }
         private Timer _Timer { get; set; }
+        private int _WorkTime { get; set; } = 25;
+        private int _ShortBreak { get; set; } = 5;
+        private int _LongBreak { get; set; } = 15;
 
         private const int secondsInMinute = 60;
        
@@ -59,6 +65,24 @@ namespace Workfulness.Client.Services
                 OnFinished?.Invoke();
             }
             OnTick?.Invoke();
+        }
+
+        public void WorkSession(int minutes)
+        {
+            SetTime(_WorkTime);
+            OnWorkStarted?.Invoke();
+        }
+
+        public void ShortBreakSession(int minutes)
+        {
+            SetTime(_ShortBreak);
+            OnShortBreakStarted?.Invoke();
+        }
+
+        public void LongBreakSession(int minutes)
+        {
+            SetTime(_LongBreak);
+            OnLongBreakStarted?.Invoke();
         }
     }
 }

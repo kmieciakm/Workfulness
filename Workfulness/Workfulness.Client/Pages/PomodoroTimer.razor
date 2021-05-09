@@ -6,9 +6,9 @@
 
 <div class="centerContext mt-5">
     <div>
-        <button class="btn btn-primary" @onclick="e => { counter.SetTime(_WorkTime); counter.StartCount(); }">Work</button>
-        <button class="btn btn-warning" @onclick="e =>  { counter.SetTime(_ShortBraek); counter.StartCount(); }"> Short break</button>
-        <button class="btn btn-warning" @onclick="e =>  { counter.SetTime(_LongBraek); counter.StartCount(); }"> Long break</button>
+        <button class="btn btn-primary" @onclick="e => counter.WorkSession(_WorkTime)">Work</button>
+        <button class="btn btn-warning" @onclick="e => counter.ShortBreakSession(_ShortBreak)"> Short break</button>
+        <button class="btn btn-warning" @onclick="e => counter.LongBreakSession(_LongBreak)"> Long break</button>
     </div>
     <p class="time p-5 text-center">@counter.ShortTime</p>
     <div>
@@ -19,8 +19,8 @@
 
 @code {
     private int _WorkTime { get; set; } = 25;
-    private int _ShortBraek { get; set; } = 5;
-    private int _LongBraek { get; set; } = 15;
+    private int _ShortBreak { get; set; } = 5;
+    private int _LongBreak { get; set; } = 15;
 
     protected override void OnInitialized()
     {

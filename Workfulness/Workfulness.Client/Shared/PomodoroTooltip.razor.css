@@ -4,10 +4,17 @@
     left: 0px;
     letter-spacing: 4px;
     width: 150px;
-    height: 100px;
-    background-color: #ff5968 !important;
     border-radius: 12px 0px 0px 12px;
     font-size: x-large;
     font-weight: bold;
     color: white;
+    cursor: pointer;
+}
+
+.colorRed {
+    background-color: #ff5968 !important;
+}
+
+.colorBlue {
+    background-color: mediumturquoise !important;
 }

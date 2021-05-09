@@ -1,17 +1,21 @@
 ﻿@inject IPomodoroTimer counter;
 @inject NavigationManager navigationManager;
 
-@if(counter.HasRun && !_IsOnPomodoroPage)
+@if (counter.HasRun && !_IsOnPomodoroPage)
 {
     <div @onclick="GoToPomodoroMainPage">
-        <p class="timeOnTooltip p-4 text-center">@counter.ShortTime</p>
+        <div class="@Color timeOnTooltip p-4 text-center">@counter.ShortTime</div>
     </div>
 }
 
 @code{
+    public string Color { get; set; } = "colorRed";
     protected override void OnInitialized()
     {
         counter.OnTick += () => { StateHasChanged(); };
+        counter.OnWorkStarted += () => { Color = "colorRed";  };
+        counter.OnShortBreakStarted += () => { Color = "colorBlue";};
+        counter.OnLongBreakStarted += () => { Color = "colorBlue"; };
     }
 
     public void GoToPomodoroMainPage()
@@ -19,8 +23,10 @@
         navigationManager.NavigateTo($"{navigationManager.BaseUri}pomodoro");
     }
 
-    private bool _IsOnPomodoroPage {
-        get {
+    private bool _IsOnPomodoroPage
+    {
+        get
+        {
             var pomodoroPageUrl = ($"{navigationManager.BaseUri}pomodoro");
             return navigationManager.Uri == pomodoroPageUrl;
         }
