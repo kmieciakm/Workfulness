@@ -11,11 +11,14 @@ namespace WorkfulnessAPI.Database.Models
     public class DbPlaylist : DbModelBase
     {
         [Required]
+        [MaxLength(200)]
         public string Title { get; set; }
+        [Required]
+        [MaxLength(500)]
         public string CoverUrl { get; set; }
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public DbPlaylistCategory Category { get; set; }
-        public ICollection<DbSong> Songs { get; set; }
+        public IEnumerable<DbSong> Songs { get; set; }
     }
 }

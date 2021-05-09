@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace WorkfulnessAPI.Database.Models
 {
-    public class DbPlaylistCategory : DbModelBase
+    public class DbPlaylistCategory
     {
+        [Key]
+        public int? Id { get; set; }
         [Required]
+        [MaxLength(200)]
         public string Name { get; set; }
     }
 }

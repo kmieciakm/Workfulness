@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,9 +13,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
-using WorkfulnessAPI.Services.Ports.Presenters;
-using WorkfulnessAPI.Services.Services.Fake;
+using WorkfulnessAPI.Database.Context;
+using WorkfulnessAPI.Database.Seed;
+using WorkfulnessAPI.Helpers;
 
 namespace WorkfulnessAPI
 {
@@ -46,6 +49,7 @@ namespace WorkfulnessAPI
             });
 
             services.AddControllers();
+
             services.AddSwaggerGen(config =>
             {
                 config.SwaggerDoc("v1", new OpenApiInfo { Title = "WorkfulnessAPI", Version = "v1" });
@@ -54,20 +58,23 @@ namespace WorkfulnessAPI
                 config.IncludeXmlComments(xmlCommentsPath);
             });
 
-            services.AddSingleton<IPlaylistService>(
-                new FakePlaylistService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
-
-            services.AddSingleton<ISongService>(
-                new FakeSongService(Configuration["BaseSongsUrl"], Configuration["SongsFolder"]));
+            services.AddDatabase(Configuration.GetConnectionString("DefaultConnection"))
+                    .AddTokenAuthentication(Configuration)
+                    .AddOptions(Configuration)
+                    .AddCustomServices();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WorkfulnessAPI v1"));
+
+                var seedDatabase = new DatabaseSeed(
+                        serviceProvider.GetRequiredService<DatabaseContext>());
+                seedDatabase.Seed();
             }
 
             app.UseHttpsRedirection();
@@ -75,6 +82,7 @@ namespace WorkfulnessAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

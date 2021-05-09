@@ -16,7 +16,7 @@ namespace Workfulness.Client.Services
         public PlaylistService(IHttpClientFactory httpClientFactory)
         {
             _HttpClient = httpClientFactory.CreateClient("GatewayAPI");
-            _HttpClient.BaseAddress = new Uri("https://localhost:44300/"); // BUG, TODO: Check why client is injected without BaseAddress
+            _HttpClient.BaseAddress = new Uri("https://localhost:5001/"); // BUG, TODO: Check why client is injected without BaseAddress
             Console.WriteLine($"API: {_HttpClient.BaseAddress}"); // TODO: Delete
         }
 
@@ -28,8 +28,19 @@ namespace Workfulness.Client.Services
 
         public async Task<List<PlaylistGroup>> GetCategorizedPlaylistsAsync()
         {
-            await Task.Delay(100);
-            throw new NotImplementedException();
+            var playlistsGroups = new List<PlaylistGroup>();
+            var categories = await _HttpClient.GetFromJsonAsync<List<string>>($"playlist/category");
+            foreach (var category in categories)
+            {
+                var playlists = await _HttpClient.GetFromJsonAsync<List<Playlist>>($"playlist/?playlistCategory={category}");
+                playlistsGroups.Add(new PlaylistGroup()
+                {
+                    Category = category,
+                    Playlists = playlists
+                });
+            }
+
+            return playlistsGroups;
         }
     }
 }
