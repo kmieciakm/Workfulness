@@ -10,13 +10,11 @@ namespace Workfulness.Client.Services.Contracts
         int Minutes { get; }
         int Seconds { get; }
         string ShortTime { get; }
+        bool HasRun { get; }
 
         void SetTime(int minutesToSet);
         void StartCount();
         void StopCount();
-        void ShortBreak();
-        void LongBreak();
-        void Work();
 
         event Action OnTick;
         event Action OnFinished;

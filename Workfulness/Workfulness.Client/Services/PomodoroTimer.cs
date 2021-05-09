@@ -25,6 +25,8 @@ namespace Workfulness.Client.Services
             }
         }
 
+        public bool HasRun { get; private set; } = false;
+
         public PomodoroTimer(int minutesToCount) 
         {
             _Timer = new Timer(1000);
@@ -34,6 +36,7 @@ namespace Workfulness.Client.Services
         }
         public void StartCount()
         {
+            HasRun = true;
             _Timer.Start();
         }
 
@@ -41,32 +44,12 @@ namespace Workfulness.Client.Services
         {
             _Timer.Stop();
         }
-
-        public void ShortBreak()
-        {
-            _Timer.Stop();
-            SetTime(5);
-            _Timer.Start();
-        }
-
-        public void LongBreak()
-        {
-            _Timer.Stop();
-            SetTime(15);
-            _Timer.Start();
-        }
-        public void Work() 
-        {
-            _Timer.Stop();
-            SetTime(25);
-            _Timer.Start();
-        }
         public void SetTime(int minutesToSet)
         {
             StopCount();
             _TimeLeft = minutesToSet * secondsInMinute;
-            StartCount();
         }
+
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             _TimeLeft--;
