@@ -45,7 +45,7 @@ namespace WorkfulnessAPI.Database.Seed
                 new DbSong() {
                     Title = "Blathering On",
                     Author = "Derek Clegg",
-                    FileName = "Blathering On.mp3"
+                    FileName = "Derek Clegg - Blathering On.mp3"
                 }
             };
             _Database.Songs.AddRange(songs);

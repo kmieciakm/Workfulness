@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using WorkfulnessAPI.Database.Models;
 
 namespace WorkfulnessAPI.Database.Context
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<DbUser>
     {
         public DbSet<DbSong> Songs { get; set; }
         public DbSet<DbPlaylistCategory> PlaylistsCategories { get; set; }
@@ -18,6 +19,8 @@ namespace WorkfulnessAPI.Database.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder
                 .Entity<DbPlaylist>()
                 .HasOne(playlist => playlist.Category)
