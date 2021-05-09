@@ -44,7 +44,7 @@ namespace Workfulness.Client
             services.AddScoped<IPlaylistManager, PlaylistManager>();
 
             // External
-            services.AddSingleton<IPlaylistService, InMemoryPlaylistService>();
+            services.AddSingleton<IPlaylistService, PlaylistService>();
             services.AddSingleton<IPomodoroTimer>(_ => new PomodoroTimer(25));
         }
     }
