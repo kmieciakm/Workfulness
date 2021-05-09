@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using WorkfulnessAPI.Database.Context;
+using WorkfulnessAPI.Database.Models;
 using WorkfulnessAPI.Database.Repositories;
 using WorkfulnessAPI.Database.Seed;
 using WorkfulnessAPI.Services.Models.Config;
@@ -53,6 +55,7 @@ namespace WorkfulnessAPI
             });
 
             services.AddControllers();
+
             services.AddSwaggerGen(config =>
             {
                 config.SwaggerDoc("v1", new OpenApiInfo { Title = "WorkfulnessAPI", Version = "v1" });
@@ -61,11 +64,15 @@ namespace WorkfulnessAPI
                 config.IncludeXmlComments(xmlCommentsPath);
             });
 
-            services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DatabaseContext>(options => options
+                .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
+                .AddIdentity<DbUser, IdentityRole>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<DbUser>>(TokenOptions.DefaultProvider); ;
 
             services.Configure<SongsConfig>(Configuration.GetSection("SongsConfig"));
+            services.Configure<AuthenticationConfig>(Configuration.GetSection("AuthenticationConfig"));
 
             services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
             services.AddScoped<ISongsRegistry, SongsRegistry>();
