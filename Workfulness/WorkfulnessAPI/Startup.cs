@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,17 +9,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using WorkfulnessAPI.Database.Context;
 using WorkfulnessAPI.Database.Models;
 using WorkfulnessAPI.Database.Repositories;
 using WorkfulnessAPI.Database.Seed;
+using WorkfulnessAPI.Helpers;
 using WorkfulnessAPI.Services.Models.Config;
 using WorkfulnessAPI.Services.Ports.Infrastructure;
 using WorkfulnessAPI.Services.Ports.Presenters;
@@ -69,16 +73,20 @@ namespace WorkfulnessAPI
                 .AddIdentity<DbUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
-                .AddTokenProvider<DataProtectorTokenProvider<DbUser>>(TokenOptions.DefaultProvider); ;
+                .AddTokenProvider<DataProtectorTokenProvider<DbUser>>(TokenOptions.DefaultProvider);
+
+            services.AddTokenAuthentication(Configuration);
 
             services.Configure<SongsConfig>(Configuration.GetSection("SongsConfig"));
-            services.Configure<AuthenticationConfig>(Configuration.GetSection("AuthenticationConfig"));
 
             services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
             services.AddScoped<ISongsRegistry, SongsRegistry>();
+            services.AddScoped<IUserRegistry, UserRegistry>();
 
             services.AddScoped<IPlaylistService, PlaylistService>();
             services.AddScoped<ISongService, SongService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -99,6 +107,7 @@ namespace WorkfulnessAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
