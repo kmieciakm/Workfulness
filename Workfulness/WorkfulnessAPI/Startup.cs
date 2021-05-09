@@ -1,15 +1,12 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -19,15 +16,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WorkfulnessAPI.Database.Context;
-using WorkfulnessAPI.Database.Models;
-using WorkfulnessAPI.Database.Repositories;
 using WorkfulnessAPI.Database.Seed;
 using WorkfulnessAPI.Helpers;
-using WorkfulnessAPI.Services.Models.Config;
-using WorkfulnessAPI.Services.Ports.Infrastructure;
-using WorkfulnessAPI.Services.Ports.Presenters;
-using WorkfulnessAPI.Services.Services;
-using WorkfulnessAPI.Services.Services.Fake;
 
 namespace WorkfulnessAPI
 {
@@ -68,25 +58,10 @@ namespace WorkfulnessAPI
                 config.IncludeXmlComments(xmlCommentsPath);
             });
 
-            services.AddDbContext<DatabaseContext>(options => options
-                .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
-                .AddIdentity<DbUser, IdentityRole>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<DatabaseContext>()
-                .AddTokenProvider<DataProtectorTokenProvider<DbUser>>(TokenOptions.DefaultProvider);
-
-            services.AddTokenAuthentication(Configuration);
-
-            services.Configure<SongsConfig>(Configuration.GetSection("SongsConfig"));
-
-            services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
-            services.AddScoped<ISongsRegistry, SongsRegistry>();
-            services.AddScoped<IUserRegistry, UserRegistry>();
-
-            services.AddScoped<IPlaylistService, PlaylistService>();
-            services.AddScoped<ISongService, SongService>();
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddDatabase(Configuration.GetConnectionString("DefaultConnection"))
+                    .AddTokenAuthentication(Configuration)
+                    .AddOptions(Configuration)
+                    .AddCustomServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
