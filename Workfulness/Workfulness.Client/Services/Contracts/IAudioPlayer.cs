@@ -10,6 +10,7 @@ namespace Workfulness.Client.Services.Contracts
         bool IsSongPlaying { get; }
         event Action SongHasFinished;
         Task AttachSong(string songSrc);
+        Task<string> GetCurrentSource();
         Task Play();
         Task Pause();
         Task Reset();

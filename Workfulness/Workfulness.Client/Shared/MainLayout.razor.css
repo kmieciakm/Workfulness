@@ -20,6 +20,14 @@
     padding-top: 2rem;
 }
 
+.right-top-tooltip {
+    position: fixed;
+    top: 50px;
+    right: 0px;
+    border-radius: 12px 0px 0px 12px;
+    background: transparent;
+}
+
 .bottombar {
     position: fixed;
     width: 100%;
