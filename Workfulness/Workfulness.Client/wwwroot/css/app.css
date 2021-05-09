@@ -53,12 +53,38 @@ ___________________________
     margin: 0 auto;
 }
 
+.btn-success {
+    color: white !important;
+    background-color: mediumseagreen !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.btn-warning {
+    color: white !important;
+    background-color: mediumturquoise !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.btn-danger {
+    color: white !important;
+    background-color: #ff5968 !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.btn-primary {
+    color: white !important;
+    background-color: mediumslateblue !important;
+    outline: none !important;
+    border: none !important;
+}
 /*
 ___________________________
     Custom shared CSS
 ___________________________
 */
-
 .fill {
     height: 100%;
     width: 100%;

@@ -22,6 +22,9 @@ namespace Workfulness.Client.Services
         public async Task AttachSong(string songSrc) =>
             await _JSRuntime.InvokeVoidAsync("audioPlayer.attachSongToAudio", songSrc);
 
+        public async Task<string> GetCurrentSource() =>
+            await _JSRuntime.InvokeAsync<string>("audioPlayer.getCurrentSource");
+
         public async Task Play()
         {
             await _JSRuntime.InvokeVoidAsync("audioPlayer.play");
@@ -47,5 +50,6 @@ namespace Workfulness.Client.Services
 
         [JSInvokable]
         public void SongFinished() => SongHasFinished?.Invoke();
+
     }
 }
