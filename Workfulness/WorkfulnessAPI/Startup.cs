@@ -74,7 +74,7 @@ namespace WorkfulnessAPI
 
                 var seedDatabase = new DatabaseSeed(
                         serviceProvider.GetRequiredService<DatabaseContext>());
-                seedDatabase.Seed();
+                //seedDatabase.Seed();
             }
 
             app.UseHttpsRedirection();
