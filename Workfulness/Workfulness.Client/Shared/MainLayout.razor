@@ -1,0 +1,20 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="content content-center">
+            @Body
+        </div>
+        <div class="right-top-tooltip">
+            <PomodoroTooltip />
+        </div>
+    </div>
+</div>
+
+<div class="bottombar">
+    <Player />
+</div>

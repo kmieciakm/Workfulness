@@ -1,0 +1,51 @@
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+    min-height: 100vh;
+    background-color: var(--color-primary);
+}
+
+.content {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.sidebar {
+    background-color: var(--color-dark);
+    padding-top: 2rem;
+}
+
+.right-top-tooltip {
+    position: fixed;
+    top: 50px;
+    right: 0px;
+    border-radius: 12px 0px 0px 12px;
+    background: transparent;
+}
+
+.bottombar {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+}
+
+@media (min-width: 770px) {
+    .page {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+}
