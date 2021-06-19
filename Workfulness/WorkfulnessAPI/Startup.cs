@@ -72,9 +72,12 @@ namespace WorkfulnessAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WorkfulnessAPI v1"));
 
-                var seedDatabase = new DatabaseSeed(
-                        serviceProvider.GetRequiredService<DatabaseContext>());
-                seedDatabase.Seed();
+                if (Configuration.GetValue<bool>("SeedDatabase"))
+                {
+                    var seedDatabase = new DatabaseSeed(
+                            serviceProvider.GetRequiredService<DatabaseContext>());
+                    seedDatabase.Seed();
+                }
             }
 
             app.UseHttpsRedirection();
