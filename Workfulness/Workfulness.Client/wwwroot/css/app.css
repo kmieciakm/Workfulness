@@ -58,6 +58,7 @@ ___________________________
     background-color: mediumseagreen !important;
     outline: none !important;
     border: none !important;
+    cursor: pointer !important;
 }
 
 .btn-warning {

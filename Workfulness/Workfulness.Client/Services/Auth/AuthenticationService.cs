@@ -42,14 +42,14 @@ namespace Workfulness.Client.Services.Auth
 
             if (response.IsSuccessStatusCode)
             {
-                var resContent = await response.Content.ReadAsStringAsync();
-                var token = JsonSerializer.Deserialize<string>(resContent);
+                var token = await response.Content.ReadAsStringAsync();
                 await _LocalStorage.SetItemAsync("UserToken", token);
                 _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             }
             else
             {
-                // TODO: throw exception
+                var err = await response.Content.ReadAsStringAsync();
+                throw new AuthenticationException(err);
             }
         }
 

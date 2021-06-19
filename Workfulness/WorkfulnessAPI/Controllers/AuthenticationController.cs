@@ -50,14 +50,14 @@ namespace WorkfulnessAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SignIn(SignInRequest request)
+        public async Task<ActionResult<string>> SignIn(SignInRequest request)
         {
             try
             {
                 var signIn = Mapper.Request.ToSignIn(request);
                 var token = await _AuthenticationService.SignInAsync(signIn);
 
-                return Ok(token);
+                return token;
             }
             catch (AuthenticationException authEx)
                when (authEx.Cause == ExceptionCause.IncorrectInputData)

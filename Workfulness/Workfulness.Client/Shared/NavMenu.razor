@@ -1,4 +1,7 @@
-﻿<div class="top-row navbar navbar-dark">
+﻿@inject IAuthenticationService authService;
+@inject NavigationManager navigationManager;
+
+<div class="top-row navbar navbar-dark">
     <a class="navbar-brand" href="">Workfulness</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -30,19 +33,19 @@
                     </NavLink>
                 </li>
                 <li class="nav-item px-3 pt-3">
-                    <NavLink class="nav-link btn-success" href="auth/logout" Match="NavLinkMatch.All">
+                    <div class="nav-link btn btn-success p-2" @onclick="Logout">
                         Logout
-                    </NavLink>
+                    </div>
                 </li>
             </Authorized>
             <NotAuthorized>
                 <li class="nav-item px-3 pt-3">
-                    <NavLink class="nav-link btn-success" href="auth/login" Match="NavLinkMatch.All">
+                    <NavLink class="btn btn-success" href="auth/login" Match="NavLinkMatch.All">
                         Login
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link btn-success" href="auth/register" Match="NavLinkMatch.All">
+                    <NavLink class="btn btn-success" href="auth/register" Match="NavLinkMatch.All">
                         Register
                     </NavLink>
                 </li>
@@ -56,8 +59,24 @@
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    protected override void OnInitialized()
+    {
+        navigationManager.LocationChanged += OnLocationChanged;
+    }
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void Logout()
+    {
+        authService.Logout();
+        navigationManager.NavigateTo("/", forceLoad: true);
+    }
+
+    private void OnLocationChanged(object sender, EventArgs eventArgs)
+    {
+        StateHasChanged();
     }
 }

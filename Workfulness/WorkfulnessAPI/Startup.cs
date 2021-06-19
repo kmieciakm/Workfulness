@@ -44,7 +44,7 @@ namespace WorkfulnessAPI
                 {
                     builder.WithOrigins(origins)
                        .WithMethods("POST")
-                       .WithHeaders("Content-Type");
+                       .AllowAnyHeader();
                 });
             });
 
