@@ -3,12 +3,11 @@
 @inject IAudioPlayer audioPlayer;
 @inject IBeepPlayer beepPlayer;
 
-
 <div class="centerContext mt-5">
     <div>
         <button class="btn btn-primary" @onclick="e => counter.WorkSession(_WorkTime)">Work</button>
-        <button class="btn btn-warning" @onclick="e => counter.ShortBreakSession(_ShortBreak)"> Short break</button>
-        <button class="btn btn-warning" @onclick="e => counter.LongBreakSession(_LongBreak)"> Long break</button>
+        <button class="btn btn-warning" @onclick="e => counter.ShortBreakSession(_ShortBreak)">Short break</button>
+        <button class="btn btn-warning" @onclick="e => counter.LongBreakSession(_LongBreak)">Long break</button>
     </div>
     <p class="time p-5 text-center">@counter.ShortTime</p>
     <div>
@@ -27,6 +26,7 @@
         counter.OnTick += () => { StateHasChanged(); };
         counter.OnFinished += () => { Beep(); };
     }
+
     public async void Beep()
     {
         await audioPlayer.Pause();
@@ -35,6 +35,5 @@
         await Task.Delay(1000);
         await beepPlayer.PlayBeep(beepUrl);
         beepPlayer.BeepHasFinished += async () => { await audioPlayer.Play(); };
-
     }
 }

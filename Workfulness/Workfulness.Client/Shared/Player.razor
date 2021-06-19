@@ -10,7 +10,13 @@
             <div class="container-fluid fill">
                 <div class="row fill m-0">
                     <div class="col-lg-6 p-1 content-center playlist_box">
-                        <div class="playlist_image" style='background-image: url("@Playlist?.CoverUrl")' />
+                        <a href="@Playlist?.CoverUrl" target="_blank">
+                            <div class="playlist_image" style='background-image: url("@Playlist?.CoverUrl")'>
+                                <div class="playlist_image_btn content-vertical-center p-3">
+                                    <i class="fas fa-2x fa-download"></i>
+                                </div>
+                            </div>
+                        </a>
                         <h3 class="playlist_title p-2">@Playlist?.Title</h3>
                     </div>
                     <div class="col-lg-6 p-1 content-vertical-center playlist_box">
@@ -19,19 +25,29 @@
                             {
                                 if (song.Id == Playlist?.CurrentSong.Id)
                                 {
-                                    <li class="list-group-item list-item-active" @onclick="@(e => PlaySelectedSong(e, song.Id))">
-                                        <i class="far fa-1x fa-play-circle"></i>
-                                        <span class="font-weight-bold">@song.Title</span>
-                                        <br />
-                                        <span>@song.Author</span>
+                                    <li class="list-group-item list-item-active">
+                                        <div class="w-100" @onclick="@(e => PlaySelectedSong(e, song.Id))">
+                                            <i class="far fa-1x fa-play-circle"></i>
+                                            <span class="font-weight-bold">@song.Title</span>
+                                            <br />
+                                            <span>@song.Author</span>
+                                        </div>
+                                        <a class="content-vertical-center p-1" href="@song.Url">
+                                            <i class="fas fa-2x fa-download"></i>
+                                        </a>
                                     </li>
                                 }
                                 else
                                 {
-                                    <li class="list-group-item" @onclick="@(e => PlaySelectedSong(e, song.Id))">
-                                        <span class="font-weight-bold">@song.Title</span>
-                                        <br />
-                                        <span>@song.Author</span>
+                                    <li class="list-group-item list-item-inactive">
+                                        <div class="w-100" @onclick="@(e => PlaySelectedSong(e, song.Id))">
+                                            <span class="font-weight-bold">@song.Title</span>
+                                            <br />
+                                            <span>@song.Author</span>
+                                        </div>
+                                        <a class="content-vertical-center p-1" href="@song.Url">
+                                            <i class="fas fa-2x fa-download"></i>
+                                        </a>
                                     </li>
                                 }
                             }
@@ -89,7 +105,8 @@
 @code {
     protected override void OnInitialized()
     {
-        playlistManager.PlaylistChanged += async () => {
+        playlistManager.PlaylistChanged += async () =>
+        {
             Playlist = playlistManager.Playlist;
             if (Playlist != null)
             {
@@ -101,7 +118,6 @@
         };
         SliderTimer.Elapsed += UpdateSlider;
         audioPlayer.SongHasFinished += async () => await PlayNextSong();
-
     }
     private async Task Reset()
     {
