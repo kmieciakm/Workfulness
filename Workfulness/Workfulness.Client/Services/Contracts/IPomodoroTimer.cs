@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Workfulness.Client.Models;
 
 namespace Workfulness.Client.Services.Contracts
 {
@@ -11,6 +12,7 @@ namespace Workfulness.Client.Services.Contracts
         int Seconds { get; }
         string ShortTime { get; }
         bool HasRun { get; }
+        PomodoroState CurrentState { get; }
 
         void StartCount();
         void StopCount();

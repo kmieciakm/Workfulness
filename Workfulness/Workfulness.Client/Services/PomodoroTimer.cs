@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using Workfulness.Client.Models;
 using Workfulness.Client.Services.Contracts;
 
 namespace Workfulness.Client.Services
@@ -16,9 +17,6 @@ namespace Workfulness.Client.Services
 
         private int _TimeLeft { get; set; }
         private Timer _Timer { get; set; }
-        private int _WorkTime { get; set; } = 25;
-        private int _ShortBreak { get; set; } = 5;
-        private int _LongBreak { get; set; } = 15;
 
         private const int secondsInMinute = 60;
        
@@ -33,12 +31,14 @@ namespace Workfulness.Client.Services
 
         public bool HasRun { get; private set; } = false;
 
+        public PomodoroState CurrentState { get; private set; }
+
         public PomodoroTimer(int minutesToCount) 
         {
             _Timer = new Timer(1000);
-            SetTime(minutesToCount);
-           _Timer.Elapsed += Timer_Elapsed;
-           _Timer.Enabled = false;
+            _Timer.Elapsed += Timer_Elapsed;
+            _Timer.Enabled = false;
+            WorkSession(minutesToCount);
         }
         public void StartCount()
         {
@@ -50,7 +50,8 @@ namespace Workfulness.Client.Services
         {
             _Timer.Stop();
         }
-        public void SetTime(int minutesToSet)
+
+        private void SetTime(int minutesToSet)
         {
             StopCount();
             _TimeLeft = minutesToSet * secondsInMinute;
@@ -69,20 +70,23 @@ namespace Workfulness.Client.Services
 
         public void WorkSession(int minutes)
         {
-            SetTime(_WorkTime);
+            SetTime(minutes);
             OnWorkStarted?.Invoke();
+            CurrentState = PomodoroState.WORK;
         }
 
         public void ShortBreakSession(int minutes)
         {
-            SetTime(_ShortBreak);
+            SetTime(minutes);
             OnShortBreakStarted?.Invoke();
+            CurrentState = PomodoroState.SHORT_BREAK;
         }
 
         public void LongBreakSession(int minutes)
         {
-            SetTime(_LongBreak);
+            SetTime(minutes);
             OnLongBreakStarted?.Invoke();
+            CurrentState = PomodoroState.LONG_BREAK;
         }
     }
 }
