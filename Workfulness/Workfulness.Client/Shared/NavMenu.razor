@@ -22,6 +22,32 @@
                 Pomodoro
             </NavLink>
         </li>
+        <AuthorizeView>
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="todo" Match="NavLinkMatch.All">
+                        ToDo
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3 pt-3">
+                    <NavLink class="nav-link btn-success" href="auth/logout" Match="NavLinkMatch.All">
+                        Logout
+                    </NavLink>
+                </li>
+            </Authorized>
+            <NotAuthorized>
+                <li class="nav-item px-3 pt-3">
+                    <NavLink class="nav-link btn-success" href="auth/login" Match="NavLinkMatch.All">
+                        Login
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link btn-success" href="auth/register" Match="NavLinkMatch.All">
+                        Register
+                    </NavLink>
+                </li>
+            </NotAuthorized>
+        </AuthorizeView>
     </ul>
 </div>
 

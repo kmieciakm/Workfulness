@@ -1,3 +1,5 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +10,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Workfulness.Client.Services;
+using Workfulness.Client.Services.Auth;
 using Workfulness.Client.Services.Contracts;
 using Workfulness.Client.Services.InMemory;
 
@@ -21,31 +24,31 @@ namespace Workfulness.Client
             builder.RootComponents.Add<App>("#app");
 
             var gatewayApiUrl = builder.Configuration.GetValue<string>("ApiUrls:GatewayAPI");
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(gatewayApiUrl) });
 
-            ConfigureHttpClient(builder.Services, gatewayApiUrl);
             ConfigureServices(builder.Services);
 
             await builder.Build().RunAsync();
         }
 
-        private static void ConfigureHttpClient(IServiceCollection services, string gatewayApiUrl)
-        {
-            services.AddHttpClient("GatewayAPI", client => new HttpClient
-            {
-                BaseAddress = new Uri(gatewayApiUrl)
-            });
-        }
-
         public static void ConfigureServices(IServiceCollection services)
         {
+            services.AddBlazoredLocalStorage();
+
+            // Authorization
+            services.AddAuthorizationCore();
+            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+
+            // Internal services
             services.AddSingleton<IPageSize, PageSize>();
             services.AddScoped<IAudioPlayer, AudioPlayer>();
             services.AddScoped<IBeepPlayer, BeepPlayer>();
             services.AddScoped<IPlaylistManager, PlaylistManager>();
+            services.AddSingleton<IPomodoroTimer>(_ => new PomodoroTimer(25));
 
             // External
-            services.AddSingleton<IPlaylistService, PlaylistService>();
-            services.AddSingleton<IPomodoroTimer>(_ => new PomodoroTimer(25));
+            services.AddScoped<IPlaylistService, PlaylistService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
     }
 }
