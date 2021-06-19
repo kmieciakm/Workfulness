@@ -44,12 +44,14 @@ namespace WorkfulnessAPI.Helpers
             services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
             services.AddScoped<ISongsRegistry, SongsRegistry>();
             services.AddScoped<IUserRegistry, UserRegistry>();
+            services.AddScoped<IToDoListRegistry, ToDoRepository>();
 
             // Domain Services
             services.AddScoped<IPlaylistService, PlaylistService>();
             services.AddScoped<ISongService, SongService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ITodoListService, ToDoListService>();
 
             return services;
         }
