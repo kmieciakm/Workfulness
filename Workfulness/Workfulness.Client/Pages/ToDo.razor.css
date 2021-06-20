@@ -1,9 +1,52 @@
-﻿.ListsMenu {
+﻿.box {
+    padding-bottom: 200px !important;
+}
+
+.todo-parent {
+    position: relative;
+}
+
+.todo-bar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: var(--color-dark);
     display: flex;
-    height: 100%;
     flex-flow: column nowrap;
-    align-items: flex-end;
     justify-content: space-between;
-    margin-right: 0px !important;
-    
+}
+
+.todo-lists {
+    background-color: var(--color-dark);
+    flex-grow: 1;
+}
+
+.todo-lists-item {
+    background-color: transparent;
+    color: #d7d7d7;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    .todo-lists-item:hover {
+        background-color: var(--color-secondary);
+        color: black;
+    }
+
+    .todo-lists-item .active {
+        background-color: var(--color-secondary);
+        color: black;
+    }
+
+.task-item {
+    cursor: pointer;
+    background-color: transparent;
+}
+
+    .task-item:hover span {
+        text-decoration: line-through;
+    }
+
+.task-done {
+    opacity: 0.5;
 }

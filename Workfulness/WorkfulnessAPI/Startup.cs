@@ -39,7 +39,7 @@ namespace WorkfulnessAPI
                 options.AddPolicy(_corsPolicyName, builder =>
                 {
                     builder.WithOrigins(origins)
-                       .WithMethods("POST", "DELETE", "PATCH")
+                       .WithMethods("POST", "DELETE", "PATCH", "GET", "HEAD")
                        .AllowAnyHeader();
                 });
             });

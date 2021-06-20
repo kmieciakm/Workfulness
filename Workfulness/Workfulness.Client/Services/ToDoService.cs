@@ -29,7 +29,8 @@ namespace Workfulness.Client.Services
 
         public async Task CreateToDoList(string name)
         {
-            var response = await _HttpClient.PostAsync($"api/todo/{name}", null);
+            var content = new StringContent("", Encoding.UTF8, "application/json");
+            var response = await _HttpClient.PostAsync($"api/todo/{name}", content);
 
             if (!response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.InternalServerError)
             {
