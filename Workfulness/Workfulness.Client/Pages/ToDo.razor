@@ -1,18 +1,16 @@
 ﻿@page "/todo"
 @inject IToDoService toDoService;
 
+@* TODO: Mobile  view *@
 @if (!IsLoading)
 {
     <div class="w-100 min-vh-100 box">
         <div class="row h-100">
-            <div class="col-12 p-4 todo-parent">
+            <div class="col-8 p-4">
                 @if (SelectedList != null)
                 {
                     <h1>@SelectedList.Name</h1>
-                    @*<label for="taskImput" class="form-label">Please Add Task</label>
-                        <input type="text" class="form-control" id="exampleInputText" @bind-value="NewTaskValue" @onsubmit="AddTaskToList">*@
-
-                    <ul class="list-group list-group-flush col-md-9">
+                    <ul class="list-group list-group-flush">
                         @foreach (var task in SelectedList.Tasks)
                         {
 
@@ -32,31 +30,36 @@
                                 </li>
                             }
                         }
+                        <li class="list-group-item task-item pl-5 pr-5">
+                            <input type="text" class="form-control" id="NewTaskInput" placeholder="Add a task ..."
+                                   @bind-value="NewTaskValue" @onkeydown="async (e) => await AddTaskToList(e, SelectedList.Name)">
+                            @*<div class="col-xl-6">
+                         <h4>DatePicker</h4>
+                        <RadzenDatePicker @bind-Value=@Value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) />
+                    </div>*@
+                        </li>
                     </ul>
-                    @*  <div class="col-xl-6">
-                            <h4>DatePicker</h4>
-                            <RadzenDatePicker @bind-Value=@Value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) />
-                        </div>*@
                 }
                 else
                 {
-                    <span>No list selected.</span>
-                    //TODO: Show invitation bla bla
-                }
-
-                <div class="col-md-3 p-0 vh-100 todo-bar">
-                    <div class="p-3">
-                        <label for="NewListInput" class="form-label text-white"><i class="fas fa-plus"></i> Create New List</label>
-                        <input type="text" class="form-control" id="NewListInput" placeholder="List name ..." @bind-value="NewListValue" @onkeydown="async (e) => { await AddList(e); }">
+                    <div class="content-center mt-2">
+                        <div class="image" style="background-image: url('../photos/cat_music.png')" />
+                        <h4>It's looks like you have nothing ToDo.</h4>
+                        <h4>Create a new list to get started.</h4>
                     </div>
-                    <hr />
-                    <ul class="list-group list-group-flush todo-lists">
-                        @foreach (var list in Lists)
-                        {
-                            <li class="list-group-item todo-lists-item" @onclick="e => SelectList(e, list.Name)">@list.Name</li>
-                        }
-                    </ul>
+                }
+            </div>
+
+            <div class="col-md-3 p-0 pt-2 vh-100 todo-bar">
+                <div class="p-3">
+                    <input type="text" class="form-control" id="NewListInput" placeholder='Create a new list' @bind-value="NewListValue" @onkeydown="async (e) => { await AddList(e); }" />
                 </div>
+                <ul class="list-group list-group-flush todo-lists">
+                    @foreach (var list in Lists)
+                    {
+                        <li class="list-group-item todo-lists-item" @onclick="e => SelectList(e, list.Name)">@list.Name</li>
+                    }
+                </ul>
             </div>
         </div>
     </div>
@@ -88,14 +91,23 @@
         Lists = await toDoService.GetToDoListsAsync();
         NewTaskValue = "";
         NewListValue = "";
+        SelectedList = Lists.FirstOrDefault(list => list.Name == SelectedList?.Name) ?? Lists.FirstOrDefault();
+        StateHasChanged();
     }
 
     void OnChange(DateTime? value, string name, string format)
     {
     }
 
-    void AddTaskToList()
+    private async Task AddTaskToList(KeyboardEventArgs args, string listname)
     {
+        await Task.Delay(1000);
+        if (args.Code == "Enter" && NewTaskValue != "")
+        {
+            var task = new ToDoTask() { Task = NewTaskValue };
+            await toDoService.AddTaskToList(listname, task);
+            await Refresh();
+        }
     }
 
     private async Task AddList(KeyboardEventArgs args)
@@ -105,7 +117,6 @@
         {
             await toDoService.CreateToDoList(NewListValue);
             await Refresh();
-            StateHasChanged();
         }
     }
 
@@ -119,6 +130,5 @@
         task.Done = !task.Done;
         await toDoService.EditTask(listname, task);
         await Refresh();
-        StateHasChanged();
     }
 }

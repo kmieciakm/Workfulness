@@ -1,5 +1,5 @@
 ﻿.box {
-    padding-bottom: 200px !important;
+    padding-bottom: 150px !important;
 }
 
 .todo-parent {
@@ -7,7 +7,7 @@
 }
 
 .todo-bar {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     background-color: var(--color-dark);
@@ -19,6 +19,9 @@
 .todo-lists {
     background-color: var(--color-dark);
     flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-bottom: 200px !important;
 }
 
 .todo-lists-item {
@@ -50,3 +53,41 @@
 .task-done {
     opacity: 0.5;
 }
+
+#NewTaskInput {
+    border-radius: 0px;
+    outline: none !important;
+    background-color: transparent;
+    border: 0px;
+    border-bottom: 1px solid #aaa;
+}
+
+#NewListInput {
+    border-radius: 0px;
+    outline: none !important;
+    background-color: transparent;
+}
+
+.image {
+    height: 300px;
+    width: 300px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-secondary);
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-secondary);
+    }
