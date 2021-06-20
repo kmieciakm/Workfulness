@@ -47,7 +47,7 @@ namespace WorkfulnessAPI.Helpers
             services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
             services.AddScoped<ISongsRegistry, SongsRegistry>();
             services.AddScoped<IUserRegistry, UserRegistry>();
-            services.AddScoped<IToDoListRegistry, ToDoRepository>();
+            services.AddScoped<IToDoListRegistry, ToDoRegistry>();
 
             // Domain Services
             services.AddScoped<IPlaylistService, PlaylistService>();

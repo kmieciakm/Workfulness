@@ -10,6 +10,10 @@ namespace WorkfulnessAPI.Services.Ports.Infrastructure
     public interface IToDoListRegistry
     {
         IEnumerable<ToDoList> FindByOwner(Guid userId);
+        ToDoList FindByName(Guid userId, string listName);
         void AddListToUser(Guid userId, ToDoList list);
+        void AddTasksToList(Guid userId, string listName, IEnumerable<TaskItem> tasks);
+        void DeleteList(Guid userId, string listName);
+        bool Exists(Guid userId, string listName);
     }
 }

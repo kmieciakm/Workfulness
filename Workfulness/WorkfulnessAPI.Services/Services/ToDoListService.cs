@@ -34,6 +34,11 @@ namespace WorkfulnessAPI.Services.Services
                 throw new ToDoException($"Cannot create list. User of id {userId} does not exists.", ExceptionCause.IncorrectInputData);
             }
 
+            if (_ToDoRegistry.Exists(user.Guid, listName))
+            {
+                throw new ToDoException($"Cannot create list. List of name {listName} already exists.", ExceptionCause.IncorrectInputData);
+            }
+
             try
             {
                 var toDoList = new ToDoList(listName);
@@ -43,6 +48,53 @@ namespace WorkfulnessAPI.Services.Services
             catch (Exception ex)
             {
                 throw new ToDoException($"Cannot create list. See inner exception for more information.", ex, ExceptionCause.Unknown);
+            }
+        }
+
+        public ToDoList AddTasksToList(Guid userId, string listName, IEnumerable<TaskItem> tasks)
+        {
+            var user = _UserRegistry.GetAsync(userId).Result;
+            if (user == null)
+            {
+                throw new ToDoException($"Cannot create list. User of id {userId} does not exists.", ExceptionCause.IncorrectInputData);
+            }
+
+            if (!_ToDoRegistry.Exists(user.Guid, listName))
+            {
+                throw new ToDoException($"Cannot add task. List '{listName}' does not exists.", ExceptionCause.IncorrectInputData);
+            }
+
+            try
+            {
+                _ToDoRegistry.AddTasksToList(userId, listName, tasks);
+                return _ToDoRegistry.FindByName(userId, listName);
+            }
+            catch (Exception ex)
+            {
+                throw new ToDoException($"Cannot add task to '{listName}' list. See inner exception for more information.", ex, ExceptionCause.Unknown);
+            }
+        }
+
+        public void DeleteList(Guid userId, string listName)
+        {
+            var user = _UserRegistry.GetAsync(userId).Result;
+            if (user == null)
+            {
+                throw new ToDoException($"Cannot delete '{listName}' list from User of id {userId}. User does not exists.", ExceptionCause.IncorrectInputData);
+            }
+
+            if (!_ToDoRegistry.Exists(user.Guid, listName))
+            {
+                throw new ToDoException($"List '{listName}' does not exists.", ExceptionCause.IncorrectInputData);
+            }
+
+            try
+            {
+                _ToDoRegistry.DeleteList(userId, listName);
+            }
+            catch (Exception ex)
+            {
+                throw new ToDoException($"Cannot delete '{listName}' list. See inner exception for more information.", ex, ExceptionCause.Unknown);
             }
         }
     }

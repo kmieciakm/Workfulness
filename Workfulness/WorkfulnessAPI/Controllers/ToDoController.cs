@@ -32,6 +32,7 @@ namespace WorkfulnessAPI.Controllers
         /// Returns todo lists of logged in user.
         /// </summary>
         /// <response code="200">Return lists.</response>
+        /// <response code="409">Occures when cannot access user.</response>
         [Authorize]
         [HttpGet("")]
         [ActionName("GetToDos")]
@@ -53,13 +54,20 @@ namespace WorkfulnessAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Create new ToDo list for the logged in user.
+        /// </summary>
+        /// <response code="200">Return a new list.</response>
+        /// <response code="404">Occures when given list does not exists.</response>
+        /// <response code="409">Occures when cannot access user.</response>
+        /// <response code="500">Unexpected error.</response>
         [Authorize]
-        [HttpPost("todolist")]
+        [HttpPost("{listname}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> CreateToDoList([FromBody] string name)
+        public async Task<ActionResult> CreateToDoList(string listname)
         {
             var email = User.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _AuthenticationService.GetIdentity(email);
@@ -67,7 +75,7 @@ namespace WorkfulnessAPI.Controllers
             {
                 try
                 {
-                    var toDoList = _ToDoService.CreateNewList(user.Guid, name);
+                    var toDoList = _ToDoService.CreateNewList(user.Guid, listname);
                     var toDosDTO = new ToDoDTO(toDoList);
                     return CreatedAtAction("GetToDos", toDosDTO);
                 }
@@ -81,6 +89,94 @@ namespace WorkfulnessAPI.Controllers
                    when (toDoEx.Cause == ExceptionCause.Unknown)
                 {
                     _Logger.LogError(toDoEx, $"Cannot craete a new list.");
+                    throw;
+                }
+            }
+            else
+            {
+                return Conflict();
+            }
+        }
+
+        /// <summary>
+        /// Deletes given list of the logged in user.
+        /// </summary>
+        /// <response code="204">List has been deleted.</response>
+        /// <response code="404">Occures when given list does not exists.</response>
+        /// <response code="409">Occures when cannot access user.</response>
+        /// <response code="500">Unexpected error.</response>
+        [Authorize]
+        [HttpDelete("{listname}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> DeleteeToDoList(string listname)
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _AuthenticationService.GetIdentity(email);
+            if (user != null)
+            {
+                try
+                {
+                    _ToDoService.DeleteList(user.Guid, listname);
+                    return NoContent();
+                }
+                catch (ToDoException toDoEx)
+                    when (toDoEx.Cause == ExceptionCause.IncorrectInputData)
+                {
+                    _Logger.LogInformation(toDoEx, $"List cannot be deleted.");
+                    return BadRequest(new { toDoEx.Message, toDoEx.Details });
+                }
+                catch (ToDoException toDoEx)
+                   when (toDoEx.Cause == ExceptionCause.Unknown)
+                {
+                    _Logger.LogError(toDoEx, $"List cannot be deleted.");
+                    throw;
+                }
+            }
+            else
+            {
+                return Conflict();
+            }
+        }
+
+        /// <summary>
+        /// Add tasks for the given list.
+        /// </summary>
+        /// <response code="200">Return the list.</response>
+        /// <response code="404">Occures when given list does not exists.</response>
+        /// <response code="409">Occures when cannot access user.</response>
+        /// <response code="500">Unexpected error.</response>
+        [Authorize]
+        [HttpPost("{listname}/task")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> AddTaskToList(string listname, [FromBody] IEnumerable<TaskItemDTO> tasksToCreate)
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _AuthenticationService.GetIdentity(email);
+            if (user != null)
+            {
+                try
+                {
+                    var tasks = tasksToCreate.Select(task => task.ToTaskItem());
+                    var toDoList = _ToDoService.AddTasksToList(user.Guid, listname, tasks);
+                    var toDosDTO = new ToDoDTO(toDoList);
+                    return CreatedAtAction("GetToDos", toDosDTO);
+                }
+                catch (ToDoException toDoEx)
+                    when (toDoEx.Cause == ExceptionCause.IncorrectInputData)
+                {
+                    _Logger.LogInformation(toDoEx, $"Cannot add task to list.");
+                    return BadRequest(new { toDoEx.Message, toDoEx.Details });
+                }
+                catch (ToDoException toDoEx)
+                   when (toDoEx.Cause == ExceptionCause.Unknown)
+                {
+                    _Logger.LogError(toDoEx, $"Cannot add task to list.");
                     throw;
                 }
             }
