@@ -11,5 +11,8 @@ namespace Workfulness.Client.Services.Contracts
         Task<List<ToDoList>> GetToDoListsAsync();
         Task CreateToDoList(string name);
         Task DeleteToDoList(string name);
+        Task AddTaskToList(string listname, ToDoTask task);
+        Task DeleteTaskFromList(string listname, int taskId);
+        Task EditTask(string listname, ToDoTask task);
     }
 }
