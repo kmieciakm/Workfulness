@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using WorkfulnessAPI.Helpers.Mappers;
 using WorkfulnessAPI.Models.Requests;
 using WorkfulnessAPI.Services.Exceptions;
+using WorkfulnessAPI.Services.Models;
 using WorkfulnessAPI.Services.Ports.Presenters;
 
 namespace WorkfulnessAPI.Controllers
@@ -20,11 +21,14 @@ namespace WorkfulnessAPI.Controllers
     {
         private ILogger<AuthenticationController> _Logger { get; }
         private IAuthenticationService _AuthenticationService { get; }
+        private IPlaylistService _PlaylistService { get; set; }
 
-        public AuthenticationController(ILogger<AuthenticationController> logger, IAuthenticationService authenticationService)
+        public AuthenticationController(ILogger<AuthenticationController> logger, IAuthenticationService authenticationService,
+            IPlaylistService playlistService)
         {
             _Logger = logger;
             _AuthenticationService = authenticationService;
+            _PlaylistService = playlistService;
         }
 
         [Authorize]
@@ -84,6 +88,8 @@ namespace WorkfulnessAPI.Controllers
             {
                 var signUp = Mapper.Request.ToSignUp(request);
                 var user = await _AuthenticationService.SignUpAsync(signUp);
+                var favouritePlaylist = Playlist.CreateFavouritesPlaylist();
+                _PlaylistService.CreateNewPlaylist(user.Guid, favouritePlaylist);
 
                 return CreatedAtAction("GetIdentity", user);
             }

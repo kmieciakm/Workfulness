@@ -19,11 +19,12 @@ namespace WorkfulnessAPI.Database.Helpers.Mappers
                         dbPlaylist.Title,
                         dbPlaylist.CoverUrl,
                         dbPlaylist.Category?.Name,
-                        Song.ToSong(dbPlaylist.Songs)
+                        Song.ToSong(dbPlaylist.Songs),
+                        dbPlaylist.IsPublic
                     );
             }
 
-            public static IQueryable<DomainModels.Playlist> ToPlaylist(IQueryable<DbPlaylist> dbPlaylists)
+            public static IEnumerable<DomainModels.Playlist> ToPlaylist(IEnumerable<DbPlaylist> dbPlaylists)
             {
                 if (dbPlaylists == null) return null;
                 return dbPlaylists.Select(dbPlaylist => ToPlaylist(dbPlaylist));
@@ -42,7 +43,8 @@ namespace WorkfulnessAPI.Database.Helpers.Mappers
                         Id = null,
                         Name = playlist.Category
                     },
-                    CategoryId = null
+                    CategoryId = null,
+                    IsPublic = playlist.IsPublic
                 };
             }
         }

@@ -12,10 +12,12 @@ namespace WorkfulnessAPI.Services.Services
     public class PlaylistService : IPlaylistService
     {
         public IPlaylistsRegistry _PlaylistRegistry { get; set; }
+        public IUserRegistry _UserRegistry { get; set; }
 
-        public PlaylistService(IPlaylistsRegistry playlistsRegistry)
+        public PlaylistService(IPlaylistsRegistry playlistsRegistry, IUserRegistry userRegistry)
         {
             _PlaylistRegistry = playlistsRegistry;
+            _UserRegistry = userRegistry;
         }
 
         public Playlist GetPlaylistById(int id)
@@ -37,6 +39,18 @@ namespace WorkfulnessAPI.Services.Services
         public IEnumerable<string> GetAvailablePlaylistsCategories()
         {
             return _PlaylistRegistry.GetCategories();
+        }
+
+        public IEnumerable<Playlist> GetPlaylistsOfUser(Guid userId)
+        {
+            // TODO: Check if user exists
+            // TODO: Catch all unepected errors and cover with custom error
+            return _PlaylistRegistry.FindByUser(userId);
+        }
+
+        public void CreateNewPlaylist(Guid userId, Playlist playlist)
+        {
+            _PlaylistRegistry.CreateFor(userId, playlist);
         }
     }
 }

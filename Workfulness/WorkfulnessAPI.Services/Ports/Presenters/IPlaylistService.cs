@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WorkfulnessAPI.Services.Models;
 
 namespace WorkfulnessAPI.Services.Ports.Presenters
@@ -9,5 +10,7 @@ namespace WorkfulnessAPI.Services.Ports.Presenters
         Playlist GetPlaylistById(int id);
         IEnumerable<string> GetAvailablePlaylistsCategories();
         IEnumerable<Playlist> GetPlaylistsOfCategory(string category);
+        IEnumerable<Playlist> GetPlaylistsOfUser(Guid userId);
+        void CreateNewPlaylist(Guid userId, Playlist playlist);
     }
 }

@@ -19,6 +19,7 @@ namespace WorkfulnessAPI.Database.Models
         public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public DbPlaylistCategory Category { get; set; }
+        public bool IsPublic { get; set; } = true;
         public IEnumerable<DbSong> Songs { get; set; }
     }
 }

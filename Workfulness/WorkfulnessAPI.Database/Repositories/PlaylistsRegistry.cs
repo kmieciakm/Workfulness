@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,11 @@ namespace WorkfulnessAPI.Database.Repositories
     public class PlaylistsRegistry : IPlaylistsRegistry
     {
         public DatabaseContext _Database { get; }
-        public PlaylistsRegistry(DatabaseContext database)
+        public UserManager<DbUser> _UserManager { get; }
+        public PlaylistsRegistry(DatabaseContext database, UserManager<DbUser> userManager)
         {
             _Database = database;
+            _UserManager = userManager;
         }
 
         public Playlist Get(int playlistId)
@@ -26,7 +29,7 @@ namespace WorkfulnessAPI.Database.Repositories
             var dbPlaylist = _Database.Playlists
                 .Include(playlist => playlist.Songs)
                 .Include(playlist => playlist.Category)
-                .FirstOrDefault(playlist => playlist.Id == playlistId);
+                .FirstOrDefault(playlist => playlist.Id == playlistId && playlist.IsPublic);
             return Mapper.Playlist.ToPlaylist(dbPlaylist);
         }
 
@@ -35,7 +38,7 @@ namespace WorkfulnessAPI.Database.Repositories
             var dbPlaylists = _Database.Playlists
                 .Include(playlist => playlist.Songs)
                 .Include(playlist => playlist.Category)
-                .Where(_ => true);
+                .Where(playlist => playlist.IsPublic);
             return Mapper.Playlist.ToPlaylist(dbPlaylists);
         }
 
@@ -44,7 +47,7 @@ namespace WorkfulnessAPI.Database.Repositories
             var dbPlaylists = _Database.Playlists
                 .Include(playlist => playlist.Songs)
                 .Include(playlist => playlist.Category)
-                .Where(playlist => playlist.Category.Name == category);
+                .Where(playlist => playlist.Category.Name == category && playlist.IsPublic);
             return Mapper.Playlist.ToPlaylist(dbPlaylists);
         }
 
@@ -61,6 +64,35 @@ namespace WorkfulnessAPI.Database.Repositories
             }
 
             _Database.Add(dbPlaylist);
+        }
+
+        private DbPlaylist CreateAndGet(Playlist playlist)
+        {
+            var dbPlaylist = Mapper.Playlist.ToDbPlaylist(playlist);
+            var dbCategory = _Database.PlaylistsCategories
+                .FirstOrDefault(category => category.Name == playlist.Category);
+
+            if (dbCategory != null)
+            {
+                dbPlaylist.CategoryId = dbCategory.Id;
+                dbPlaylist.Category = null;
+            }
+
+            return _Database.Add(dbPlaylist).Entity;
+        }
+
+        public void CreateFor(Guid userId, Playlist playlist)
+        {
+            var user = _Database.Users
+                .Include(user => user.PrivatePlaylists)
+                .FirstOrDefault(user => user.Id == userId.ToString());
+
+            if (user != null)
+            {
+                var dbPlaylist = CreateAndGet(playlist);
+                user.PrivatePlaylists = user.PrivatePlaylists.Concat(new List<DbPlaylist>() { dbPlaylist }).ToList();
+                _UserManager.UpdateAsync(user).Wait();
+            }
         }
 
         public void Remove(int playlistId)
@@ -91,6 +123,16 @@ namespace WorkfulnessAPI.Database.Repositories
         {
             return _Database.PlaylistsCategories
                 .Select(category => category.Name);
+        }
+
+        public IEnumerable<Playlist> FindByUser(Guid userId)
+        {
+            var dbPlaylists = _Database.Users
+                .Include(user => user.PrivatePlaylists).ThenInclude(playlist => playlist.Songs)
+                .Include(user => user.PrivatePlaylists).ThenInclude(playlist => playlist.Category)
+                .FirstOrDefault(user => user.Id == userId.ToString())
+                .PrivatePlaylists;
+            return Mapper.Playlist.ToPlaylist(dbPlaylists);
         }
     }
 }

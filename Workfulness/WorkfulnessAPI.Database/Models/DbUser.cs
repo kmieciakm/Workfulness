@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkfulnessAPI.Database.Helpers.Mappers;
 using WorkfulnessAPI.Services.Models;
 
 namespace WorkfulnessAPI.Database.Models
@@ -17,6 +18,7 @@ namespace WorkfulnessAPI.Database.Models
         [Required]
         [MaxLength(100)]
         public string LastName { get; set; }
+        public IEnumerable<DbPlaylist> PrivatePlaylists { get; set; } = new List<DbPlaylist>();
 
         public DbUser(string firstname, string lastname, string email) : base()
         {
@@ -33,6 +35,7 @@ namespace WorkfulnessAPI.Database.Models
             Email = user.Email;
             EmailConfirmed = user.AccountConfirmed;
             UserName = Email;
+            PrivatePlaylists = user.UsersPlaylists.Select(p => Mapper.Playlist.ToDbPlaylist(p)).ToList();
         }
 
         public DbUser() { }
@@ -44,6 +47,7 @@ namespace WorkfulnessAPI.Database.Models
                 FirstName,
                 LastName,
                 Email,
+                PrivatePlaylists.Select(p => Mapper.Playlist.ToPlaylist(p)).ToList(),
                 EmailConfirmed
             );
         }

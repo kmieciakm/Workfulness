@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,8 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using WorkfulnessAPI.DTO;
 using WorkfulnessAPI.Services.Helpers;
 using WorkfulnessAPI.Services.Models.Config;
@@ -20,12 +23,15 @@ namespace WorkfulnessAPI.Controllers
         private ILogger<PlaylistController> _Logger { get; }
         public string _BaseSongsUrl { get; }
         private IPlaylistService _PlaylistService { get; set; }
+        private IAuthenticationService _AuthenticationService { get; set; }
 
-        public PlaylistController(ILogger<PlaylistController> logger, IPlaylistService songsService, IOptions<SongsConfig> songsConfig)
+        public PlaylistController(ILogger<PlaylistController> logger, IPlaylistService songsService,
+            IOptions<SongsConfig> songsConfig, IAuthenticationService authenticationService)
         {
             _Logger = logger;
             _BaseSongsUrl = songsConfig.Value.BaseSongsUrl;
             _PlaylistService = songsService;
+            _AuthenticationService = authenticationService;
         }
 
         /// <summary>
@@ -95,6 +101,24 @@ namespace WorkfulnessAPI.Controllers
         {
             var categories = _PlaylistService.GetAvailablePlaylistsCategories();
             return new List<string>(categories);
+        }
+
+        [Authorize]
+        [HttpGet("private")]
+        public async Task<ActionResult<IEnumerable<PlaylistDTO>>> GetUserPrivatePlaylists()
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _AuthenticationService.GetIdentity(email);
+            if (user != null)
+            {
+                var playlists = _PlaylistService.GetPlaylistsOfUser(user.Guid);
+                var playlistsDTO = playlists.Select(playlist => new PlaylistDTO(playlist, _BaseSongsUrl));
+                return Ok(playlistsDTO);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
     }

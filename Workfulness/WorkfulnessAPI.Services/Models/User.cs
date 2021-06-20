@@ -11,6 +11,7 @@ namespace WorkfulnessAPI.Services.Models
         public string Lastname { get; set; }
         public string Email { get; set; }
         public bool AccountConfirmed { get; set; }
+        public IEnumerable<Playlist> UsersPlaylists { get; set; }
 
         public User(Guid guid, string firstname, string lastname, string email, bool accountConfirmed = false)
         {
@@ -19,6 +20,18 @@ namespace WorkfulnessAPI.Services.Models
             Lastname = lastname;
             Email = email;
             AccountConfirmed = accountConfirmed;
+            UsersPlaylists = new List<Playlist>();
+        }
+
+        public User(Guid guid, string firstname, string lastname,
+            string email, IEnumerable<Playlist> usersPlaylists, bool accountConfirmed = false)
+        {
+            Guid = guid;
+            Firstname = firstname;
+            Lastname = lastname;
+            Email = email;
+            AccountConfirmed = accountConfirmed;
+            UsersPlaylists = usersPlaylists;
         }
     }
 }
