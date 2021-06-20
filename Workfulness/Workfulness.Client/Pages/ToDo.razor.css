@@ -1,0 +1,9 @@
+﻿.ListsMenu {
+    display: flex;
+    height: 100%;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-right: 0px !important;
+    
+}

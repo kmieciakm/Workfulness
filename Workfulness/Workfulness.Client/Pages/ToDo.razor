@@ -1,13 +1,65 @@
 ﻿@page "/todo"
 @inject IToDoService toDoService;
 
-<h3>ToDo</h3>
+<div>
+    <h1>List Name</h1>
+    <label for="taskImput" class="form-label">Please Add Task</label>
+    <input type="text" class="form-control" id="exampleInputText" @bind-value="InputValue" @onsubmit="AddTaskToList">
 
-@code {
-    List<ToDoList> Lists { get; set; }
+    <ul class="list-group">
+        <li class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" value="" aria-label="..." />
+        </li>
+    </ul>
+    <div class="col-xl-6">
+        @*<h4>DatePicker</h4>
+            <RadzenDatePicker @bind-Value=@value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) />*@
+    </div>
+
+    <div>
+        <label for="NewListInput" class="form-label">Add New List</label>
+        <input type="text" class="form-control" id="NewListInput" @bind-value="NewListValue" @onkeydown="AddList">
+    </div>
+
+    <div class="ListsMenu justify-content-end">
+        @foreach (var list in Lists)
+        {
+            <button @onclick="e => SelectList(e, list.Name)">@list.Name <br></button>
+        }
+    </div>
+</div>
+
+@code{
+    private string InputValue { get; set; }
+    private string NewListValue { get; set; }
+    List<ToDoList> Lists { get; set; } = new List<ToDoList>();
+
+    DateTime? value { get; set; } = DateTime.Now;
+    IEnumerable<DateTime> dates { get; set; } = new DateTime[] { DateTime.Today.AddDays(-1), DateTime.Today.AddDays(1) };
 
     protected override async Task OnInitializedAsync()
     {
         Lists = await toDoService.GetToDoListsAsync();
+        StateHasChanged();
+    }
+
+    void OnChange(DateTime? value, string name, string format)
+    {
+    }
+
+    void AddTaskToList()
+    {
+    }
+
+    private async Task AddList(KeyboardEventArgs args)
+    {
+        if (args.Code == "Enter")
+        {
+            await toDoService.CreateToDoList(NewListValue);
+        }
+    }
+
+    private async Task SelectList(MouseEventArgs args, string name)
+    {
     }
 }
