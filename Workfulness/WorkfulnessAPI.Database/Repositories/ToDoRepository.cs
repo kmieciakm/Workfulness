@@ -26,5 +26,14 @@ namespace WorkfulnessAPI.Database.Repositories
                 .Where(toDo => toDo.OwnerId == userId.ToString());
             return Mapper.ToDo.FromDbList(dbToDos);
         }
+
+        public void AddListToUser(Guid userId, ToDoList list)
+        {
+            var dbToDo = Mapper.ToDo.ToDbList(list);
+            dbToDo.OwnerId = userId.ToString();
+            dbToDo.Owner = null;
+            _Database.ToDoLists.Add(dbToDo);
+            _Database.SaveChanges();
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WorkfulnessAPI.DTO;
+using WorkfulnessAPI.Services.Exceptions;
 using WorkfulnessAPI.Services.Ports.Presenters;
 
 namespace WorkfulnessAPI.Controllers
@@ -33,8 +34,9 @@ namespace WorkfulnessAPI.Controllers
         /// <response code="200">Return lists.</response>
         [Authorize]
         [HttpGet("")]
+        [ActionName("GetToDos")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<IEnumerable<ToDoDTO>>> GetToDos()
         {
             var email = User.FindFirst(ClaimTypes.Email)?.Value;
@@ -47,7 +49,44 @@ namespace WorkfulnessAPI.Controllers
             }
             else
             {
-                return NotFound();
+                return Conflict();
+            }
+        }
+
+        [Authorize]
+        [HttpPost("todolist")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> CreateToDoList([FromBody] string name)
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _AuthenticationService.GetIdentity(email);
+            if (user != null)
+            {
+                try
+                {
+                    var toDoList = _ToDoService.CreateNewList(user.Guid, name);
+                    var toDosDTO = new ToDoDTO(toDoList);
+                    return CreatedAtAction("GetToDos", toDosDTO);
+                }
+                catch (ToDoException toDoEx)
+                    when (toDoEx.Cause == ExceptionCause.IncorrectInputData)
+                {
+                    _Logger.LogInformation(toDoEx, $"Cannot craete a new list.");
+                    return BadRequest(new { toDoEx.Message, toDoEx.Details });
+                }
+                catch (ToDoException toDoEx)
+                   when (toDoEx.Cause == ExceptionCause.Unknown)
+                {
+                    _Logger.LogError(toDoEx, $"Cannot craete a new list.");
+                    throw;
+                }
+            }
+            else
+            {
+                return Conflict();
             }
         }
     }

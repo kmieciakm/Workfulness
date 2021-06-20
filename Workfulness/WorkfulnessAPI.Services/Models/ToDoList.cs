@@ -11,6 +11,12 @@ namespace WorkfulnessAPI.Services.Models
         public string Name { get; set; }
         public List<TaskItem> Tasks { get; set; }
 
+        public ToDoList(string name)
+        {
+            Name = name;
+            Tasks = new List<TaskItem>();
+        }
+
         public ToDoList(string name, List<TaskItem> tasks)
         {
             Name = name;

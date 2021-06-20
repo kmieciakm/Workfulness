@@ -10,5 +10,6 @@ namespace WorkfulnessAPI.Services.Ports.Presenters
     public interface ITodoListService
     {
         List<ToDoList> GetListsOfUser(Guid userId);
+        ToDoList CreateNewList(Guid userId, string listName);
     }
 }
