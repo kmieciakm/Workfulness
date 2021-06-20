@@ -1,0 +1,41 @@
+﻿@page "/todo"
+
+<div>
+    <h1>List Name</h1>
+    <label for="taskImput" class="form-label">Please Add Task</label>
+    <input type="text" class="form-control" id="exampleInputText" @bind-value="InputValue" @onsubmit="AddTaskToList">
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" value="" aria-label="..." />
+        </li>
+    </ul>
+    <div class="col-xl-6">
+        @*<h4>DatePicker</h4>
+        <RadzenDatePicker @bind-Value=@value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) />*@
+    </div>
+
+    <div>
+        <label for="NewListInput" class="form-label">Add New List</label>
+        <input type="text" class="form-control" id="NewListInput" @bind-value="InputValue" @onsubmit="AddList">
+    </div>
+</div>
+
+@code{
+    private string InputValue { get; set; }
+
+    DateTime? value { get; set; } = DateTime.Now;
+    IEnumerable<DateTime> dates { get; set; } = new DateTime[] { DateTime.Today.AddDays(-1), DateTime.Today.AddDays(1) };
+
+    void OnChange(DateTime? value, string name, string format)
+    {
+    }
+
+    void AddTaskToList()
+    {
+    }
+
+    void AddList()
+    {
+    }
+}
