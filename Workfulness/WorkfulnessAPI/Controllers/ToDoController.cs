@@ -240,7 +240,7 @@ namespace WorkfulnessAPI.Controllers
         /// <response code="409">Occures when cannot access user.</response>
         /// <response code="500">Unexpected error.</response>
         [Authorize]
-        [HttpPost("{listname}/task/{taskId}")]
+        [HttpDelete("{listname}/task/{taskId}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
