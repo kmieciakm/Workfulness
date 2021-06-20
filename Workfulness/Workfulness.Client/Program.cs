@@ -48,6 +48,7 @@ namespace Workfulness.Client
 
             // External
             services.AddScoped<IPlaylistService, PlaylistService>();
+            services.AddScoped<IToDoService, ToDoService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
     }

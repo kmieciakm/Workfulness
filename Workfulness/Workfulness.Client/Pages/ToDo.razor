@@ -1,0 +1,13 @@
+﻿@page "/todo"
+@inject IToDoService toDoService;
+
+<h3>ToDo</h3>
+
+@code {
+    List<ToDoList> Lists { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Lists = await toDoService.GetToDoListsAsync();
+    }
+}
