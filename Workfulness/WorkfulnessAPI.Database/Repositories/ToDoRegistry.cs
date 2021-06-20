@@ -62,6 +62,22 @@ namespace WorkfulnessAPI.Database.Repositories
             _Database.SaveChanges();
         }
 
+        public void ReplaceTasks(Guid userId, string listName, IEnumerable<TaskItem> tasks)
+        {
+            var list = _Database.ToDoLists
+               .Include(toDoList => toDoList.Tasks)
+               .Where(toDo => toDo.OwnerId == userId.ToString())
+               .FirstOrDefault(l => l.Name == listName);
+
+            var dbTasks = Mapper.ToDo.ToDbTask(tasks).ToList();
+
+            if (list != null)
+            {
+                list.Tasks = dbTasks;
+            }
+            _Database.SaveChanges();
+        }
+
         public void DeleteList(Guid userId, string listName)
         {
             if (Exists(userId, listName))
@@ -71,6 +87,19 @@ namespace WorkfulnessAPI.Database.Repositories
                     .FirstOrDefault(l => l.Name == listName);
 
                 _Database.ToDoLists.Remove(list);
+                _Database.SaveChanges();
+            }
+        }
+
+        public void DeleteTask(Guid userId, string listName, int taskId)
+        {
+            if (Exists(userId, listName))
+            {
+                var list = _Database.ToDoLists
+                    .Where(toDo => toDo.OwnerId == userId.ToString())
+                    .FirstOrDefault(l => l.Name == listName);
+
+                list.Tasks = list.Tasks.Where(task => task.Id != taskId).ToList();
                 _Database.SaveChanges();
             }
         }

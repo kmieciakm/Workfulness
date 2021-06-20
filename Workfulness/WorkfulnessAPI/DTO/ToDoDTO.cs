@@ -14,11 +14,16 @@ namespace WorkfulnessAPI.DTO
 
     public record TaskItemDTO(string Task, DateTime DueDate, bool Done)
     {
-        public TaskItemDTO(TaskItem task) : this(task.Task, task.DueDate, task.Done) { }
+        public int Id { get; set; }
 
         [JsonConstructor]
-        public TaskItemDTO(string task, DateTime dueDate) : this(task, dueDate, false) { }
+        public TaskItemDTO(int id, string task, DateTime dueDate, bool done) : this(task, dueDate, done)
+        {
+            Id = id;
+        }
 
-        public TaskItem ToTaskItem() => new TaskItem(Task, DueDate);
+        public TaskItemDTO(TaskItem task) : this(task.Id, task.Task, task.DueDate, task.Done) { }
+
+        public TaskItem ToTaskItem() => new TaskItem(Id, Task, DueDate, Done);
     }
 }

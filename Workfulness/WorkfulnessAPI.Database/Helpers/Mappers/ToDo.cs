@@ -36,7 +36,7 @@ namespace WorkfulnessAPI.Database.Helpers.Mappers
 
             public static TaskItem FromDbTask(DbTaskItem dbTask)
             {
-                return new TaskItem(dbTask.Task, dbTask.DueDate, dbTask.Done);
+                return new TaskItem(dbTask.Id, dbTask.Task, dbTask.DueDate, dbTask.Done);
             }
 
             public static IEnumerable<TaskItem> FromDbTask(IEnumerable<DbTaskItem> dbTasks)
@@ -48,6 +48,7 @@ namespace WorkfulnessAPI.Database.Helpers.Mappers
             {
                 return new DbTaskItem()
                 {
+                    Id = task.Id,
                     Done = task.Done,
                     DueDate = task.DueDate,
                     Task = task.Task

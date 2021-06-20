@@ -13,7 +13,9 @@ namespace WorkfulnessAPI.Services.Ports.Infrastructure
         ToDoList FindByName(Guid userId, string listName);
         void AddListToUser(Guid userId, ToDoList list);
         void AddTasksToList(Guid userId, string listName, IEnumerable<TaskItem> tasks);
+        void ReplaceTasks(Guid userId, string listName, IEnumerable<TaskItem> tasks);
         void DeleteList(Guid userId, string listName);
+        void DeleteTask(Guid userId, string listName, int taskId);
         bool Exists(Guid userId, string listName);
     }
 }

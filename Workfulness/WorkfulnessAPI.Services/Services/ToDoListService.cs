@@ -75,6 +75,34 @@ namespace WorkfulnessAPI.Services.Services
             }
         }
 
+        public ToDoList EditTasks(Guid userId, string listName, IEnumerable<TaskItem> editedTasks)
+        {
+            var user = _UserRegistry.GetAsync(userId).Result;
+            if (user == null)
+            {
+                throw new ToDoException($"User of id {userId} does not exists.", ExceptionCause.IncorrectInputData);
+            }
+
+            if (!_ToDoRegistry.Exists(user.Guid, listName))
+            {
+                throw new ToDoException($"Cannot edit tasks. List '{listName}' does not exists.", ExceptionCause.IncorrectInputData);
+            }
+
+            try
+            {
+                var list = _ToDoRegistry.FindByName(userId, listName);
+                editedTasks = editedTasks.Where(task => list.Tasks.Any(listTask => listTask.Id == task.Id));
+                var noChangedTasks = list.Tasks.Where(task => editedTasks.All(editedTask => editedTask.Id != task.Id));
+                var newTasks = noChangedTasks.Concat(editedTasks);
+                _ToDoRegistry.ReplaceTasks(userId, listName, newTasks);
+                return _ToDoRegistry.FindByName(userId, listName);
+            }
+            catch (Exception ex)
+            {
+                throw new ToDoException($"Cannot edit tasks from '{listName}' list. See inner exception for more information.", ex, ExceptionCause.Unknown);
+            }
+        }
+
         public void DeleteList(Guid userId, string listName)
         {
             var user = _UserRegistry.GetAsync(userId).Result;
@@ -95,6 +123,29 @@ namespace WorkfulnessAPI.Services.Services
             catch (Exception ex)
             {
                 throw new ToDoException($"Cannot delete '{listName}' list. See inner exception for more information.", ex, ExceptionCause.Unknown);
+            }
+        }
+
+        public void DeleteTask(Guid userId, string listName, int taskId)
+        {
+            var user = _UserRegistry.GetAsync(userId).Result;
+            if (user == null)
+            {
+                throw new ToDoException($"Cannot delete task from '{listName}' list. User of id {userId} does not exists.", ExceptionCause.IncorrectInputData);
+            }
+
+            if (!_ToDoRegistry.Exists(user.Guid, listName))
+            {
+                throw new ToDoException($"List '{listName}' does not exists.", ExceptionCause.IncorrectInputData);
+            }
+
+            try
+            {
+                _ToDoRegistry.DeleteTask(userId, listName, taskId);
+            }
+            catch (Exception ex)
+            {
+                throw new ToDoException($"Cannot delete task from '{listName}' list. See inner exception for more information.", ex, ExceptionCause.Unknown);
             }
         }
     }

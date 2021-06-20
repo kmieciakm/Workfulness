@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WorkfulnessAPI.DTO;
+using WorkfulnessAPI.Models.Requests;
 using WorkfulnessAPI.Services.Exceptions;
 using WorkfulnessAPI.Services.Ports.Presenters;
 
@@ -111,7 +112,7 @@ namespace WorkfulnessAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeleteeToDoList(string listname)
+        public async Task<ActionResult> DeleteToDoList(string listname)
         {
             var email = User.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _AuthenticationService.GetIdentity(email);
@@ -142,6 +143,51 @@ namespace WorkfulnessAPI.Controllers
         }
 
         /// <summary>
+        /// Edit tasks for the given list.
+        /// </summary>
+        /// <response code="200">Returns edited list.</response>
+        /// <response code="404">Occures when given list does not exists.</response>
+        /// <response code="409">Occures when cannot access user.</response>
+        /// <response code="500">Unexpected error.</response>
+        [Authorize]
+        [HttpPatch("{listname}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> EditTasks(string listname, [FromBody] IEnumerable<TaskItemDTO> tasksToEdit)
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _AuthenticationService.GetIdentity(email);
+            if (user != null)
+            {
+                try
+                {
+                    var tasks = tasksToEdit.Select(task => task.ToTaskItem());
+                    var toDoList = _ToDoService.EditTasks(user.Guid, listname, tasks);
+                    var toDosDTO = new ToDoDTO(toDoList);
+                    return Ok(toDosDTO);
+                }
+                catch (ToDoException toDoEx)
+                    when (toDoEx.Cause == ExceptionCause.IncorrectInputData)
+                {
+                    _Logger.LogInformation(toDoEx, $"Cannot edit tasks from '{listname}' list.");
+                    return BadRequest(new { toDoEx.Message, toDoEx.Details });
+                }
+                catch (ToDoException toDoEx)
+                   when (toDoEx.Cause == ExceptionCause.Unknown)
+                {
+                    _Logger.LogError(toDoEx, $"Cannot edit tasks from '{listname}' list.");
+                    throw;
+                }
+            }
+            else
+            {
+                return Conflict();
+            }
+        }
+
+        /// <summary>
         /// Add tasks for the given list.
         /// </summary>
         /// <response code="200">Return the list.</response>
@@ -154,7 +200,7 @@ namespace WorkfulnessAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> AddTaskToList(string listname, [FromBody] IEnumerable<TaskItemDTO> tasksToCreate)
+        public async Task<ActionResult> AddTaskToList(string listname, [FromBody] IEnumerable<TaskCreateRequest> tasksToCreate)
         {
             var email = User.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _AuthenticationService.GetIdentity(email);
@@ -177,6 +223,49 @@ namespace WorkfulnessAPI.Controllers
                    when (toDoEx.Cause == ExceptionCause.Unknown)
                 {
                     _Logger.LogError(toDoEx, $"Cannot add task to list.");
+                    throw;
+                }
+            }
+            else
+            {
+                return Conflict();
+            }
+        }
+
+        /// <summary>
+        /// Delete task for the given list.
+        /// </summary>
+        /// <response code="204">Task has been deleted.</response>
+        /// <response code="404">Occures when given list does not exists.</response>
+        /// <response code="409">Occures when cannot access user.</response>
+        /// <response code="500">Unexpected error.</response>
+        [Authorize]
+        [HttpPost("{listname}/task/{taskId}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> DeleteTaskFromList(string listname, int taskId)
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _AuthenticationService.GetIdentity(email);
+            if (user != null)
+            {
+                try
+                {
+                    _ToDoService.DeleteTask(user.Guid, listname, taskId);
+                    return NoContent();
+                }
+                catch (ToDoException toDoEx)
+                    when (toDoEx.Cause == ExceptionCause.IncorrectInputData)
+                {
+                    _Logger.LogInformation(toDoEx, $"Cannot delete task from the list.");
+                    return BadRequest(new { toDoEx.Message, toDoEx.Details });
+                }
+                catch (ToDoException toDoEx)
+                   when (toDoEx.Cause == ExceptionCause.Unknown)
+                {
+                    _Logger.LogError(toDoEx, $"Cannot delete task from the list.");
                     throw;
                 }
             }

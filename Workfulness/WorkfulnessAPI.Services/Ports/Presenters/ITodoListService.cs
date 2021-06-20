@@ -12,6 +12,8 @@ namespace WorkfulnessAPI.Services.Ports.Presenters
         List<ToDoList> GetListsOfUser(Guid userId);
         ToDoList CreateNewList(Guid userId, string listName);
         void DeleteList(Guid userId, string listName);
+        void DeleteTask(Guid userId, string listName, int taskId);
         ToDoList AddTasksToList(Guid userId, string listName, IEnumerable<TaskItem> tasks);
+        ToDoList EditTasks(Guid userId, string listName, IEnumerable<TaskItem> tasks);
     }
 }
