@@ -30,7 +30,17 @@ namespace Workfulness.Client.Services.Auth
 
             if (!response.IsSuccessStatusCode)
             {
-                // TODO: throw exception
+                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    // TODO: Fix deserialization
+                    // var resContent = await response.Content.ReadAsStringAsync();
+                    // var error = JsonSerializer.Deserialize<RegisterErrorResponse>(resContent);
+                    throw new AuthenticationException("Please ensure that all data is correct :)");
+                }
+                else
+                {
+                    throw new AuthenticationException("Ups! Something goes wrong. Please try again in a minute.");
+                }
             }
         }
 
