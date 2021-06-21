@@ -5,11 +5,11 @@
 @if (!IsLoading)
 {
     <div class="w-100 min-vh-100 box">
-        <div class="row h-100">
+        <div class="row h-100 p-4">
             <div class="col-8 p-4">
                 @if (SelectedList != null)
                 {
-                    <h1>@SelectedList.Name</h1>
+                    <h2>@SelectedList.Name</h2>
                     <ul class="list-group list-group-flush">
                         @foreach (var task in SelectedList.Tasks)
                         {
@@ -34,9 +34,9 @@
                             <input type="text" class="form-control" id="NewTaskInput" placeholder="Add a task ..."
                                    @bind-value="NewTaskValue" @onkeydown="async (e) => await AddTaskToList(e, SelectedList.Name)">
                             @*<div class="col-xl-6">
-                         <h4>DatePicker</h4>
-                        <RadzenDatePicker @bind-Value=@Value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) />
-                    </div>*@
+                                 <h4>DatePicker</h4>
+                                <RadzenDatePicker @bind-Value=@Value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) />
+                            </div>*@
                         </li>
                     </ul>
                 }
@@ -52,12 +52,19 @@
 
             <div class="col-md-3 p-0 pt-2 vh-100 todo-bar">
                 <div class="p-3">
-                    <input type="text" class="form-control" id="NewListInput" placeholder='Create a new list' @bind-value="NewListValue" @onkeydown="async (e) => { await AddList(e); }" />
+                    <input type="text" class="form-control" id="NewListInput" placeholder='Create a new list ...' @bind-value="NewListValue" @onkeydown="async (e) => { await AddList(e); }" />
                 </div>
                 <ul class="list-group list-group-flush todo-lists">
                     @foreach (var list in Lists)
                     {
-                        <li class="list-group-item todo-lists-item" @onclick="e => SelectList(e, list.Name)">@list.Name</li>
+                        <li class="list-group-item todo-lists-item @(list.Name == SelectedList.Name ? "active-item" : "") ">
+                            <div class="w-100" @onclick="e => SelectList(e, list.Name)">
+                                @list.Name
+                            </div>
+                            <a class="content-vertical-center p-1" @onclick="e => DeleteList(e, list.Name)">
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                        </li>
                     }
                 </ul>
             </div>
@@ -123,6 +130,12 @@
     private void SelectList(MouseEventArgs args, string name)
     {
         SelectedList = Lists.FirstOrDefault(list => list.Name == name);
+    }
+
+    private async Task DeleteList(MouseEventArgs args, string name)
+    {
+        await toDoService.DeleteToDoList(name);
+        await Refresh();
     }
 
     private async Task ToogleTask(MouseEventArgs args, string listname, ToDoTask task)
