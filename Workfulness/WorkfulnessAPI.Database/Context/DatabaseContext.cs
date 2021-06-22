@@ -14,6 +14,8 @@ namespace WorkfulnessAPI.Database.Context
         public DbSet<DbSong> Songs { get; set; }
         public DbSet<DbPlaylistCategory> PlaylistsCategories { get; set; }
         public DbSet<DbPlaylist> Playlists { get; set; }
+        public DbSet<DbToDoList> ToDoLists { get; set; }
+        public DbSet<DbTaskItem> Tasks { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> dbOptions) : base(dbOptions) { }
 
@@ -37,6 +39,12 @@ namespace WorkfulnessAPI.Database.Context
                .HasMany(playlist => playlist.Songs)
                .WithOne()
                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder
+               .Entity<DbToDoList>()
+               .HasMany(toDo => toDo.Tasks)
+               .WithOne()
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

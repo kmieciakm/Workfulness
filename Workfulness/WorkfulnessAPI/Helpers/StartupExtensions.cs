@@ -4,9 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WorkfulnessAPI.Database.Context;
@@ -44,12 +47,14 @@ namespace WorkfulnessAPI.Helpers
             services.AddScoped<IPlaylistsRegistry, PlaylistsRegistry>();
             services.AddScoped<ISongsRegistry, SongsRegistry>();
             services.AddScoped<IUserRegistry, UserRegistry>();
+            services.AddScoped<IToDoListRegistry, ToDoRegistry>();
 
             // Domain Services
             services.AddScoped<IPlaylistService, PlaylistService>();
             services.AddScoped<ISongService, SongService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ITodoListService, ToDoListService>();
 
             return services;
         }
@@ -76,6 +81,42 @@ namespace WorkfulnessAPI.Helpers
                         ValidateAudience = false
                     };
                 });
+            return services;
+        }
+
+        public static IServiceCollection AddSwaggerDocs(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo { Title = "WorkfulnessAPI", Version = "v1" });
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+                config.IncludeXmlComments(xmlCommentsPath);
+
+                config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+                });
+                config.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+            });
             return services;
         }
     }

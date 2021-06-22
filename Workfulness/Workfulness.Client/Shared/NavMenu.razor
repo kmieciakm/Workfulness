@@ -33,21 +33,21 @@
                     </NavLink>
                 </li>
                 <li class="nav-item px-3 pt-3">
-                    <div class="nav-link btn btn-success p-2" @onclick="Logout">
+                    <div class="nav-link btn btn-info p-2" @onclick="Logout">
                         Logout
                     </div>
                 </li>
             </Authorized>
             <NotAuthorized>
                 <li class="nav-item px-3 pt-3">
-                    <NavLink class="btn btn-success" href="auth/login" Match="NavLinkMatch.All">
+                    <div class="nav-link btn btn-info p-2" @onclick='() => { navigationManager.NavigateTo("auth/login"); }'>
                         Login
-                    </NavLink>
+                    </div>
                 </li>
                 <li class="nav-item px-3">
-                    <NavLink class="btn btn-success" href="auth/register" Match="NavLinkMatch.All">
+                    <div class="nav-link btn btn-info p-2" @onclick='() => { navigationManager.NavigateTo("auth/register"); }'>
                         Register
-                    </NavLink>
+                    </div>
                 </li>
             </NotAuthorized>
         </AuthorizeView>
