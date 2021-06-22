@@ -1,7 +1,7 @@
 ﻿@inject IPomodoroTimer counter;
 @inject NavigationManager navigationManager;
 
-@if (counter.HasRun && !_IsOnPomodoroPage)
+@if (counter.HasRun && !_IsOnPomodoroPage && !_IsOnToDoPage)
 {
     <div @onclick="GoToPomodoroMainPage">
         <div class="@Color timeOnTooltip p-4 text-center">@counter.ShortTime</div>
@@ -28,6 +28,15 @@
         get
         {
             var pomodoroPageUrl = ($"{navigationManager.BaseUri}pomodoro");
+            return navigationManager.Uri == pomodoroPageUrl;
+        }
+    }
+
+    private bool _IsOnToDoPage
+    {
+        get
+        {
+            var pomodoroPageUrl = ($"{navigationManager.BaseUri}todo");
             return navigationManager.Uri == pomodoroPageUrl;
         }
     }

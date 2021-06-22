@@ -58,6 +58,7 @@ ___________________________
     background-color: mediumseagreen !important;
     outline: none !important;
     border: none !important;
+    cursor: pointer !important;
 }
 
 .btn-warning {
@@ -80,6 +81,15 @@ ___________________________
     outline: none !important;
     border: none !important;
 }
+
+.btn-info {
+    color: black !important;
+    background-color: var(--color-secondary) !important;
+    outline: none !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
 /*
 ___________________________
     Custom shared CSS

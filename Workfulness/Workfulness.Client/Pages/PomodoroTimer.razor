@@ -3,30 +3,51 @@
 @inject IAudioPlayer audioPlayer;
 @inject IBeepPlayer beepPlayer;
 
-
-<div class="centerContext mt-5">
-    <div>
-        <button class="btn btn-primary" @onclick="e => counter.WorkSession(_WorkTime)">Work</button>
-        <button class="btn btn-warning" @onclick="e => counter.ShortBreakSession(_ShortBreak)"> Short break</button>
-        <button class="btn btn-warning" @onclick="e => counter.LongBreakSession(_LongBreak)"> Long break</button>
+<div class="centerContext mt-4">
+        @if (_ImageUrl != null)
+        {
+            <div class="image" style='background-image: url("@_ImageUrl")'/>
+        }
+        <div>
+            <button class="btn btn-primary"
+                    @onclick='e => counter.WorkSession(_WorkTime)'>Work</button>
+            <button class="btn btn-warning"
+                    @onclick='e => counter.ShortBreakSession(_ShortBreak)'>Short break</button>
+            <button class="btn btn-warning"
+                    @onclick='e => counter.LongBreakSession(_LongBreak)'>Long break</button>
+        </div>
+        <p class="time p-3 text-center">@counter.ShortTime</p>
+        <div>
+            <button class="btn btn-success" @onclick="e => counter.StartCount()">Start</button>
+            <button class="btn btn-danger" @onclick="e => counter.StopCount()">Stop</button>
+        </div>
     </div>
-    <p class="time p-5 text-center">@counter.ShortTime</p>
-    <div>
-        <button class="btn btn-success" @onclick="e => counter.StartCount()">Start</button>
-        <button class="btn btn-danger" @onclick="e => counter.StopCount()">Stop</button>
-    </div>
-</div>
 
 @code {
     private int _WorkTime { get; set; } = 25;
     private int _ShortBreak { get; set; } = 5;
     private int _LongBreak { get; set; } = 15;
+    private string _ImageUrl { get {
+            switch (counter.CurrentState)
+            {
+                case PomodoroState.WORK:
+                    return "../photos/work-img.png";
+                case PomodoroState.SHORT_BREAK:
+                    return "../photos/short-break-img.png";
+                case PomodoroState.LONG_BREAK:
+                    return "../photos/long-break-img.png";
+                default:
+                    return null;
+            }
+        }
+    }
 
     protected override void OnInitialized()
     {
         counter.OnTick += () => { StateHasChanged(); };
         counter.OnFinished += () => { Beep(); };
     }
+
     public async void Beep()
     {
         await audioPlayer.Pause();
@@ -35,6 +56,5 @@
         await Task.Delay(1000);
         await beepPlayer.PlayBeep(beepUrl);
         beepPlayer.BeepHasFinished += async () => { await audioPlayer.Play(); };
-
     }
 }

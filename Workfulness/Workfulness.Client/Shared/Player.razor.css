@@ -7,6 +7,14 @@ h3 {
     font-weight: 400;
 }
 
+a {
+    color: inherit;
+}
+
+    a:hover {
+        color: inherit;
+    }
+
 .background {
     position: fixed;
     top: 0;
@@ -151,6 +159,7 @@ __________________________
 
 .playlist_image {
     background-color: var(--color-light);
+    position: relative;
     height: 50vh;
     width: 50vh;
     max-height: 500px;
@@ -158,6 +167,25 @@ __________________________
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    cursor: pointer;
+    transition: ease-out 0.2s;
+}
+
+    .playlist_image .playlist_image_btn {
+        display: none;
+    }
+
+    .playlist_image:hover .playlist_image_btn {
+        display: flex;
+    }
+
+.playlist_image_btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    color: var(--color-secondary);
+    background-color: #808080;
+    transition: ease-out 0.2s;
 }
 
 .playlist_list {
@@ -170,18 +198,29 @@ __________________________
     overflow-y: scroll;
 }
 
-li {
+.list-group-item {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
     background-color: var(--color-light);
-    transition: 0.2s;
+    transition: 0.1s;
 }
 
-    li:hover {
+    .list-group-item:hover {
         color: var(--color-secondary);
         cursor: pointer;
     }
 
+        .list-group-item:hover a {
+            display: flex !important;
+        }
+
 .list-item-active {
     color: var(--color-secondary);
+}
+
+.list-group-item a {
+    display: none !important;
 }
 
 /*

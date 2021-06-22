@@ -226,6 +226,56 @@ namespace WorkfulnessAPI.Database.Migrations
                     b.ToTable("Songs");
                 });
 
+            modelBuilder.Entity("WorkfulnessAPI.Database.Models.DbTaskItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DbToDoListId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Done")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Task")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DbToDoListId");
+
+                    b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("WorkfulnessAPI.Database.Models.DbToDoList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("ToDoLists");
+                });
+
             modelBuilder.Entity("WorkfulnessAPI.Database.Models.DbUser", b =>
                 {
                     b.Property<string>("Id")
@@ -370,9 +420,31 @@ namespace WorkfulnessAPI.Database.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 
+            modelBuilder.Entity("WorkfulnessAPI.Database.Models.DbTaskItem", b =>
+                {
+                    b.HasOne("WorkfulnessAPI.Database.Models.DbToDoList", null)
+                        .WithMany("Tasks")
+                        .HasForeignKey("DbToDoListId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WorkfulnessAPI.Database.Models.DbToDoList", b =>
+                {
+                    b.HasOne("WorkfulnessAPI.Database.Models.DbUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("WorkfulnessAPI.Database.Models.DbPlaylist", b =>
                 {
                     b.Navigation("Songs");
+                });
+
+            modelBuilder.Entity("WorkfulnessAPI.Database.Models.DbToDoList", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

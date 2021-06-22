@@ -1,0 +1,112 @@
+﻿.box {
+    padding-bottom: 150px !important;
+}
+
+.todo-parent {
+    position: relative;
+}
+
+.todo-bar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    background-color: var(--color-dark);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.todo-lists {
+    background-color: var(--color-dark);
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-bottom: 200px !important;
+}
+
+.todo-lists-item {
+    background-color: transparent;
+    color: #d7d7d7;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    transition: 0.1s;
+}
+
+    .todo-lists-item:hover {
+        background-color: var(--color-secondary);
+        color: black;
+    }
+
+        .todo-lists-item:hover a {
+            display: flex !important;
+        }
+
+.active-item {
+    background-color: var(--color-secondary) !important;
+    color: black !important;
+    outline: none !important;
+    border: none !important
+}
+
+.todo-lists-item a {
+    display: none !important;
+    transition: ease-out 0.2s;
+}
+
+    .todo-lists-item a:hover {
+        transform: scale(1.5);
+    }
+
+.task-item {
+    cursor: pointer;
+    background-color: transparent;
+}
+
+    .task-item:hover span {
+        text-decoration: line-through;
+    }
+
+.task-done {
+    opacity: 0.5;
+}
+
+#NewTaskInput {
+    border-radius: 0px;
+    outline: none !important;
+    background-color: transparent;
+    border: 0px;
+    border-bottom: 1px solid #aaa;
+}
+
+#NewListInput {
+    border-radius: 0px;
+    outline: none !important;
+    background-color: transparent;
+}
+
+.image {
+    height: 300px;
+    width: 300px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-secondary);
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-secondary);
+    }

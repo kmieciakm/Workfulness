@@ -13,11 +13,9 @@ namespace Workfulness.Client.Services
     {
         private HttpClient _HttpClient { get; }
 
-        public PlaylistService(IHttpClientFactory httpClientFactory)
+        public PlaylistService(HttpClient httpClient)
         {
-            _HttpClient = httpClientFactory.CreateClient("GatewayAPI");
-            _HttpClient.BaseAddress = new Uri("https://localhost:5001/"); // BUG, TODO: Check why client is injected without BaseAddress
-            Console.WriteLine($"API: {_HttpClient.BaseAddress}"); // TODO: Delete
+            _HttpClient = httpClient;
         }
 
         public async Task<Playlist> GetPlaylistAsync(int id)
