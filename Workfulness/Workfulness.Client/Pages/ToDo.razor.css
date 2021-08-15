@@ -40,10 +40,6 @@
         color: black;
     }
 
-        .todo-lists-item:hover a {
-            display: flex !important;
-        }
-
 .active-item {
     background-color: var(--color-secondary) !important;
     color: black !important;
@@ -51,18 +47,26 @@
     border: none !important
 }
 
-.todo-lists-item a {
-    display: none !important;
+.btn-expanding {
+    cursor: pointer;
     transition: ease-out 0.2s;
 }
 
-    .todo-lists-item a:hover {
+    .btn-expanding:hover, .todo-task-item .btn-expanding:hover {
         transform: scale(1.5);
     }
 
-.task-item {
-    cursor: pointer;
+.todo-task-item {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
     background-color: transparent;
+}
+
+.task-item {
+    background-color: transparent;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
     .task-item:hover span {

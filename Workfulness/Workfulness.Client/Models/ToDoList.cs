@@ -8,6 +8,17 @@ namespace Workfulness.Client.Models
     public class ToDoList
     {
         public string Name { get; set; }
-        public IEnumerable<ToDoTask> Tasks { get; set; }
+        private IEnumerable<ToDoTask> _tasks;
+        public IEnumerable<ToDoTask> Tasks {
+            get { return _tasks.OrderBy(task => task.Done); }
+            init { _tasks = value; }
+        }
+
+        public void DisableAllTasksEditMode() {
+            foreach (var task in _tasks)
+            {
+                task.InEditMode = false;
+            }
+        }
     }
 }

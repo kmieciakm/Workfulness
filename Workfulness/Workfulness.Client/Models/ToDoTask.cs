@@ -11,5 +11,6 @@ namespace Workfulness.Client.Models
         public string Task { get; set; }
         public DateTime DueDate { get; set; }
         public bool Done { get; set; }
+        public bool InEditMode { get; set; }
     }
 }
