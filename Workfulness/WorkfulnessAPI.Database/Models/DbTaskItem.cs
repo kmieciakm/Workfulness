@@ -12,8 +12,7 @@ namespace WorkfulnessAPI.Database.Models
         [Required]
         [MaxLength(500)]
         public string Task { get; set; }
-        [Required]
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public bool Done { get; set; }
     }
 }

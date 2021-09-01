@@ -20,6 +20,9 @@
                                         <i class="fas fa-heart" style="color: red;"></i>
                                         <span class="text-done">@task.Task</span>
                                     </div>
+                                    <span class="pr-3">
+                                        <RadzenDatePicker @bind-Value=task.DueDate DateFormat="dd/MM/yyyy" Change=@(async newDate => await SetTaskDate(task, newDate)) />
+                                    </span>
                                     <a class="content-vertical-center p-1 mr-1 btn-expanding" @onclick="(e) => SwitchTaskToEditMode(e, task)">
                                         <i class="far fa-edit"></i>
                                     </a>
@@ -33,7 +36,7 @@
                                 <li class="list-group-item todo-task-item pl-5 pr-5">
                                     <div class="w-100 task-item">
                                         <input type="text" class="form-control" id="EditTaskInput" @ref="EditTaskInput"
-                                               @bind-value="EditTaskValue" @onkeydown="async (e) => await EditTask(e, task)">
+                                            @bind-value="EditTaskValue" @onkeydown="async (e) => await EditTask(e, task)">
                                     </div>
                                     <a class="content-vertical-center p-1 ml-2 btn-expanding" @onclick="(e) => { task.InEditMode = false; }">
                                         <i class="fas fa-times"></i>
@@ -47,6 +50,9 @@
                                         <i class="far fa-circle"></i>
                                         @task.Task
                                     </div>
+                                    <span class="pr-3">
+                                        <RadzenDatePicker @bind-Value=task.DueDate DateFormat="dd/MM/yyyy" Change=@(async newDate => await SetTaskDate(task, newDate)) />
+                                    </span>
                                     <a class="content-vertical-center p-1 mr-1 btn-expanding" @onclick="(e) => SwitchTaskToEditMode(e, task)">
                                         <i class="far fa-edit"></i>
                                     </a>
@@ -58,11 +64,7 @@
                         }
                         <li class="list-group-item task-item pl-5 pr-5">
                             <input type="text" class="form-control" id="NewTaskInput" placeholder="Add a task ..."
-                                   @bind-value="NewTaskValue" @onkeydown="async (e) => await AddTaskToList(e, SelectedList.Name)">
-                            @*<div class="col-xl-6">
-                                     <h4>DatePicker</h4>
-                                    <RadzenDatePicker @bind-Value=@Value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) />
-                                </div>*@
+                                @bind-value="NewTaskValue" @onkeydown="async (e) => await AddTaskToList(e, SelectedList.Name)">
                         </li>
                     </ul>
                 }
@@ -102,13 +104,10 @@
     private bool IsLoading { get; set; } = true;
     private string NewTaskValue { get; set; } = "";
     private string EditTaskValue { get; set; } = "";
-    private string NewListValue { get; set; } = "";
     private ElementReference EditTaskInput { get; set; }
+    private string NewListValue { get; set; } = "";
     ToDoList SelectedList { get; set; }
     List<ToDoList> Lists { get; set; } = new List<ToDoList>();
-
-    DateTime? Value { get; set; } = DateTime.Now;
-    IEnumerable<DateTime> Dates { get; set; } = new DateTime[] { DateTime.Today.AddDays(-1), DateTime.Today.AddDays(1) };
 
     protected override async Task OnInitializedAsync()
     {
@@ -129,10 +128,6 @@
         NewListValue = "";
         SelectedList = Lists.FirstOrDefault(list => list.Name == SelectedList?.Name) ?? Lists.FirstOrDefault();
         StateHasChanged();
-    }
-
-    void OnChange(DateTime? value, string name, string format)
-    {
     }
 
     private async Task AddTaskToList(KeyboardEventArgs args, string listname)
@@ -170,6 +165,14 @@
             await toDoService.EditTask(SelectedList.Name, task);
             await Refresh();
         }
+    }
+
+    private async Task SetTaskDate(ToDoTask task, DateTime? dueDate)
+    {
+        await Task.Yield();
+        task.DueDate = dueDate;
+        await toDoService.EditTask(SelectedList.Name, task);
+        await Refresh();
     }
 
     private async Task DeleteTaskFromList(MouseEventArgs args, ToDoTask task)
