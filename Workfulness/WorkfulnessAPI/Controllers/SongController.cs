@@ -14,7 +14,7 @@ namespace WorkfulnessAPI.Controllers
     public class SongController : ControllerBase
     {
         private ILogger<SongController> _Logger { get; }
-        private ISongService _SongService { get; set; }
+        private ISongService _SongService { get; }
 
         public SongController(ILogger<SongController> logger, ISongService songService) 
         {

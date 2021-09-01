@@ -9,8 +9,7 @@ namespace WorkfulnessAPI.Models.Requests
     public class TaskCreateRequest
     {
         public string Task { get; set; }
-        public DateTime DueDate { get; set; }
 
-        public TaskItem ToTaskItem() => new TaskItem(Task, DueDate);
+        public TaskItem ToTaskItem() => new TaskItem(Task);
     }
 }

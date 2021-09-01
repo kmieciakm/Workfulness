@@ -10,17 +10,17 @@ namespace WorkfulnessAPI.Services.Models
     {
         public int Id { get; set; }
         public string Task { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public bool Done { get; set; }
 
-        public TaskItem(string task, DateTime dueDate)
+        public TaskItem(string task)
         {
             Task = task;
-            DueDate = dueDate;
+            DueDate = null;
             Done = false;
         }
 
-        public TaskItem(int id, string task, DateTime dueDate, bool done)
+        public TaskItem(int id, string task, DateTime? dueDate, bool done)
         {
             Id = id;
             Task = task;

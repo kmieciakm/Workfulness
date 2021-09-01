@@ -18,13 +18,13 @@ namespace WorkfulnessAPI.Controllers
     public class PlaylistController : ControllerBase
     {
         private ILogger<PlaylistController> _Logger { get; }
-        public string _BaseSongsUrl { get; }
-        private IPlaylistService _PlaylistService { get; set; }
+        public string BaseSongsUrl { get; init; }
+        private IPlaylistService _PlaylistService { get; }
 
         public PlaylistController(ILogger<PlaylistController> logger, IPlaylistService songsService, IOptions<SongsConfig> songsConfig)
         {
             _Logger = logger;
-            _BaseSongsUrl = songsConfig.Value.BaseSongsUrl;
+            BaseSongsUrl = songsConfig.Value.BaseSongsUrl;
             _PlaylistService = songsService;
         }
 
@@ -49,20 +49,20 @@ namespace WorkfulnessAPI.Controllers
                 return new OkObjectResult(GetPlaylistsByCategory(playlistCategory));
             }
 
-            List<PlaylistDTO> playlists = new List<PlaylistDTO>();
+            List<PlaylistDTO> playlists = new();
             foreach (var playlist in _PlaylistService.GetPlaylists())
             {
-                playlists.Add(new PlaylistDTO(playlist, _BaseSongsUrl));
+                playlists.Add(new PlaylistDTO(playlist, BaseSongsUrl));
             }
             return playlists;
         }
 
         private IEnumerable<PlaylistDTO> GetPlaylistsByCategory(string category)
         {
-            List<PlaylistDTO> playlists = new List<PlaylistDTO>();
+            List<PlaylistDTO> playlists = new();
             foreach (var playlist in _PlaylistService.GetPlaylistsOfCategory(category))
             {
-                playlists.Add(new PlaylistDTO(playlist, _BaseSongsUrl));
+                playlists.Add(new PlaylistDTO(playlist, BaseSongsUrl));
             }
             return playlists;
         }
@@ -82,7 +82,7 @@ namespace WorkfulnessAPI.Controllers
             {
                 return NotFound();
             }
-            return new PlaylistDTO(playlist, _BaseSongsUrl);
+            return new PlaylistDTO(playlist, BaseSongsUrl);
         }
 
         /// <summary>

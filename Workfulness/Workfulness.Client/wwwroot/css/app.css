@@ -92,6 +92,53 @@ ___________________________
 
 /*
 ___________________________
+    Radzen Components
+___________________________
+*/
+.rz-inputtext {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.rz-datepicker-trigger {
+    color: inherit !important;
+}
+
+.rz-state-active, .rz-state-highlight, .rz-dropdown-item:hover {
+    background-color: var(--color-secondary) !important;
+}
+
+.rz-datepicker-header {
+    background-color: var(--color-secondary) !important;
+    padding-bottom: 5px !important;
+}
+
+.rz-button-icon-left {
+    color: inherit !important;
+    transition: ease-out 0.2s !important;
+    height: 16px !important;
+    width: 16px !important;
+}
+
+    .rz-button-icon-left:hover {
+        transform: scale(1.5) !important;
+    }
+
+::-webkit-scrollbar {
+    width: 10px !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-secondary) !important;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-secondary) !important;
+    }
+
+/*
+___________________________
     Custom shared CSS
 ___________________________
 */
