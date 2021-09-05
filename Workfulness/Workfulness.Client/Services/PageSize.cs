@@ -28,9 +28,9 @@ namespace Workfulness.Client.Services
 
         public bool IsMedium => Width >= 768 && Width < 992;
 
-        public bool IsLarge => Width >= 992 && Width < 1200;
+        public bool IsLarge => Width >= 992 && Width < 1300;
 
-        public bool IsExtraLarge => Width >= 1200;
+        public bool IsExtraLarge => Width >= 1300;
 
         [JSInvokable]
         public void OnPageResized(int width, int height)
