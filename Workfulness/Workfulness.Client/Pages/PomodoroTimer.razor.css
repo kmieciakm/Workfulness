@@ -1,21 +1,120 @@
 ﻿.image {
-    height: 300px;
-    width: 300px;
+    width: 100%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
-.centerContext {
+.center_context {
     width: 100%;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    justify-content: center;
     margin-bottom: 200px !important;
 }
 
-.time {
-    font-size: 3rem;
-    font-weight: bold;
-    letter-spacing: 5px;
+.timer {
+    display: flex;
+    position: relative;
 }
+
+.clock {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+    border-right: 4px solid var(--color-dark);
+}
+
+.clock_controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clock_time {
+    text-align: center;
+    letter-spacing: 1px;
+    font-size: 2.9rem;
+    font-weight: bold;
+}
+
+.settings_bar {
+    top: -3rem;
+    right: -1rem;
+    position: absolute;
+}
+
+.btn-icon {
+    font-size: 1.5rem;
+    color: var(--color-light);
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+
+    .btn-icon:hover {
+        color: var(--color-dark);
+    }
+
+.btn-circle {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 17px 16px 17px;
+    margin: 5px 10px 5px 10px;
+    border-radius: 50%;
+    color: var(--color-dark);
+    border: 3px solid var(--color-dark);
+    background-color: var(--color-light);
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+
+    .btn-circle .fas {
+        font-size: 16px;
+        background-color: var(--color-light);
+    }
+
+    .btn-circle:hover .fas {
+        font-size: 20px;
+    }
+
+.timespan_options {
+    margin: 0px;
+    padding-left: 6px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .timespan_options li {
+        box-sizing: border-box;
+        font-size: 18px;
+        font-weight: bold;
+        min-width: 250px;
+        margin-bottom: 6px;
+        padding: 15px 15px 15px 20px;
+        border-radius: 0.25rem;
+        background-color: transparent;
+        list-style-type: none;
+        cursor: pointer;
+        transition: 0.4s ease-in-out;
+    }
+
+        .timespan_options li:last-child {
+            margin-bottom: 0px !important;
+        }
+
+        .timespan_options li:hover {
+            padding-left: 30px;
+            background-color: var(--color-light);
+        }
+
+        .timespan_options li.active {
+            background-color: var(--color-dark);
+            color: var(--color-light);
+        }

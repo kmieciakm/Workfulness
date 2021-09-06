@@ -12,12 +12,12 @@ namespace WorkfulnessAPI.DTO
         public ToDoDTO(ToDoList toDo) : this(toDo.Name, toDo.Tasks.Select(task => new TaskItemDTO(task))) { }
     }
 
-    public record TaskItemDTO(string Task, DateTime DueDate, bool Done)
+    public record TaskItemDTO(string Task, DateTime? DueDate, bool Done)
     {
         public int Id { get; set; }
 
         [JsonConstructor]
-        public TaskItemDTO(int id, string task, DateTime dueDate, bool done) : this(task, dueDate, done)
+        public TaskItemDTO(int id, string task, DateTime? dueDate, bool done) : this(task, dueDate, done)
         {
             Id = id;
         }

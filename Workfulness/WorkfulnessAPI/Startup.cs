@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using WorkfulnessAPI.Database.Context;
 using WorkfulnessAPI.Database.Seed;
 using WorkfulnessAPI.Helpers;
+using WorkfulnessAPI.Middleware;
 
 namespace WorkfulnessAPI
 {
@@ -73,6 +74,8 @@ namespace WorkfulnessAPI
             app.UseCors(_corsPolicyName);
 
             app.UseRouting();
+
+            app.UseMiddleware<ResponseTimer>();
 
             app.UseAuthentication();
             app.UseAuthorization();
